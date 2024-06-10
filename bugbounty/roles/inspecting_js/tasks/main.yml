@@ -1,0 +1,16 @@
+- name: Install LinkFinder
+  git:
+    repo: 'https://github.com/GerbenJavado/LinkFinder.git'
+    dest: /opt/tools/inspecting_js/LinkFinder
+  become: yes
+
+- name: Install JSParser
+  git:
+    repo: 'https://github.com/nahamsec/JSParser.git'
+    dest: /opt/tools/inspecting_js/JSParser
+  become: yes
+
+- name: Install requirements for JSParser
+  pip:
+    requirements: /opt/tools/inspecting_js/JSParser/requirements.txt
+  become: yes

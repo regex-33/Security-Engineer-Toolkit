@@ -1,0 +1,10 @@
+- name: Install secretx
+  git:
+    repo: 'https://github.com/xyele/secretx.git'
+    dest: /opt/tools/api/secretx
+  become: yes
+
+- name: Install requirements for secretx
+  pip:
+    requirements: /opt/tools/api/secretx/requirements.txt
+  become: yes

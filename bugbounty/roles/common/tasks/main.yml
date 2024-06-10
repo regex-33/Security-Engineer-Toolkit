@@ -1,0 +1,42 @@
+- name: Update and upgrade apt packages
+  apt:
+    update_cache: yes
+    upgrade: dist
+  become: yes
+
+- name: Install common dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - libcurl4-openssl-dev
+    - libssl-dev
+    - jq
+    - ruby-full
+    - libxml2
+    - libxml2-dev
+    - libxslt1-dev
+    - ruby-dev
+    - build-essential
+    - libgmp-dev
+    - zlib1g-dev
+    - libffi-dev
+    - python-dev
+    - python-setuptools
+    - libldns-dev
+    - python3-pip
+    - python-pip
+    - python-dnspython
+    - git
+    - rename
+    - xargs
+    - libtest-www-mechanize-perl
+    - libnet-whois-ip-perl
+    - npm
+  become: yes
+
+- name: Create tools directory
+  file:
+    path: /opt/tools
+    state: directory
+  become: yes

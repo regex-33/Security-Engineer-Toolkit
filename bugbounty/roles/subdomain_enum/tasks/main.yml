@@ -1,0 +1,488 @@
+- name: Install Sublist3r using git
+  git:
+    repo: 'https://github.com/aboul3la/Sublist3r.git'
+    dest: /opt/tools/subdomain_enum/Sublist3r
+  become: yes
+
+- name: Check if Sublist3r installation was successful
+  fail:
+    msg: "Failed to install Sublist3r using git. Please check the repository or network connectivity."
+  when: ansible_failed_result|failed
+
+- name: Install aquatone
+  shell: go get github.com/michenriksen/aquatone
+  become: yes
+
+- name: Check if aquatone installation was successful
+  fail:
+    msg: "Failed to install aquatone using go get."
+  when: result|failed
+
+- name: Install assetfinder
+  shell: go get -u github.com/tomnomnom/assetfinder
+  become: yes
+
+- name: Check if assetfinder installation was successful
+  fail:
+    msg: "Failed to install assetfinder using go get."
+  when: result|failed
+
+- name: Install amass
+  apt:
+    name: amass
+    state: present
+  become: yes
+
+- name: Check if amass installation was successful
+  fail:
+    msg: "Failed to install amass using apt."
+  when: result|failed
+
+- name: Install Golang
+  become: yes
+  apt:
+    name: unzip
+    state: present
+  vars:
+    go_version: "1.22.2"
+    go_url: "https://go.dev/dl/go{{ go_version }}.linux-amd64.tar.gz"
+    go_tar_path: "/usr/local/"
+    go_bin_path: "~/.go/bin"
+  tasks:
+    - name: Download Golang
+      get_url:
+        url: "{{ go_url }}"
+        dest: "/tmp/go{{ go_version }}.linux-amd64.tar.gz"
+    - name: Extract Golang
+      become: yes
+      unarchive:
+        src: "/tmp/go{{ go_version }}.linux-amd64.tar.gz"
+        dest: "{{ go_tar_path }}"
+        remote_src: yes
+    - name: Set Golang environment variables
+      become: yes
+      lineinfile:
+        dest: "~/.bashrc"
+        line: "{{ item }}"
+      loop:
+        - "export GOROOT=/usr/local/go"
+        - "export GOPATH=~/.go"
+        - "export PATH=$PATH:/usr/local/go/bin:~/.go/bin"
+    - name: Install Subfinder
+      become: yes
+      command: "GO111MODULE=on go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest"
+    - name: Copy Subfinder binary to /usr/local/bin
+      become: yes
+      copy:
+        src: "~/go/bin/subfinder"
+        dest: "/usr/local/bin/subfinder"
+        mode: "0755"
+
+- name: Download Findomain ZIP file
+  get_url:
+    url: "https://github.com/findomain/findomain/releases/latest/download/findomain-linux-i386.zip"
+    dest: "/tmp/findomain-linux-i386.zip"
+  register: download_findomain
+  become: yes
+
+- name: Ensure Findomain ZIP file is downloaded successfully
+  fail:
+    msg: "Failed to download Findomain ZIP file. Please check the URL or network connectivity."
+  when: download_findomain.failed
+
+- name: Extract Findomain ZIP file
+  unarchive:
+    src: "/tmp/findomain-linux-i386.zip"
+    dest: "/usr/bin/"
+    remote_src: yes
+  register: extract_findomain
+  become: yes
+  ignore_errors: yes
+
+- name: Ensure Findomain ZIP file is extracted successfully
+  fail:
+    msg: "Failed to extract Findomain ZIP file. Please check the ZIP file or destination directory."
+  when: extract_findomain|failed
+
+- name: Make Findomain executable
+  file:
+    path: "/usr/bin/findomain"
+    mode: "u+x"
+  become: yes
+
+- name: Install Github-subdomains
+  become: yes
+  shell: "GO111MODULE=on go install github.com/gwen001/github-subdomains@latest"
+    
+- name: Check if Github-subdomains installation was successful
+  fail:
+    msg: "Failed to install Github-subdomains using go."
+  when: result|failed
+
+- name: Copy Github-subdomains binary to /usr/local/bin
+  become: yes
+  copy:
+    src: "~/go/bin/github-subdomains"
+    dest: "/usr/local/bin/github-subdomains"
+    mode: "0755"
+
+- name: Install Crobat
+  shell: "go install github.com/cgboal/sonarsearch/cmd/crobat@latest"
+  become: yes
+
+- name: Check if Crobat installation was successful
+  fail:
+    msg: "Failed to install Crobat using go."
+  when: result|failed
+
+- name: Copy Crobat binary to /usr/local/bin
+  become: yes
+  copy:
+    src: "~/go/bin/crobat"
+    dest: "/usr/local/bin/crobat"
+    mode: "0755"
+
+- name: Install Sudomy using git
+  git:
+    repo: 'https://github.com/screetsec/Sudomy.git'
+    dest: /opt/tools/subdomain_enum/Sudomy
+  become: yes
+
+- name: Install requirements for Sudomy
+  pip:
+    requirements: /opt/tools/subdomain_enum/Sudomy/requirements.txt
+  become: yes
+
+- name: Install Sudomy Packeges
+  become: yes
+  shell: "apt-get install npm && apt-get install jq && npm install -g phantomjs && apt-get install jq nmap phantomjs npm chromium parallel -y && npm i -g wappalyzer wscat && cp sudomy /usr/local/bin && cp sudomy.api /usr/local/bin && cp slack.conf /usr/local/bin && cp sudomy.conf /usr/local/bin"
+
+- name: Copy Sudomy binary to /usr/local/bin
+  become: yes
+  copy:
+    src: "/opt/tools/subdomain_enum/Sudomy/Sudomy"
+    dest: "/usr/local/bin/Sudomy"
+    mode: "0755"
+
+- name: Install Mapcidr
+  shell:
+    cmd: "go install -v github.com/projectdiscovery/mapcidr/cmd/mapcidr@latest"
+  become: yes
+
+- name: Check if Mapcidr installation was successful
+  fail:
+    msg: "Failed to install Mapcidr using go."
+  when: result|failed
+
+- name: Copy Mapcidr binary to /usr/local/bin
+  become: yes
+  copy:
+    src: "~/go/bin/mapcidr"
+    dest: "/usr/local/bin/mapcidr"
+    mode: "0755"
+
+- name: Install CertCrunchy
+  git:
+    repo: 'https://github.com/joda32/CertCrunchy.git'
+    dest: /opt/tools/subdomain_enum/CertCrunchy
+  become: yes
+
+- name: Install requirements for CertCrunchy
+  pip:
+    requirements: /opt/tools/subdomain_enum/CertCrunchy/requirements.txt
+  become: yes
+
+- name: Install AnalyticsRelationships using git
+  git:
+    repo: 'https://github.com/Josue87/AnalyticsRelationships.git'
+    dest: /opt/tools/subdomain_enum/AnalyticsRelationships
+  become: yes
+
+- name: Build AnalyticsRelationships
+  shell:
+    cmd: "cd /opt/tools/subdomain_enum/AnalyticsRelationships && go build -ldflags '-s -w'"
+  become: yes
+
+- name: Check if AnalyticsRelationships build was successful
+  fail:
+    msg: "Failed to build AnalyticsRelationships using go."
+  when: result|failed
+
+- name: Copy AnalyticsRelationships binary to /usr/local/bin
+  become: yes
+  copy:
+    src: "/opt/tools/subdomain_enum/AnalyticsRelationships/analyticsrelationships"
+    dest: "/usr/local/bin/analyticsrelationships"
+    mode: "0755"
+
+- name: Install Galer
+  become: yes
+  shell: "GO111MODULE=on go install -v github.com/dwisiswant0/galer@latest"
+
+- name: Check if Galer installation was successful
+  fail:
+    msg: "Failed to install Galer using go."
+  when: result|failed
+
+- name: Copy Galer binary to /usr/local/bin
+  become: yes
+  copy:
+    src: "~/go/bin/galer"
+    dest: "/usr/local/bin/galer"
+    mode: "0755"
+
+- name: Install quickcert
+  become: yes
+  shell: "GO111MODULE=on go install -v github.com/c3l3si4n/quickcert@HEAD"
+
+- name: Check if quickcert installation was successful
+  fail:
+    msg: "Failed to install quickcert using go."
+  when: result|failed
+
+- name: Copy quickcert binary to /usr/local/bin
+  become: yes
+  copy:
+    src: "~/go/bin/quickcert"
+    dest: "/usr/local/bin/quickcert"
+    mode: "0755"
+
+
+# - name: Install Sublist3r
+#   git:
+#     repo: 'https://github.com/aboul3la/Sublist3r.git'
+#     dest: /opt/tools/subdomain_enum/Sublist3r
+#   become: yes
+
+# - name: Install aquatone
+#   shell: go get github.com/michenriksen/aquatone
+#   become: yes
+
+# - name: Install assetfinder
+#   shell: go get -u github.com/tomnomnom/assetfinder
+#   become: yes
+
+# - name: Install amass
+#   apt:
+#     name: amass
+#     state: present
+#   become: yes
+
+# ---
+# - name: Install Sublist3r
+#   git:
+#     repo: 'https://github.com/aboul3la/Sublist3r.git'
+#     dest: /opt/tools/subdomain_enum/Sublist3r
+#   become: yes
+
+# - name: Install aquatone
+#   shell: go get github.com/michenriksen/aquatone
+#   become: yes
+
+# - name: Install assetfinder
+#   shell: go get -u github.com/tomnomnom/assetfinder
+#   become: yes
+
+# - name: Install amass
+#   apt:
+#     name: amass
+#     state: present
+#   become: yes
+
+# - name: Install Golang
+#   become: yes
+#   apt:
+#     name: unzip
+#     state: present
+#   vars:
+#     go_version: "1.22.2"
+#     go_url: "https://go.dev/dl/go{{ go_version }}.linux-amd64.tar.gz"
+#     go_tar_path: "/usr/local/"
+#     go_bin_path: "~/.go/bin"
+#   tasks:
+#     - name: Download Golang
+#       get_url:
+#         url: "{{ go_url }}"
+#         dest: "/tmp/go{{ go_version }}.linux-amd64.tar.gz"
+
+#     - name: Extract Golang
+#       become: yes
+#       unarchive:
+#         src: "/tmp/go{{ go_version }}.linux-amd64.tar.gz"
+#         dest: "{{ go_tar_path }}"
+#         remote_src: yes
+
+#     - name: Set Golang environment variables
+#       become: yes
+#       lineinfile:
+#         dest: "~/.bashrc"
+#         line: "{{ item }}"
+#       loop:
+#         - "export GOROOT=/usr/local/go"
+#         - "export GOPATH=~/.go"
+#         - "export PATH=$PATH:/usr/local/go/bin:~/.go/bin"
+#         - "export PATH=$PATH:/usr/local/go/bin:~/.go/bin"
+#         - "export PATH=$PATH:/usr/local/go/bin:~/.go/bin"
+
+#     - name: Install Subfinder
+#       become: yes
+#       command: "GO111MODULE=on go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest"
+
+#     - name: Copy Subfinder binary to /usr/local/bin
+#       become: yes
+#       copy:
+#         src: "~/go/bin/subfinder"
+#         dest: "/usr/local/bin/subfinder"
+#         mode: "0755"
+
+
+# - name: Download Findomain ZIP file
+#   get_url:
+#     url: "https://github.com/findomain/findomain/releases/latest/download/findomain-linux-i386.zip"
+#     dest: "/tmp/findomain-linux-i386.zip"
+#   register: download_findomain
+#   become: yes
+
+# - name: Ensure Findomain ZIP file is downloaded successfully
+#   fail:
+#     msg: "Failed to download Findomain ZIP file. Please check the URL or network connectivity."
+#   when: download_findomain.failed
+
+# - name: Extract Findomain ZIP file
+#   unarchive:
+#     src: "/tmp/findomain-linux-i386.zip"
+#     dest: "/usr/bin/"
+#     remote_src: yes
+#   register: extract_findomain
+#   become: yes
+#   ignore_errors: yes
+
+# - name: Ensure Findomain ZIP file is extracted successfully
+#   fail:
+#     msg: "Failed to extract Findomain ZIP file. Please check the ZIP file or destination directory."
+#   when: extract_findomain|failed
+
+# - name: Make Findomain executable
+#   file:
+#     path: "/usr/bin/findomain"
+#     mode: "u+x"
+#   become: yes
+
+
+
+# - name: Install Github-subdomains
+#   become: yes
+#   shell: "GO111MODULE=on go install github.com/gwen001/github-subdomains@latest"
+    
+# - name: Copy Github-subdomains binary to /usr/local/bin
+#   become: yes
+#   copy:
+#     src: "~/go/bin/github-subdomains"
+#     dest: "/usr/local/bin/github-subdomains"
+#     mode: "0755"
+
+
+# - name: Install Crobat
+#     shell: "go install github.com/cgboal/sonarsearch/cmd/crobat@latest"
+#     become: yes
+    
+# - name: Copy Crobat binary to /usr/local/bin
+#   become: yes
+#   copy:
+#     src: "~/go/bin/crobat"
+#     dest: "/usr/local/bin/crobat"
+#     mode: "0755"
+
+
+
+# - name: Install Sudomy using git
+#   git:
+#     repo: 'https://github.com/screetsec/Sudomy.git'
+#     dest: /opt/tools/subdomain_enum/Sudomy
+#   become: yes
+
+# - name: Install requirements for Sudomy
+#   pip:
+#     requirements: /opt/tools/subdomain_enum/Sudomy/requirements.txt
+#   become: yes
+
+# - name: Install Sudomy Packeges
+#   become: yes
+#   shell: "apt-get install npm && apt-get install jq && npm install -g phantomjs && apt-get install jq nmap phantomjs npm chromium parallel -y && npm i -g wappalyzer wscat && cp sudomy /usr/local/bin && cp sudomy.api /usr/local/bin && cp slack.conf /usr/local/bin && cp sudomy.conf /usr/local/bin"
+
+# - name: Copy Sudomy binary to /usr/local/bin
+#   become: yes
+#   copy:
+#     src: "/opt/tools/subdomain_enum/Sudomy/Sudomy"
+#     dest: "/usr/local/bin/Sudomy"
+#     mode: "0755"
+
+
+
+# - name: Install Mapcidr
+#   shell:
+#     cmd: "go install -v github.com/projectdiscovery/mapcidr/cmd/mapcidr@latest"
+#   become: yes
+
+# - name: Copy Mapcidr binary to /usr/local/bin
+#   become: yes
+#   copy:
+#     src: "~/go/bin/mapcidr"
+#     dest: "/usr/local/bin/mapcidr"
+#     mode: "0755"
+
+
+# - name: Install CertCrunchy
+#   git:
+#     repo: 'https://github.com/joda32/CertCrunchy.git'
+#     dest: /opt/tools/subdomain_enum/CertCrunchy
+#   become: yes
+
+# - name: Install requirements for CertCrunchy
+#   pip:
+#     requirements: /opt/tools/subdomain_enum/CertCrunchy/requirements.txt
+#   become: yes
+
+
+# - name: Install AnalyticsRelationships using git
+#   git:
+#     repo: 'https://github.com/Josue87/AnalyticsRelationships.git'
+#     dest: /opt/tools/subdomain_enum/AnalyticsRelationships
+#   become: yes
+
+# - name: Build AnalyticsRelationships
+#   shell:
+#     cmd: "cd /opt/tools/subdomain_enum/AnalyticsRelationships && go build -ldflags '-s -w'"
+#   become: yes
+
+# - name: Copy AnalyticsRelationships binary to /usr/local/bin
+#   become: yes
+#   copy:
+#     src: "/opt/tools/subdomain_enum/AnalyticsRelationships/analyticsrelationships"
+#     dest: "/usr/local/bin/analyticsrelationships"
+#     mode: "0755"
+
+
+
+# - name: Install Galer
+#   become: yes
+#   shell: "GO111MODULE=on go install -v github.com/dwisiswant0/galer@latest"
+
+# - name: Copy Galer binary to /usr/local/bin
+#   become: yes
+#   copy:
+#     src: "~/go/bin/galer"
+#     dest: "/usr/local/bin/galer"
+#     mode: "0755"
+
+# - name: Install quickcert
+#   become: yes
+#   shell: "GO111MODULE=on go install -v github.com/c3l3si4n/quickcert@HEAD"
+
+# - name: Copy quickcert binary to /usr/local/bin
+#   become: yes
+#   copy:
+#     src: "~/go/bin/quickcert"
+#     dest: "/usr/local/bin/quickcert"
+#     mode: "0755"
+

@@ -1,0 +1,6 @@
+- name: Setup directory fuzzers
+  hosts: localhost
+  become: yes
+  roles:
+    - common
+    - directory_fuzzers

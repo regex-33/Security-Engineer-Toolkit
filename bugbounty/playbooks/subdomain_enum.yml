@@ -1,0 +1,6 @@
+- name: Setup subdomain enumeration tools
+  hosts: localhost
+  become: yes
+  roles:
+    - common
+    - subdomain_enum

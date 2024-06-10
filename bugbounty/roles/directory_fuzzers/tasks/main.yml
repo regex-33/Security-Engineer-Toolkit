@@ -1,0 +1,5 @@
+- name: Install dirbuster
+  apt:
+    name: dirbuster
+    state: present
+  become: yes

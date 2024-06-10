@@ -1,0 +1,21 @@
+- name: Install dirsearch
+  git:
+    repo: 'https://github.com/maurosoria/dirsearch.git'
+    dest: /opt/tools/content_discovery/dirsearch
+  become: yes
+
+- name: Install gobuster
+  apt:
+    name: gobuster
+    state: present
+  become: yes
+
+- name: Install ffuf
+  shell: go get -u github.com/ffuf/ffuf
+  become: yes
+
+- name: Install dirb
+  apt:
+    name: dirb
+    state: present
+  become: yes

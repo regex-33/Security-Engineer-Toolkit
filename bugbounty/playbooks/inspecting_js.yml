@@ -1,0 +1,6 @@
+- name: Setup JavaScript inspection tools
+  hosts: localhost
+  become: yes
+  roles:
+    - common
+    - inspecting_js

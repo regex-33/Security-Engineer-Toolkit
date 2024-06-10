@@ -1,0 +1,6 @@
+- name: Setup wordlists tools
+  hosts: localhost
+  become: yes
+  roles:
+    - common
+    - wordlists

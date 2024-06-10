@@ -1,0 +1,14 @@
+- name: Install all tools
+  hosts: local
+  become: yes
+  roles:
+    - subdomain_enum
+    # - common
+    # - api
+    # - content_discovery
+    # - exploitation
+    # - frameworks
+    # - inspecting_js
+    # - wordlists
+    # - other
+    # - directory_fuzzers

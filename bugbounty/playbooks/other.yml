@@ -1,0 +1,6 @@
+- name: Setup other tools
+  hosts: localhost
+  become: yes
+  roles:
+    - common
+    - other
