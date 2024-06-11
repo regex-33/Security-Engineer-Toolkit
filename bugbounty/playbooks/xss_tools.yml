@@ -1,0 +1,6 @@
+- name: Setup xss tools
+  hosts: localhost
+  become: yes
+  roles:
+    - common
+    - xss_tools

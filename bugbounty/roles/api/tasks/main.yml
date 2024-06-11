@@ -1,10 +1,47 @@
-- name: Install secretx
-  git:
-    repo: 'https://github.com/xyele/secretx.git'
-    dest: /opt/tools/api/secretx
+- name: Ensure api directory exists
+  file:
+    path: "/opt/tools/api"
+    state: directory
   become: yes
 
-- name: Install requirements for secretx
-  pip:
-    requirements: /opt/tools/api/secretx/requirements.txt
+- name: Define Kiterunner version
+  set_fact:
+    KITERUNNERVER: "1.0.2" 
+
+- name: Download Kiterunner
   become: yes
+  get_url:
+    url: "https://github.com/assetnote/kiterunner/releases/download/v{{ KITERUNNERVER }}/kiterunner_{{ KITERUNNERVER }}_linux_amd64.tar.gz"
+    dest: "/opt/tools/api/kiterunner_{{ KITERUNNERVER }}_linux_amd64.tar.gz"
+
+- name: Ensure web_crawling directory exists
+  file:
+    path: "/opt/tools/api/kiterunner"
+    state: directory
+  become: yes
+
+
+- name: Extract Kiterunner
+  become: yes
+  unarchive:
+    src: "/opt/tools/api/kiterunner_{{ KITERUNNERVER }}_linux_amd64.tar.gz"
+    dest: "/opt/tools/api/kiterunner"
+    remote_src: yes
+
+- name: Copy Kiterunner binary to /usr/local/bin
+  become: yes
+  copy:
+    src: "/opt/tools/api/kiterunner/kr"
+    dest: "/usr/local/bin/kr"
+    mode: "0755"
+
+- name: Download Kiterunner wordlists
+  become: yes
+  shell: |
+    mkdir -p /opt/tools/api/kiterunner-wordlists
+    cd /opt/tools/api/kiterunner-wordlists
+    wget https://wordlists-cdn.assetnote.io/data/kiterunner/routes-small.kite.tar.gz > /dev/null 2>&1
+    for f in *.tar.gz; do tar xf "$f"; rm -Rf "$f"; done
+  args:
+    executable: /bin/bash
+

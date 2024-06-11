@@ -1,0 +1,102 @@
+
+- name: Ensure xss_tools directory exists
+  file:
+    path: "/opt/tools/xss_tools"
+    state: directory
+  become: yes
+
+
+- name: Install Dalfox
+  command: "/usr/local/go/bin/go install github.com/hahwul/dalfox/v2@latest"
+  environment:
+    GOPATH: "{{ ansible_env.HOME }}/go"
+    GOROOT: "/usr/local/go"
+    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
+  become: yes
+
+- name: Copy Dalfox binary to /usr/local/bin
+  become: yes
+  copy:
+    src: "{{ ansible_env.HOME }}/go/bin/dalfox"
+    dest: "/usr/local/bin/dalfox"
+    mode: "0755"
+
+
+- name: Install kxss
+  command: "/usr/local/go/bin/go install github.com/Emoe/kxss@latest"
+  environment:
+    GOPATH: "{{ ansible_env.HOME }}/go"
+    GOROOT: "/usr/local/go"
+    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
+  become: yes
+
+- name: Copy kxss binary to /usr/local/bin
+  become: yes
+  copy:
+    src: "{{ ansible_env.HOME }}/go/bin/kxss"
+    dest: "/usr/local/bin/kxss"
+    mode: "0755"
+
+
+- name: Install Gxssgo
+  command: "/usr/local/go/bin/go install github.com/KathanP19/Gxss@latest"
+  environment:
+    GOPATH: "{{ ansible_env.HOME }}/go"
+    GOROOT: "/usr/local/go"
+    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
+  become: yes
+
+- name: Copy Gxssgo binary to /usr/local/bin
+  become: yes
+  copy:
+    src: "{{ ansible_env.HOME }}/go/bin/Gxss"
+    dest: "/usr/local/bin/Gxss"
+    mode: "0755"
+
+
+- name: Install Bxss
+  command: "/usr/local/go/bin/go install github.com/ethicalhackingplayground/bxss@latest"
+  environment:
+    GOPATH: "{{ ansible_env.HOME }}/go"
+    GOROOT: "/usr/local/go"
+    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
+  become: yes
+
+- name: Copy Bxss binary to /usr/local/bin
+  become: yes
+  copy:
+    src: "{{ ansible_env.HOME }}/go/bin/bxss"
+    dest: "/usr/local/bin/bxss"
+    mode: "0755"
+
+- name: Install knoxnl 
+  shell: "pip install knoxnl --break-system-packages"
+  become: yes
+
+- name: Install Findom-xss
+  shell: "cd /opt/tools/xss_tools && git clone https://github.com/dwisiswant0/findom-xss.git > /dev/null 2>&1 && cd findom-xss && chmod +x findom-xss.sh && rm -rf LinkFinder && git clone https://github.com/GerbenJavado/LinkFinder.git > /dev/null 2>&1"
+  become: yes
+
+
+- name: Install XSStrike using git
+  git:
+    repo: 'https://github.com/s0md3v/XSStrike'
+    dest: /opt/tools/xss_tools/XSStrike
+  become: yes
+
+
+- name: Install requirements for XSStrike
+  shell: "pip3 install -r /opt/tools/xss_tools/XSStrike/requirements.txt --break-system-packages"
+  become: yes
+
+
+- name: Install XSS_VIBES using git
+  git:
+    repo: 'https://github.com/faiyazahmad07/xss_vibes.git'
+    dest: /opt/tools/xss_tools/xss_vibes
+  become: yes
+
+
+- name: Install requirements for XSS_VIBES
+  shell: "pip3 install -r /opt/tools/xss_tools/xss_vibes/requirements --break-system-packages"
+  become: yes

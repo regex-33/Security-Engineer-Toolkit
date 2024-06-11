@@ -16,4 +16,10 @@
     # - inspecting_js
     # - wordlists
     # - other
-    - directory_fuzzers
+    # - directory_fuzzers
+    #  - lfi_tools 
+    #  - open_redirect
+    # - ssrf_tools 
+    # - ssti_tools 
+    - xss_tools 
+    # - request_smuggling 

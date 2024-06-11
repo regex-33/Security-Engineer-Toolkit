@@ -1,0 +1,6 @@
+- name: Setup lfi tools
+  hosts: localhost
+  become: yes
+  roles:
+    - common
+    - lfi_tools

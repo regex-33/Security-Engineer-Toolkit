@@ -204,5 +204,14 @@
 
 
 
-	#feroxbuster
-  curl -sL https://raw.githubusercontent.com/epi052/feroxbuster/main/install-nix.sh | bash -s $HOME/.local/bin
+	#NoSQLMap
+git clone https://github.com/codingo/NoSQLMap.git > /dev/null 2>&1
+ && cd NoSQLMap && python setup.py install > /dev/null 2>&1;
+	#ghauri
+	cd /root/OK-VPS/tools && git clone https://github.com/r0oth3x49/ghauri.git > /dev/null 2>&1 && cd ghauri && python3 -m pip install --upgrade -r requirements.txt && python3 -m pip install -e . > /dev/null 2>&1;
+        #Jeeves
+	go install github.com/ferreiraklet/Jeeves@latest > /dev/null 2>&1 && ln -s ~/go/bin/Jeeves /usr/local/bin/; 
+	#time-sql
+	go install github.com/mrco24/time-sql@latest > /dev/null 2>&1 && ln -s ~/go/bin/time-sql /usr/local/bin/; 
+        #mrco24-error-sql
+	go install github.com/mrco24/mrco24-error-sql@latest > /dev/null 2>&1 && ln -s ~/go/bin/mrco24-error-sql /usr/local/bin/; 

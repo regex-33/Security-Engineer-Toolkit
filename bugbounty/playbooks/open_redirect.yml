@@ -1,0 +1,6 @@
+- name: Setup open redirection tools
+  hosts: localhost
+  become: yes
+  roles:
+    - common
+    - open_redirect

@@ -1,0 +1,6 @@
+- name: Setup ssti tools
+  hosts: localhost
+  become: yes
+  roles:
+    - common
+    - ssti_tools 

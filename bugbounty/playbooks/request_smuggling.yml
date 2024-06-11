@@ -1,0 +1,6 @@
+- name: Setup Request-Smuggling tools
+  hosts: localhost
+  become: yes
+  roles:
+    - common
+    - request_smuggling 
