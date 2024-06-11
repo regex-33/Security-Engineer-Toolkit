@@ -1,0 +1,6 @@
+- name: Setup Sql tools
+  hosts: localhost
+  become: yes
+  roles:
+    - common
+    - sql_tools

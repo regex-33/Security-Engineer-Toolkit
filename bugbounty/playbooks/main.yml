@@ -21,5 +21,7 @@
     #  - open_redirect
     # - ssrf_tools 
     # - ssti_tools 
-    - xss_tools 
+    # - xss_tools 
+    # - sql_tools 
+    - useful_tools
     # - request_smuggling 
