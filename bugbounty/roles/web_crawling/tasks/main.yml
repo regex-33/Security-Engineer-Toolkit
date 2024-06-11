@@ -203,3 +203,13 @@
 
 
 
+
+
+	#Droopescan
+	
+  #Nrich
+
+	#AEM-Hacking
+	cd /root/OK-VPS/tools && git clone https://github.com/0ang3el/aem-hacker.git > /dev/null 2>&1 && cd aem-hacker && pip3 install -r requirements.txt > /dev/null 2>&1;
+ 	#WhatWaf
+	cd /root/OK-VPS/tools && git clone https://github.com/Ekultek/WhatWaf.git > /dev/null 2>&1 && cd WhatWaf && cp -r /root/tools/WhatWeb/WhatWaf/whatwaf /usr/local/bin;
