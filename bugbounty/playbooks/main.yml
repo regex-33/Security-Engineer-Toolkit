@@ -23,5 +23,7 @@
     # - ssti_tools 
     # - xss_tools 
     # - sql_tools 
-    - useful_tools
+    # - useful_tools
+    # - sensitive_finding
+    - web_technologies 
     # - request_smuggling 

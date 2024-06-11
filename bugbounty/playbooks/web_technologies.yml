@@ -1,0 +1,6 @@
+- name: Setup web technologies tools
+  hosts: localhost
+  become: yes
+  roles:
+    - common
+    - web_technologies

@@ -1,0 +1,6 @@
+- name: Setup sensitive finding tools
+  hosts: localhost
+  become: yes
+  roles:
+    - common
+    - sensitive_finding

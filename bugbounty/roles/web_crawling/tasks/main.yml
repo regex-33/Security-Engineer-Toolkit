@@ -203,13 +203,3 @@
 
 
 
-
-USEFUL_TOOLS () {
-
-
-        #SploitScan
-	git clone https://github.com/xaitax/SploitScan.git > /dev/null 2>&1;
-        #Oralyzer
-	git clone  && ;
-	#Interlace
-	git clone  > /dev/null 2>&1 && cd Interlace && python3 setup.py install > /dev/null 2>&1;
