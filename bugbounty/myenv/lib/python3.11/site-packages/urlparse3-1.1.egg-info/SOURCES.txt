@@ -1,0 +1,10 @@
+README.rst
+setup.cfg
+setup.py
+urlparse3/__init__.py
+urlparse3/tests.py
+urlparse3/urlparse3.py
+urlparse3.egg-info/PKG-INFO
+urlparse3.egg-info/SOURCES.txt
+urlparse3.egg-info/dependency_links.txt
+urlparse3.egg-info/top_level.txt

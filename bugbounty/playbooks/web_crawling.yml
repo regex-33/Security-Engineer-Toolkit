@@ -1,0 +1,6 @@
+- name: Setup Web Crawling tools
+  hosts: localhost
+  become: yes
+  roles:
+    - common
+    - web_crawling

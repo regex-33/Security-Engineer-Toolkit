@@ -1,0 +1,7 @@
+- name: Setup Visual tools
+  hosts: localhost
+  become: yes
+  roles:
+    - common
+    - visual_tools
+
