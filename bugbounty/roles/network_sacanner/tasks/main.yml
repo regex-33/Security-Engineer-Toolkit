@@ -1,0 +1,46 @@
+- name: Ensure network_scanner directory exists
+  file:
+    path: "/opt/tools/network_scanner"
+    state: directory
+  become: yes
+
+
+
+- name: Install masscan using git
+  git:
+    repo: 'https://github.com/robertdavidgraham/masscan'
+    dest: /opt/tools/network_scanner/masscan
+  become: yes
+
+
+- name: Install requirements for masscan
+  shell: "cd /opt/tools/network_scanner/masscan && make > /dev/null 2>&1 && make install > /dev/null 2>&1"
+  become: yes
+
+- name: Copy masscan binary to /usr/local/bin
+  become: yes
+  copy:
+    src: "/opt/tools/network_scanner/masscan/bin/masscan"
+    dest: "/usr/local/bin/masscan"
+    mode: "0755"
+
+
+
+- name: Install naabu
+  command: "/usr/local/go/bin/go install github.com/projectdiscovery/naabu/v2/cmd/naabu@latest"
+  environment:
+    GOPATH: "{{ ansible_env.HOME }}/go"
+    GOROOT: "/usr/local/go"
+    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
+  become: yes
+
+- name: Copy naabu binary to /usr/local/bin
+  become: yes
+  copy:
+    src: "{{ ansible_env.HOME }}/go/bin/naabu"
+    dest: "/usr/local/bin/naabu"
+    mode: "0755"
+
+- name: Install requirements for masscan
+  shell: "cd /opt/tools/network_scanner && wget -N -c https://github.com/Edu4rdSHL/unimap/releases/download/0.5.1/unimap-linux && mv unimap-linux /usr/local/bin/unimap && chmod 755 /usr/local/bin/unimap && strip -s /usr/local/bin/unimap"
+  become: yes

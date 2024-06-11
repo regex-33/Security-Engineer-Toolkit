@@ -1,0 +1,6 @@
+- name: Setup network_sacanner tools
+  hosts: localhost
+  become: yes
+  roles:
+    - common
+    - network_sacanner

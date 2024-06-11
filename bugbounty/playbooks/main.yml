@@ -2,10 +2,11 @@
   hosts: local
   become: yes
   roles:
+    - network_sacanner
     # - subdomain_enum
     # - visual_tools
     # - http_probe
-    - web_crawling
+    # - web_crawling
     # - common
     # - api
     # - content_discovery

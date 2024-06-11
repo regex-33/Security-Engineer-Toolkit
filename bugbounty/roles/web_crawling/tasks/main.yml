@@ -200,3 +200,11 @@
 - name: Install requirements for freq
   shell: "cd /opt/tools/web_crawling/freq/ && mv main.go freq.go && go build freq.go && cp freq /usr/bin"
   become: yes
+
+
+
+
+
+
+        #unimap
+	wget -N -c https://github.com/Edu4rdSHL/unimap/releases/download/0.5.1/unimap-linux && mv unimap-linux /usr/local/bin/unimap && chmod 755 /usr/local/bin/unimap && strip -s /usr/local/bin/unimap;
