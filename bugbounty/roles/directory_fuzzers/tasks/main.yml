@@ -3,3 +3,37 @@
     name: dirbuster
     state: present
   become: yes
+
+- name: Install ffuf
+  command: "/usr/local/go/bin/go install github.com/ffuf/ffuf@latest"
+  environment:
+    GOPATH: "{{ ansible_env.HOME }}/go"
+    GOROOT: "/usr/local/go"
+    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
+  become: yes
+
+- name: Copy ffuf binary to /usr/local/bin
+  become: yes
+  copy:
+    src: /root/go/bin/ffuf
+    dest: /usr/local/bin/ffuf
+    mode: '0755'
+
+- name: Install gobuster
+  command: "/usr/local/go/bin/go install github.com/OJ/gobuster/v3@latest"
+  environment:
+    GOPATH: "{{ ansible_env.HOME }}/go"
+    GOROOT: "/usr/local/go"
+    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
+  become: yes
+
+- name: Copy gobuster binary to /usr/local/bin
+  become: yes
+  copy:
+    src: "{{ ansible_env.HOME }}/go/bin/gobuster"
+    dest: "/usr/local/bin/gobuster"
+    mode: "0755"
+
+- name: Install feroxbuster
+  shell: "curl -sL https://raw.githubusercontent.com/epi052/feroxbuster/main/install-nix.sh | bash -s $HOME/.local/bin"
+  become: yes

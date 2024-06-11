@@ -2,7 +2,8 @@
   hosts: local
   become: yes
   roles:
-    - network_sacanner
+    # - network_sacanner
+    # - http_parameter 
     # - subdomain_enum
     # - visual_tools
     # - http_probe
@@ -15,4 +16,4 @@
     # - inspecting_js
     # - wordlists
     # - other
-    # - directory_fuzzers
+    - directory_fuzzers

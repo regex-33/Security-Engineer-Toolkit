@@ -1,0 +1,28 @@
+- name: Ensure http_parameter directory exists
+  file:
+    path: "/opt/tools/http_parameter"
+    state: directory
+  become: yes
+
+- name: Install Arjun
+  shell: "pip3 install arjun --break-system-packages"
+  become: yes
+
+- name: Ensure http_parameter directory exists
+  file:
+    path: "/opt/tools/http_parameter/x8"
+    state: directory
+  become: yes
+
+- name: Download x8
+  become: yes
+  get_url:
+    url: "https://github.com/mrco24/x8/raw/main/x8"
+    dest: "/opt/tools/http_parameter/x8/x8"
+
+- name: Copy x8 binary to /usr/local/bin
+  become: yes
+  copy:
+    src: "/opt/tools/http_parameter/x8/x8"
+    dest: "/usr/local/bin/x8"
+    mode: "0755"

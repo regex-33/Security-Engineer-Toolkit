@@ -34,6 +34,9 @@
     - libnet-whois-ip-perl
     - npm
     - libpcap-dev
+    - wfuzz
+    - gobuster
+    - dirsearch
   become: yes
 
 - name: Create tools directory
