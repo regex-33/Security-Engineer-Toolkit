@@ -1,0 +1,33 @@
+- name: Ensure vulns_scanner directory exists
+  file:
+    path: "/opt/tools/vulns_scanner"
+    state: directory
+  become: yes
+
+
+- name: Install Afrog
+  command: "/usr/local/go/bin/go install github.com/zan8in/afrog/v2/cmd/afrog@latest"
+  environment:
+    GOPATH: "{{ ansible_env.HOME }}/go"
+    GOROOT: "/usr/local/go"
+    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
+  become: yes
+
+- name: Copy Afrog binary to /usr/local/bin
+  become: yes
+  copy:
+    src: "{{ ansible_env.HOME }}/go/bin/afrog"
+    dest: "/usr/local/bin/afrog"
+    mode: "0755"
+  
+
+- name: Install POC-bomber using git
+  git:
+    repo: 'https://github.com/tr0uble-mAker/POC-bomber.git'
+    dest: /opt/tools/vulns_scanner/POC-bomber
+  become: yes
+
+
+- name: Install requirements for POC-bomber
+  shell: "cd /opt/tools/vulns_scanner/POC-bomber/ && pip install -r requirements.txt --break-system-packages"
+  become: yes

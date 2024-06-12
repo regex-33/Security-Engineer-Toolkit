@@ -28,5 +28,6 @@
     # - web_technologies 
       # - cms_scanner
     # - git_hunting
-    - js_hunting
+    # - js_hunting
+    - dns_resolver
     # - request_smuggling 

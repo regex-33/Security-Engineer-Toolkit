@@ -1,0 +1,97 @@
+- name: Ensure dns_resolver directory exists
+  file:
+    path: "/opt/tools/dns_resolver"
+    state: directory
+  become: yes
+
+
+- name: Install dnsx
+  command: "/usr/local/go/bin/go install github.com/projectdiscovery/dnsx/cmd/dnsx@latest"
+  environment:
+    GOPATH: "{{ ansible_env.HOME }}/go"
+    GOROOT: "/usr/local/go"
+    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
+  become: yes
+
+- name: Copy dnsx binary to /usr/local/bin
+  become: yes
+  copy:
+    src: "{{ ansible_env.HOME }}/go/bin/dnsx"
+    dest: "/usr/local/bin/dnsx"
+    mode: "0755"
+  
+
+- name: Install PureDNS
+  command: "/usr/local/go/bin/go install github.com/d3mondev/puredns/v2@latest"
+  environment:
+    GOPATH: "{{ ansible_env.HOME }}/go"
+    GOROOT: "/usr/local/go"
+    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
+  become: yes
+
+- name: Copy PureDNS binary to /usr/local/bin
+  become: yes
+  copy:
+    src: "{{ ansible_env.HOME }}/go/bin/puredns"
+    dest: "/usr/local/bin/puredns"
+    mode: "0755"
+
+
+
+- name: Install shuffledns
+  command: "/usr/local/go/bin/go install github.com/projectdiscovery/shuffledns/cmd/shuffledns@latest"
+  environment:
+    GOPATH: "{{ ansible_env.HOME }}/go"
+    GOROOT: "/usr/local/go"
+    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
+  become: yes
+
+- name: Copy shuffledns binary to /usr/local/bin
+  become: yes
+  copy:
+    src: "{{ ansible_env.HOME }}/go/bin/shuffledns"
+    dest: "/usr/local/bin/shuffledns"
+    mode: "0755"
+
+
+- name: Install MassDNS using git
+  git:
+    repo: 'https://github.com/blechschmidt/massdns.git'
+    dest: /opt/tools/dns_resolver/massdns
+  become: yes
+
+
+- name: Install requirements for MassDNS
+  shell: "cd /opt/tools/dns_resolver/massdns && make && make install"
+  become: yes
+
+- name: Copy MassDNS binary to /usr/local/bin
+  become: yes
+  copy:
+    src: "/opt/tools/dns_resolver/massdns/bin/massdns"
+    dest: "/usr/local/bin/massdns"
+    mode: "0755"
+
+
+- name: Install dnsvalidator using git
+  git:
+    repo: 'https://github.com/vortexau/dnsvalidator.git'
+    dest: /opt/tools/dns_resolver/dnsvalidator
+  become: yes
+
+
+- name: Install requirements for dnsvalidator
+  shell: "cd /opt/tools/dns_resolver/dnsvalidator && python3 setup.py install && pip3 install contextvars --break-system-packages && pip3 install -e . --break-system-packages"
+  become: yes
+
+- name: Copy dnsvalidator binary to /usr/local/bin
+  become: yes
+  copy:
+    src: "/opt/tools/dns_resolver/dnsvalidator/dnsvalidator"
+    dest: "/usr/local/bin/dnsvalidator"
+    mode: "0755"
+  ignore_errors: yes
+
+#resolver
+# dnsvalidator -tL https://public-dns.info/nameservers.txt -threads 200 -o /root/wordlist/resolvers.txt;
+

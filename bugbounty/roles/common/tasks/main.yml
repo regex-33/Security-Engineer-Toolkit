@@ -37,6 +37,8 @@
     - wfuzz
     - gobuster
     - dirsearch
+    - make
+    - nikto
   become: yes
 
 - name: Create tools directory
