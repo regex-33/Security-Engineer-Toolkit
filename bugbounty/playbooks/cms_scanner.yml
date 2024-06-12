@@ -1,0 +1,6 @@
+- name: Setup cms scanner tools
+  hosts: localhost
+  become: yes
+  roles:
+    - common
+    - cms_scanner

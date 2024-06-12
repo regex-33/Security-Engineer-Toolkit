@@ -1,0 +1,83 @@
+- name: Ensure js_hunting directory exists
+  file:
+    path: "/opt/tools/js_hunting"
+    state: directory
+  become: yes
+
+
+- name: Install Getjs
+  command: "/usr/local/go/bin/go install github.com/003random/getJS@latest"
+  environment:
+    GOPATH: "{{ ansible_env.HOME }}/go"
+    GOROOT: "/usr/local/go"
+    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
+  become: yes
+
+- name: Copy Getjs binary to /usr/local/bin
+  become: yes
+  copy:
+    src: "{{ ansible_env.HOME }}/go/bin/getJS"
+    dest: "/usr/local/bin/getJS"
+    mode: "0755"
+
+- name: Install LinkFinder using git
+  git:
+    repo: 'https://github.com/GerbenJavado/LinkFinder.git'
+    dest: /opt/tools/js_hunting/LinkFinder
+  become: yes
+
+
+- name: Install requirements for LinkFinder
+  shell: "cd /opt/tools/js_hunting/LinkFinder/ && pip3 install -r requirements.txt --break-system-packages"
+  become: yes
+
+
+- name: Install SecretFinder using git
+  git:
+    repo: 'https://github.com/m4ll0k/SecretFinder.git'
+    dest: /opt/tools/js_hunting/SecretFinder
+  become: yes
+
+
+- name: Install requirements for SecretFinder
+  shell: "cd /opt/tools/js_hunting/SecretFinder/ && pip3 install -r requirements.txt --break-system-packages && pip3 install jsbeautifier --break-system-packages && pip3 install lxml --break-system-packages"
+  become: yes
+
+
+- name: Download subjs
+  become: yes
+  get_url:
+    url: "https://github.com/lc/subjs/releases/download/v1.0.1/subjs_1.0.1_linux_amd64.tar.gz"
+    dest: "/tmp/subjs_1.0.1_linux_amd64.tar.gz"
+
+- name: Ensure subjs directory exists
+  file:
+    path: "/opt/tools/js_hunting/subjs"
+    state: directory
+  become: yes
+
+
+- name: Extract subjs
+  become: yes
+  unarchive:
+    src: "/tmp/subjs_1.0.1_linux_amd64.tar.gz"
+    dest: "/opt/tools/js_hunting/subjs"
+    remote_src: yes
+
+- name: Copy subjs binary to /usr/local/bin
+  become: yes
+  copy:
+    src: "/opt/tools/js_hunting/subjs/subjs"
+    dest: "/usr/local/bin/subjs"
+    mode: "0755"
+
+
+- name: Install JSScanner using git
+  git:
+    repo: 'https://github.com/dark-warlord14/JSScanner'
+    dest: /opt/tools/js_hunting/JSScanner
+  become: yes
+
+- name: Install requirements for JSScanner
+  shell: "cd /opt/tools/js_hunting/JSScanner && bash install.sh"
+  become: yes

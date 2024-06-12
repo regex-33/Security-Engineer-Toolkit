@@ -25,5 +25,8 @@
     # - sql_tools 
     # - useful_tools
     # - sensitive_finding
-    - web_technologies 
+    # - web_technologies 
+      # - cms_scanner
+    # - git_hunting
+    - js_hunting
     # - request_smuggling 

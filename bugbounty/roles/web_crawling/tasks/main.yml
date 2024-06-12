@@ -203,13 +203,12 @@
 
 
 
+JS_HUNTING
+#SecretFinder
 
-
-	#Droopescan
-	
-  #Nrich
-
-	#AEM-Hacking
-	cd /root/OK-VPS/tools && git clone https://github.com/0ang3el/aem-hacker.git > /dev/null 2>&1 && cd aem-hacker && pip3 install -r requirements.txt > /dev/null 2>&1;
- 	#WhatWaf
-	cd /root/OK-VPS/tools && git clone https://github.com/Ekultek/WhatWaf.git > /dev/null 2>&1 && cd WhatWaf && cp -r /root/tools/WhatWeb/WhatWaf/whatwaf /usr/local/bin;
+	#subjs
+	wget https://github.com/lc/subjs/releases/download/v1.0.1/
+   && tar xvf subjs_1.0.1_linux_amd64.tar.gz && mv subjs /usr/bin/subjs;
+	#jsscanner
+	git clone https://github.com/dark-warlord14/JSScanner 
+  && cd JSScanner/ && bash install.sh > /dev/null 2>&1;

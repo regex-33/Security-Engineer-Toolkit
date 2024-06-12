@@ -1,0 +1,6 @@
+- name: Setup git hunting tools
+  hosts: localhost
+  become: yes
+  roles:
+    - common
+    - git_hunting

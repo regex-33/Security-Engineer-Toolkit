@@ -1,0 +1,36 @@
+- name: Ensure git_hunting directory exists
+  file:
+    path: "/opt/tools/git_hunting"
+    state: directory
+  become: yes
+
+
+- name: Clone GitDorker repository
+  git:
+    repo: 'https://github.com/obheda12/GitDorker.git'
+    dest: /opt/tools/git_hunting/GitDorker
+
+- name: Install requirements for GitDorker
+  become: yes
+  shell: "cd /opt/tools/git_hunting/GitDorker && pip3 install -r requirements.txt --break-system-packages"
+
+
+- name: Clone gitGraber repository
+  git:
+    repo: 'https://github.com/hisxo/gitGraber.git'
+    dest: /opt/tools/git_hunting/gitGraber
+
+- name: Install requirements for gitGraber
+  become: yes
+  shell: "cd /opt/tools/git_hunting/gitGraber && pip3 install -r requirements.txt --break-system-packages"
+
+
+- name: Install GitHacker
+  become: yes
+  shell: "pip3 install GitHacker --break-system-packages"
+
+
+- name: Clone GitTools repository
+  git:
+    repo: 'https://github.com/internetwache/GitTools.git'
+    dest: /opt/tools/git_hunting/GitTools

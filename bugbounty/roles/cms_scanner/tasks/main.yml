@@ -5,7 +5,7 @@
   become: yes
 
 - name: Install Droopescan
-  shell: "pip3 install droopescan"
+  shell: "pip3 install droopescan --break-system-packages"
   become: yes
 
 
@@ -18,3 +18,27 @@
 - name: dpkg nrich.deb
   shell: dpkg -i /tmp/nrich_latest_amd64.deb
   become: yes
+
+- name: Install AEM-Hacking using git
+  git:
+    repo: 'https://github.com/0ang3el/aem-hacker.git'
+    dest: /opt/tools/cms_scanner/aem-hacker
+  become: yes
+
+
+- name: Install requirements for AEM-Hacking
+  shell: "cd /opt/tools/cms_scanner/aem-hacker/ && pip3 install -r requirements.txt --break-system-packages"
+  become: yes
+
+- name: Install WhatWaf using git
+  git:
+    repo: 'https://github.com/Ekultek/WhatWaf.git'
+    dest: /opt/tools/cms_scanner/WhatWaf
+  become: yes
+
+- name: Copy WhatWaf binary to /usr/local/bin
+  become: yes
+  copy:
+    src: "/opt/tools/cms_scanner/WhatWaf/whatwaf"
+    dest: "/usr/local/bin/whatwaf"
+    mode: "0755"
