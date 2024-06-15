@@ -1,46 +1,48 @@
 - name: Ensure ssrf_tools directory exists
-  file:
+  ansible.builtin.file:
     path: "/opt/tools/ssrf_tools"
     state: directory
   become: yes
 
+- name: Install tools in ssrf_tools directory
+  ansible.builtin.block:
+    become: yes
+    vars:
+      tools_to_install:
+        - name: Interactsh
+          install_cmd: "/usr/local/go/bin/go install github.com/projectdiscovery/interactsh/cmd/interactsh-client@latest"
+          binary_src: "{{ ansible_env.HOME }}/go/bin/interactsh-client"
+          binary_dest: "/usr/local/bin/interactsh-client"
+        
+        - name: SSRFmap
+          repo: github.com/swisskyrepo/SSRFmap
+          requirements_cmd: "pip3 install -r requirements.txt --break-system-packages"
+        
+        - name: Gopherus
+          repo: github.com/tarunkant/Gopherus.git
+          install_cmd: "chmod +x install.sh && ./install.sh"
 
+    ansible.builtin.loop:
+      - name: "Clone {{ item.name }} repository"
+        ansible.builtin.git:
+          repo: "https://{{ item.repo }}.git"
+          dest: "/opt/tools/ssrf_tools/{{ item.name }}"
+        when: item.repo is defined
 
-- name: Install Interactsh
-  command: "/usr/local/go/bin/go install github.com/projectdiscovery/interactsh/cmd/interactsh-client@latest"
-  environment:
-    GOPATH: "{{ ansible_env.HOME }}/go"
-    GOROOT: "/usr/local/go"
-    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
-  become: yes
+      - name: "Install requirements for {{ item.name }}"
+        ansible.builtin.shell:
+          cmd: "{{ item.requirements_cmd }}"
+        when: item.requirements_cmd is defined
 
-- name: Copy Interactsh binary to /usr/local/bin
-  become: yes
-  copy:
-    src: "{{ ansible_env.HOME }}/go/bin/interactsh-client"
-    dest: "/usr/local/bin/interactsh-client"
+      - name: "Run installation script for {{ item.name }}"
+        ansible.builtin.shell:
+          cmd: "{{ item.install_cmd }}"
+        when: item.install_cmd is defined
+
+- name: Set execute permissions for binaries
+  ansible.builtin.file:
+    path: "{{ item.binary_dest }}"
     mode: "0755"
-
-
-- name: Install SSRFmap using git
-  git:
-    repo: 'https://github.com/swisskyrepo/SSRFmap'
-    dest: /opt/tools/ssrf_tools/SSRFmap
-  become: yes
-
-
-- name: Install requirements for SSRFmap
-  shell: "cd /opt/tools/ssrf_tools/SSRFmap && pip3 install -r requirements.txt --break-system-packages"
-  become: yes
-
-
-- name: Install Gopherus using git
-  git:
-    repo: 'https://github.com/tarunkant/Gopherus.git'
-    dest: /opt/tools/ssrf_tools/Gopherus
-  become: yes
-
-
-- name: Install requirements for Gopherus
-  shell: "cd /opt/tools/ssrf_tools/Gopherus && chmod +x install.sh && ./install.sh"
+  with_items:
+    - { binary_dest: "/usr/local/bin/interactsh-client" }
   become: yes

@@ -1,218 +1,114 @@
 - name: Ensure web_crawling directory exists
+  become: yes
   file:
     path: "/opt/tools/web_crawling"
     state: directory
+
+- name: Install and copy binaries
   become: yes
+  vars:
+    tools:
+      - name: gospider
+        repo: github.com/jaeles-project/gospider
+      - name: hakrawler
+        repo: github.com/hakluke/hakrawler
+      - name: waybackurls
+        repo: github.com/tomnomnom/waybackurls
+      - name: katana
+        repo: github.com/projectdiscovery/katana/cmd/katana
+      - name: parameters
+        repo: github.com/mrco24/parameters
+      - name: gf
+        repo: github.com/tomnomnom/gf
+      - name: otx-url
+        repo: github.com/mrco24/otx-url
+      - name: web-archive
+        repo: github.com/mrco24/web-archive
 
+  loop: "{{ tools }}"
+  block:
+    - name: Install {{ item.name }}
+      command: "/usr/local/go/bin/go install {{ item.repo }}@latest"
+      environment:
+        GOPATH: "{{ ansible_env.HOME }}/go"
+        GOROOT: "/usr/local/go"
+        PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
 
-- name: Install Gospider
-  command: "/usr/local/go/bin/go install github.com/jaeles-project/gospider@latest"
-  environment:
-    GOPATH: "{{ ansible_env.HOME }}/go"
-    GOROOT: "/usr/local/go"
-    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
+    - name: Copy {{ item.name }} binary to /usr/local/bin
+      copy:
+        src: "{{ ansible_env.HOME }}/go/bin/{{ item.name }}"
+        dest: "/usr/local/bin/{{ item.name }}"
+        mode: "0755"
+
+- name: Create .gf directory
   become: yes
-
-- name: Copy Gospider binary to /usr/local/bin
-  become: yes
-  copy:
-    src: "{{ ansible_env.HOME }}/go/bin/gospider"
-    dest: "/usr/local/bin/gospider"
-    mode: "0755"
-  
-
-
-- name: Install Hakrawler
-  command: "/usr/local/go/bin/go install github.com/hakluke/hakrawler@latest"
-  environment:
-    GOPATH: "{{ ansible_env.HOME }}/go"
-    GOROOT: "/usr/local/go"
-    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
-  become: yes
-
-- name: Copy Hakrawler binary to /usr/local/bin
-  become: yes
-  copy:
-    src: "{{ ansible_env.HOME }}/go/bin/hakrawler"
-    dest: "/usr/local/bin/hakrawler"
-    mode: "0755"
-  
-
-- name: Install Waybackurls
-  command: "/usr/local/go/bin/go install github.com/tomnomnom/waybackurls@latest"
-  environment:
-    GOPATH: "{{ ansible_env.HOME }}/go"
-    GOROOT: "/usr/local/go"
-    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
-  become: yes
-
-- name: Copy Waybackurls binary to /usr/local/bin
-  become: yes
-  copy:
-    src: "{{ ansible_env.HOME }}/go/bin/waybackurls"
-    dest: "/usr/local/bin/waybackurls"
-    mode: "0755"
-
-
-- name: Install katana
-  command: "/usr/local/go/bin/go install github.com/projectdiscovery/katana/cmd/katana@latest"
-  environment:
-    GOPATH: "{{ ansible_env.HOME }}/go"
-    GOROOT: "/usr/local/go"
-    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
-  become: yes
-
-- name: Copy katana binary to /usr/local/bin
-  become: yes
-  copy:
-    src: "{{ ansible_env.HOME }}/go/bin/katana"
-    dest: "/usr/local/bin/katana"
-    mode: "0755"
-
-
-- name: Install Parameters
-  command: "/usr/local/go/bin/go install github.com/mrco24/parameters@latest"
-  environment:
-    GOPATH: "{{ ansible_env.HOME }}/go"
-    GOROOT: "/usr/local/go"
-    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
-  become: yes
-
-- name: Copy Parameters binary to /usr/local/bin
-  become: yes
-  copy:
-    src: "{{ ansible_env.HOME }}/go/bin/parameters"
-    dest: "/usr/local/bin/parameters"
-    mode: "0755"
-
-
-- name: Install GF
-  command: "/usr/local/go/bin/go install github.com/tomnomnom/gf@latest"
-  environment:
-    GOPATH: "{{ ansible_env.HOME }}/go"
-    GOROOT: "/usr/local/go"
-    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
-  become: yes
-
-- name: Copy GF binary to /usr/local/bin
-  become: yes
-  copy:
-    src: "{{ ansible_env.HOME }}/go/bin/gf"
-    dest: "/usr/local/bin/gf"
-    mode: "0755"
-
-- name: Creat .gf direcotory
-  become: yes
-  shell: "mkdir ~/.gf || true"
+  shell: "mkdir -p ~/.gf"
   ignore_errors: yes
 
-
-- name: Install gf using git
-  git:
-    repo: 'https://github.com/tomnomnom/gf'
-    dest: /opt/tools/web_crawling/gf
+- name: Install gf and its requirements
   become: yes
+  block:
+    - name: Install gf using git
+      git:
+        repo: 'https://github.com/tomnomnom/gf'
+        dest: /opt/tools/web_crawling/gf
 
+    - name: Install gf patterns
+      shell: |
+        cd /opt/tools/web_crawling/gf/examples/
+        cp *.json ~/.gf
+        cd /opt/tools/web_crawling/
+        git clone https://github.com/1ndianl33t/Gf-Patterns
+        cd /opt/tools/web_crawling/Gf-Patterns
+        wget https://raw.githubusercontent.com/mrco24/Patterns/main/my-lfi.json
+        cp *.json ~/.gf
 
-- name: Install requirements for gf
-  shell: "  cd /opt/tools/web_crawling/gf/examples/ && cp *.json ~/.gf && cd /opt/tools/web_crawling/ && git clone https://github.com/1ndianl33t/Gf-Patterns && cd /opt/tools/web_crawling/Gf-Patterns && wget https://raw.githubusercontent.com/mrco24/Patterns/main/my-lfi.json && cp *.json ~/.gf"
+- name: Install ParamSpider and its requirements
   become: yes
+  block:
+    - name: Install ParamSpider using git
+      git:
+        repo: 'https://github.com/devanshbatham/paramspider'
+        dest: /opt/tools/web_crawling/paramspider
 
+    - name: Install ParamSpider requirements
+      pip:
+        chdir: /opt/tools/web_crawling/paramspider
+        virtualenv: /opt/tools/web_crawling/paramspider/env
+        name: .
 
-
-- name: Install otx-url
-  command: "/usr/local/go/bin/go install github.com/mrco24/otx-url@latest"
-  environment:
-    GOPATH: "{{ ansible_env.HOME }}/go"
-    GOROOT: "/usr/local/go"
-    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
+- name: Install Guaplus and build
   become: yes
+  block:
+    - name: Install Guaplus using git
+      git:
+        repo: 'https://github.com/bp0lr/gauplus.git'
+        dest: /opt/tools/web_crawling/gauplus
 
-- name: Copy otx-url binary to /usr/local/bin
-  become: yes
-  copy:
-    src: "{{ ansible_env.HOME }}/go/bin/otx-url"
-    dest: "/usr/local/bin/otx-url"
-    mode: "0755"
+    - name: Build Guaplus for ParamSpider
+      shell: "cd /opt/tools/web_crawling/gauplus && go build"
 
-
-- name: Install Web-archive
-  command: "/usr/local/go/bin/go install github.com/mrco24/web-archive@latest"
-  environment:
-    GOPATH: "{{ ansible_env.HOME }}/go"
-    GOROOT: "/usr/local/go"
-    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
-  become: yes
-
-- name: Copy Web-archive binary to /usr/local/bin
-  become: yes
-  copy:
-    src: "{{ ansible_env.HOME }}/go/bin/web-archive"
-    dest: "/usr/local/bin/web-archive"
-    mode: "0755"
-
-
-- name: Install ParamSpider using git
-  git:
-    repo: 'https://github.com/devanshbatham/paramspider'
-    dest: /opt/tools/web_crawling/paramspider
-  become: yes
-
-
-- name: Install requirements for ParamSpider
-  pip:
-    chdir: /opt/tools/web_crawling/paramspider
-    virtualenv: /opt/tools/web_crawling/paramspider/env
-    name: .
-  become: yes
-
-
-- name: Install Guaplus using git
-  git:
-    repo: 'https://github.com/bp0lr/gauplus.git'
-    dest: /opt/tools/web_crawling/gauplus
-  become: yes
-
-- name: Install Guaplus for ParamSpider
-  shell: "cd /opt/tools/web_crawling/gauplus && go build "
-  become: yes
-
-- name: Copy Guaplus binary to /usr/local/bin
-  become: yes
-  copy:
-    src: "/opt/tools/web_crawling/gauplus/gauplus"
-    dest: "/usr/local/bin/gauplus"
-    mode: "0755"
-
+    - name: Copy Guaplus binary to /usr/local/bin
+      copy:
+        src: "/opt/tools/web_crawling/gauplus/gauplus"
+        dest: "/usr/local/bin/gauplus"
+        mode: "0755"
 
 - name: Install xnLinkFinder using pip
+  become: yes
   command: "/usr/bin/python3.11 -m pip install xnLinkFinder --break-system-packages"
+
+- name: Install freq and build
   become: yes
+  block:
+    - name: Install freq using git
+      git:
+        repo: 'https://github.com/takshal/freq.git'
+        dest: /opt/tools/web_crawling/freq
 
-
-- name: Install freq using git
-  git:
-    repo: 'https://github.com/takshal/freq.git'
-    dest: /opt/tools/web_crawling/freq
-  become: yes
-
-
-- name: Install requirements for freq
-  shell: "cd /opt/tools/web_crawling/freq/ && mv main.go freq.go && go build freq.go && cp freq /usr/bin"
-  become: yes
-
-
-
-
-
-	#Nuclei + nuclei templates
-	cd /root/OK-VPS/tools && wget https://github.com/projectdiscovery/nuclei/releases/download/v2.9.7/nuclei_2.9.7_linux_amd64.zip && unzip nuclei_2.9.7_linux_amd64.zip && mv nuclei /usr/local/bin/;
-	cd /root/templates && git clone https://github.com/projectdiscovery/nuclei-templates.git > /dev/null 2>&1;
-	cd /root/templates && git clone https://github.com/projectdiscovery/fuzzing-templates.git > /dev/null 2>&1;
-  go install -v github.com/xm1k3/cent@latest > /dev/null 2>&1 && ln -s ~/go/bin/cent /usr/local/bin/ && cent init;
-	#Jaeles
-	cd /root/OK-VPS/tools/file && wget https://github.com/jaeles-project/jaeles/releases/download/beta-v0.17/jaeles-v0.17-linux.zip > /dev/null 2>&1 && unzip jaeles-v0.17-linux.zip > /dev/null 2>&1 && mv jaeles /usr/local/bin/;
-	cd /root/templates && git clone https://github.com/jaeles-project/jaeles-signatures.git > /dev/null 2>&1;
-	cd /root/templates && git clone https://github.com/ghsec/ghsec-jaeles-signatures > /dev/null 2>&1;
-        #Xray
-	cd /root/OK-VPS/tools && mkdir xray && cd xray && wget https://github.com/chaitin/xray/releases/download/1.9.11/xray_linux_amd64.zip && unzip xray_linux_amd64.zip && mv xray_linux_amd64 xray && wget https://github.com/mrco24/xray-config/raw/main/n.zip && unzip n.zip && cd n && cp -r *.yaml /root/OK-VPS/tools/xray;
+    - name: Build freq
+      shell: |
+        cd /opt/tools/web_crawling/freq/
+        mv main.go freq.go
+        go build freq.go
+        cp freq /usr/bin

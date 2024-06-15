@@ -1,60 +1,61 @@
 - name: Ensure sql_tools directory exists
-  file:
+  ansible.builtin.file:
     path: "/opt/tools/sql_tools"
     state: directory
   become: yes
 
+- name: Install tools
+  ansible.builtin.block:
+    become: yes
+    vars:
+      tools_to_install:
+        - name: Jeeves
+          repo: github.com/ferreiraklet/Jeeves
+          binaries:
+            - name: Jeeves
+              install_cmd: "/usr/local/go/bin/go install github.com/ferreiraklet/Jeeves@latest"
 
-- name: Install Jeeves
-  command: "/usr/local/go/bin/go install github.com/ferreiraklet/Jeeves@latest"
-  environment:
-    GOPATH: "{{ ansible_env.HOME }}/go"
-    GOROOT: "/usr/local/go"
-    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
-  become: yes
+        - name: time-sql
+          repo: github.com/mrco24/time-sql
+          binaries:
+            - name: time-sql
+              install_cmd: "/usr/local/go/bin/go install github.com/mrco24/time-sql@latest"
 
-- name: Copy Jeeves binary to /usr/local/bin
-  become: yes
-  copy:
-    src: "{{ ansible_env.HOME }}/go/bin/Jeeves"
-    dest: "/usr/local/bin/Jeeves"
+        - name: mrco24-error-sql
+          repo: github.com/mrco24/mrco24-error-sql
+          binaries:
+            - name: mrco24-error-sql
+              install_cmd: "/usr/local/go/bin/go install github.com/mrco24/mrco24-error-sql@latest"
+
+        - name: ghauri
+          repo: github.com/r0oth3x49/ghauri
+          install_cmd: "python3 -m pip install --upgrade -r requirements.txt --break-system-packages && python3 setup.py install"
+
+    ansible.builtin.loop:
+      - name: "{{ item.name }}"
+        ansible.builtin.git:
+          repo: "https://{{ item.repo }}.git"
+          dest: "/opt/tools/sql_tools/{{ item.name }}"
+        when: item.name == "ghauri"
+
+      - name: "Install {{ item.name }} binaries"
+        ansible.builtin.command:
+          cmd: "{{ item.install_cmd }}"
+        when: item.name != "ghauri"
+        loop: "{{ item.binaries }}"
+        loop_control:
+          loop_var: binary
+
+- name: Copy binaries to /usr/local/bin
+  ansible.builtin.copy:
+    src: "{{ ansible_env.HOME }}/go/bin/{{ item.name }}"
+    dest: "/usr/local/bin/{{ item.name }}"
     mode: "0755"
-
-
-
-
-- name: Install time-sql
-  command: "/usr/local/go/bin/go install github.com/mrco24/time-sql@latest"
-  environment:
-    GOPATH: "{{ ansible_env.HOME }}/go"
-    GOROOT: "/usr/local/go"
-    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
+  with_items:
+    - { name: Jeeves }
+    - { name: time-sql }
+    - { name: mrco24-error-sql }
   become: yes
-
-- name: Copy time-sql binary to /usr/local/bin
-  become: yes
-  copy:
-    src: "{{ ansible_env.HOME }}/go/bin/time-sql"
-    dest: "/usr/local/bin/time-sql"
-    mode: "0755"
-
-
-
-- name: Install mrco24-error-sql
-  command: "/usr/local/go/bin/go install github.com/mrco24/mrco24-error-sql@latest"
-  environment:
-    GOPATH: "{{ ansible_env.HOME }}/go"
-    GOROOT: "/usr/local/go"
-    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
-  become: yes
-
-- name: Copy mrco24-error-sql binary to /usr/local/bin
-  become: yes
-  copy:
-    src: "{{ ansible_env.HOME }}/go/bin/mrco24-error-sql"
-    dest: "/usr/local/bin/mrco24-error-sql"
-    mode: "0755"
-
 
 
 # - name: Install NoSQLMap using git
@@ -92,13 +93,3 @@
 
 
 
-- name: Install ghauri using git
-  git:
-    repo: 'https://github.com/r0oth3x49/ghauri.git'
-    dest: /opt/tools/sql_tools/ghauri
-  become: yes
-
-
-- name: Install requirements for ghauri in virtual environment
-  become: yes
-  shell: "cd /opt/tools/sql_tools/ghauri && python3 -m pip install --upgrade -r requirements.txt --break-system-packages && python3 setup.py install"

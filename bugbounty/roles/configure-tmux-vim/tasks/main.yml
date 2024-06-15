@@ -1,0 +1,79 @@
+---
+- name: Debug User and Home
+  debug:
+    msg: "Running as {{ ansible_user_id }} with home directory {{ ansible_env.HOME }}"
+
+- name: Install Tmux
+  apt:
+    name: tmux
+    state: present
+
+- name: Copying Tmux Config
+  copy:
+    src: "{{ role_path }}/files/.tmux.conf"
+    dest: "{{ ansible_env.HOME }}/.tmux.conf"
+    mode: '0644'
+  become: yes
+  become_user: "{{ ansible_user_id }}"
+
+- name: Copying Vim Config
+  copy:
+    src: "{{ role_path }}/files/.vimrc"
+    dest: "{{ ansible_env.HOME }}/.vimrc"
+    mode: '0644'
+  become: yes
+  become_user: "{{ ansible_user_id }}"
+
+- name: Vundle Clone
+  git:
+    repo: 'https://github.com/VundleVim/Vundle.vim.git'
+    dest: "{{ ansible_env.HOME }}/.vim/bundle/Vundle.vim"
+  become: yes
+  become_user: "{{ ansible_user_id }}"
+
+- name: Install Vim Plugins
+  command: vim +PluginInstall +qall
+  become: yes
+  become_user: "{{ ansible_user_id }}"
+  environment:
+    HOME: "{{ ansible_env.HOME }}"
+
+# ---
+# - name: "Install Tmux"
+#   apt:
+#     name: tmux
+#     state: present
+#   become: true
+#   become_method: sudo
+
+# - name: "Copying Tmux Config"
+#   copy:
+#     src: "{{ role_path }}/files/.tmux.conf"
+#     dest: "{{ ansible_env.HOME }}"
+
+
+# - name: "Install Vim"
+#   apt:
+#     name: vim
+#     state: present
+#   become: true
+#   become_method: sudo
+
+
+# - name: "Copying Vim Config"
+#   copy:
+#     src: "{{ role_path }}/files/.vimrc"
+#     dest: "{{ ansible_env.HOME }}"
+#   become: true
+
+# - name: "Vundle Clone"
+#   shell: "git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim"
+#   become: true
+#   args:
+#     creates: "{{ ansible_env.HOME }}/.vim/bundle/Vundle.vim"
+
+
+# - name: "Install Vim Plugins"
+#   command: vim +PluginInstall +qall
+#   become: true
+

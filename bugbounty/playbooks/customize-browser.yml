@@ -1,0 +1,6 @@
+- name: customize-browser 
+  hosts: localhost
+  become: yes
+  roles:
+    - apt-gem-stuff
+    - customize-browser

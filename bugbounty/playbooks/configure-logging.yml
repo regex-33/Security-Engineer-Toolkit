@@ -1,0 +1,7 @@
+
+- name: configure-logging 
+  hosts: localhost
+  become: yes
+  roles:
+    - apt-gem-stuff
+    - configure-logging 

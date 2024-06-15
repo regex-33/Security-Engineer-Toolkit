@@ -1,33 +1,49 @@
 - name: Ensure sensitive_finding directory exists
-  file:
+  ansible.builtin.file:
     path: "/opt/tools/sensitive_finding"
     state: directory
   become: yes
 
+- name: Clone and install tools
+  ansible.builtin.block:
+    become: yes
+    vars:
+      tools_to_install:
+        - name: EarlyBird
+          repo: 'https://github.com/americanexpress/earlybird.git'
+          dest: /opt/tools/sensitive_finding/earlybird
+          build_commands:
+            - ./build.sh
+            - ./install.sh
+        - name: Gau-Expose
+          repo: 'https://github.com/tamimhasan404/Gau-Expose.git'
+          dest: /opt/tools/sensitive_finding/Gau-Expose
 
-- name: Clone EarlyBird repository
-  git:
-    repo: 'https://github.com/americanexpress/earlybird.git'
-    dest: /opt/tools/sensitive_finding/earlybird
+    ansible.builtin.loop:
+      - name: "{{ item.name }}"
+        git:
+          repo: "{{ item.repo }}"
+          dest: "{{ item.dest }}"
+        when: item.name == "EarlyBird" or item.name == "Gau-Expose"
 
-- name: Build and install EarlyBird
-  shell: "cd /opt/tools/sensitive_finding/earlybird && ./build.sh && ./install.sh"
-  args:
-    chdir: /opt/tools/sensitive_finding/earlybird
+      - name: Build and install EarlyBird
+        ansible.builtin.shell:
+          cmd: "{{ item | join(' && ') }}"
+        args:
+          chdir: "{{ item.dest }}"
+        when: item.name == "EarlyBird"
+        loop: "{{ item.build_commands }}"
+        loop_control:
+          loop_var: build_cmd
 
 - name: Install Ripgrep
-  apt:
+  ansible.builtin.apt:
     name: ripgrep
     state: present
 
-- name: Clone Gau-Expose repository
-  git:
-    repo: 'https://github.com/tamimhasan404/Gau-Expose.git'
-    dest: /opt/tools/sensitive_finding/Gau-Expose
-
-
 - name: Install Mantra
-  command: "/usr/local/go/bin/go install github.com/MrEmpy/mantra@latest"
+  ansible.builtin.command:
+    cmd: "/usr/local/go/bin/go install github.com/MrEmpy/mantra@latest"
   environment:
     GOPATH: "{{ ansible_env.HOME }}/go"
     GOROOT: "/usr/local/go"
@@ -35,8 +51,8 @@
   become: yes
 
 - name: Copy mantra binary to /usr/local/bin
-  become: yes
-  copy:
+  ansible.builtin.copy:
     src: "{{ ansible_env.HOME }}/go/bin/mantra"
     dest: "/usr/local/bin/mantra"
     mode: "0755"
+  become: yes

@@ -1,47 +1,46 @@
-- name: Ensure api directory exists
+- name: Ensure necessary directories exist
   file:
-    path: "/opt/tools/api"
+    path: "{{ item }}"
     state: directory
-  become: yes
+    mode: '0755'
+  loop:
+    - "/opt/tools/api"
+    - "/opt/tools/api/kiterunner"
+    - "/opt/tools/api/kiterunner-wordlists"
 
-- name: Define Kiterunner version
+- name: Download latest Kiterunner release version
+  uri:
+    url: "https://api.github.com/repos/assetnote/kiterunner/releases/latest"
+    return_content: yes
+  register: kiterunner_release
+
+- name: Set Kiterunner version and download URL
   set_fact:
-    KITERUNNERVER: "1.0.2" 
+    kiterunner_version: "{{ kiterunner_release.json.tag_name }}"
+    kiterunner_url: "https://github.com/assetnote/kiterunner/releases/download/{{ kiterunner_version }}/kiterunner_{{ kiterunner_version }}_linux_amd64.tar.gz"
 
 - name: Download Kiterunner
-  become: yes
   get_url:
-    url: "https://github.com/assetnote/kiterunner/releases/download/v{{ KITERUNNERVER }}/kiterunner_{{ KITERUNNERVER }}_linux_amd64.tar.gz"
-    dest: "/opt/tools/api/kiterunner_{{ KITERUNNERVER }}_linux_amd64.tar.gz"
-
-- name: Ensure web_crawling directory exists
-  file:
-    path: "/opt/tools/api/kiterunner"
-    state: directory
-  become: yes
-
+    url: "{{ kiterunner_url }}"
+    dest: "/opt/tools/api/kiterunner_{{ kiterunner_version }}_linux_amd64.tar.gz"
 
 - name: Extract Kiterunner
-  become: yes
   unarchive:
-    src: "/opt/tools/api/kiterunner_{{ KITERUNNERVER }}_linux_amd64.tar.gz"
+    src: "/opt/tools/api/kiterunner_{{ kiterunner_version }}_linux_amd64.tar.gz"
     dest: "/opt/tools/api/kiterunner"
     remote_src: yes
 
 - name: Copy Kiterunner binary to /usr/local/bin
-  become: yes
   copy:
     src: "/opt/tools/api/kiterunner/kr"
     dest: "/usr/local/bin/kr"
     mode: "0755"
 
-- name: Download Kiterunner wordlists
-  become: yes
+- name: Download and extract Kiterunner wordlists
   shell: |
-    mkdir -p /opt/tools/api/kiterunner-wordlists
     cd /opt/tools/api/kiterunner-wordlists
-    wget https://wordlists-cdn.assetnote.io/data/kiterunner/routes-small.kite.tar.gz > /dev/null 2>&1
-    for f in *.tar.gz; do tar xf "$f"; rm -Rf "$f"; done
+    wget https://wordlists-cdn.assetnote.io/data/kiterunner/routes-small.kite.tar.gz -q
+    tar xf routes-small.kite.tar.gz
+    rm -f routes-small.kite.tar.gz
   args:
     executable: /bin/bash
-

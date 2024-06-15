@@ -1,0 +1,26 @@
+---
+pwnwin_tools:
+  - https://github.com/BloodHoundAD/BloodHound
+  - https://github.com/byt3bl33d3r/CrackMapExec
+  - https://github.com/trustedsec/unicorn
+  - https://github.com/Hackplayers/evil-winrm
+  - https://github.com/PowerShellMafia/PowerSploit.git
+  - https://github.com/GhostPack/KeeThief
+  - https://github.com/GhostPack/Seatbelt
+  - https://github.com/GhostPack/SharpUp
+  - https://github.com/GhostPack/SafetyKatz
+  - https://github.com/GhostPack/SharpDump
+  - https://github.com/GhostPack/SharpWMI
+  - https://github.com/GhostPack/Rubeus
+  - https://github.com/GhostPack/SharpDPAPI
+  - https://github.com/GhostPack/Lockless
+  - https://github.com/GhostPack/SharpRoast
+  - https://github.com/cobbr/PSAmsi.git
+  - https://github.com/Tylous/Limelighter
+
+win_ref:
+  - https://github.com/S1ckB0y1337/Active-Directory-Exploitation-Cheat-Sheet
+
+win_packages:
+  - https://download.sysinternals.com/files/SysinternalsSuite.zip
+  - https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20210810-2/mimikatz_trunk.zip

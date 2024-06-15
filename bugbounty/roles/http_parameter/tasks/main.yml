@@ -1,28 +1,26 @@
-- name: Ensure http_parameter directory exists
-  file:
-    path: "/opt/tools/http_parameter"
-    state: directory
+- name: Ensure http_parameter directories exist
   become: yes
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - /opt/tools/http_parameter
+    - /opt/tools/http_parameter/x8
 
 - name: Install Arjun
+  become: yes
   shell: "pip3 install arjun --break-system-packages"
-  become: yes
 
-- name: Ensure http_parameter directory exists
-  file:
-    path: "/opt/tools/http_parameter/x8"
-    state: directory
+- name: Download and copy x8
   become: yes
-
-- name: Download x8
-  become: yes
-  get_url:
-    url: "https://github.com/mrco24/x8/raw/main/x8"
-    dest: "/opt/tools/http_parameter/x8/x8"
-
-- name: Copy x8 binary to /usr/local/bin
-  become: yes
-  copy:
-    src: "/opt/tools/http_parameter/x8/x8"
-    dest: "/usr/local/bin/x8"
-    mode: "0755"
+  block:
+    - name: Download x8
+      get_url:
+        url: "https://github.com/mrco24/x8/raw/main/x8"
+        dest: "/opt/tools/http_parameter/x8/x8"
+    
+    - name: Copy x8 binary to /usr/local/bin
+      copy:
+        src: "/opt/tools/http_parameter/x8/x8"
+        dest: "/usr/local/bin/x8"
+        mode: "0755"

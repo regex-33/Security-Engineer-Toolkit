@@ -1,0 +1,37 @@
+---
+- name: Include vars of pwnwin_vars.yml file.
+  include_vars:
+    file: pwnwin_vars.yml
+
+- name: Creating Windows Pwn directory in "{{ pwn_win_dir }}"
+  file:
+    path: "{{ pwn_win_dir }}"
+    state: directory
+    owner: "{{ user_dir }}"
+    mode: "0755"
+  become: yes
+
+- name: Cloning Windows Focused tools
+  git:
+    repo: "{{ item }}"
+    dest: "{{ pwn_win_dir }}{{ item.split('/')[-1].replace('.git','')}}"
+    version: master
+  with_items: "{{ pwnwin_tools }}"
+  become: yes
+
+- name: Cloning Windows Reference Material
+  git:
+    repo: "{{ item }}"
+    dest: "{{ pwn_win_dir }}/references/{{ item.split('/')[-1].replace('.git','')}}"
+    version: master
+  with_items: "{{ win_ref }} "
+  become: yes
+
+- name: Downloading precompiled Packages
+  get_url:
+    url: "{{ item }}"
+    dest: "{{ pwn_win_dir }}"
+    mode: 644
+    owner: "{{ user_dir }}"
+  with_items: "{{ win_packages }}"
+  become: yes

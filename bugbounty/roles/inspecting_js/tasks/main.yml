@@ -1,16 +1,22 @@
-- name: Install LinkFinder
-  git:
-    repo: 'https://github.com/GerbenJavado/LinkFinder.git'
-    dest: /opt/tools/inspecting_js/LinkFinder
+- name: Ensure inspecting_js directory exists
   become: yes
+  file:
+    path: /opt/tools/inspecting_js
+    state: directory
 
-- name: Install JSParser
-  git:
-    repo: 'https://github.com/nahamsec/JSParser.git'
-    dest: /opt/tools/inspecting_js/JSParser
+- name: Install LinkFinder and JSParser
   become: yes
+  block:
+    - name: Clone LinkFinder repository
+      git:
+        repo: 'https://github.com/GerbenJavado/LinkFinder.git'
+        dest: /opt/tools/inspecting_js/LinkFinder
 
-- name: Install requirements for JSParser
-  pip:
-    requirements: /opt/tools/inspecting_js/JSParser/requirements.txt
-  become: yes
+    - name: Clone JSParser repository
+      git:
+        repo: 'https://github.com/nahamsec/JSParser.git'
+        dest: /opt/tools/inspecting_js/JSParser
+
+    - name: Install requirements for JSParser
+      pip:
+        requirements: /opt/tools/inspecting_js/JSParser/requirements.txt

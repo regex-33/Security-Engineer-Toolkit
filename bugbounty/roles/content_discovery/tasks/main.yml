@@ -2,20 +2,15 @@
   git:
     repo: 'https://github.com/maurosoria/dirsearch.git'
     dest: /opt/tools/content_discovery/dirsearch
-  become: yes
 
-- name: Install gobuster
+- name: Install gobuster and dirb
   apt:
-    name: gobuster
+    name: 
+      - gobuster
+      - dirb
     state: present
-  become: yes
 
 - name: Install ffuf
-  shell: go get -u github.com/ffuf/ffuf
-  become: yes
-
-- name: Install dirb
-  apt:
-    name: dirb
-    state: present
-  become: yes
+  shell: go install github.com/ffuf/ffuf@latest
+  environment:
+    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin"

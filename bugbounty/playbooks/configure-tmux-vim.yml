@@ -1,0 +1,6 @@
+- name: configure-tmux-vim
+  hosts: localhost
+  become: yes
+  roles:
+    # - apt-gem-stuff
+    - configure-tmux-vim

@@ -2,210 +2,65 @@
   file:
     path: "/opt/tools/sql_tools"
     state: directory
-  become: yes
 
-
-- name: Install Notify
-  command: "/usr/local/go/bin/go install github.com/projectdiscovery/notify/cmd/notify@latest"
+- name: Install Go tools and copy binaries
   environment:
     GOPATH: "{{ ansible_env.HOME }}/go"
     GOROOT: "/usr/local/go"
     PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
-  become: yes
+  block:
+    - name: Install Go tools
+      command: "/usr/local/go/bin/go install {{ item }}@latest"
+      loop:
+        - github.com/projectdiscovery/notify/cmd/notify
+        - github.com/mrco24/tok
+        - github.com/lc/gau
+        - github.com/tomnomnom/hacks/anti-burl
+        - github.com/tomnomnom/unfurl
+        - github.com/tomnomnom/anew
+        - github.com/tomnomnom/fff
+        - github.com/tomnomnom/gron
+        - github.com/tomnomnom/qsreplace
+        - github.com/LukaSikic/subzy
+        - github.com/dwisiswant0/cf-check
 
-- name: Copy Notify binary to /usr/local/bin
-  become: yes
-  copy:
-    src: "{{ ansible_env.HOME }}/go/bin/notify"
-    dest: "/usr/local/bin/notify"
-    mode: "0755"
+    - name: Copy binaries to /usr/local/bin
+      copy:
+        src: "{{ ansible_env.HOME }}/go/bin/{{ item }}"
+        dest: "/usr/local/bin/{{ item }}"
+        mode: "0755"
+      loop:
+        - notify
+        - tok
+        - gau
+        - anti-burl
+        - unfurl
+        - anew
+        - fff
+        - gron
+        - qsreplace
+        - subzy
+        - cf-check
 
+- name: Clone repositories
+  block:
+    - name: Clone SploitScan repository
+      git:
+        repo: 'https://github.com/xaitax/SploitScan.git'
+        dest: /opt/tools/useful_tools/SploitScan
 
+    - name: Clone Oralyzer repository
+      git:
+        repo: 'https://github.com/r0075h3ll/Oralyzer.git'
+        dest: /opt/tools/useful_tools/Oralyzer
 
-- name: Install tok
-  command: "/usr/local/go/bin/go install github.com/mrco24/tok@latest"
-  environment:
-    GOPATH: "{{ ansible_env.HOME }}/go"
-    GOROOT: "/usr/local/go"
-    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
-  become: yes
+    - name: Clone Interlace repository
+      git:
+        repo: 'https://github.com/codingo/Interlace.git'
+        dest: /opt/tools/useful_tools/Interlace
 
-- name: Copy tok binary to /usr/local/bin
-  become: yes
-  copy:
-    src: "{{ ansible_env.HOME }}/go/bin/tok"
-    dest: "/usr/local/bin/tok"
-    mode: "0755"
-
-
-- name: Install gau
-  command: "/usr/local/go/bin/go install github.com/lc/gau@latest"
-  environment:
-    GOPATH: "{{ ansible_env.HOME }}/go"
-    GOROOT: "/usr/local/go"
-    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
-  become: yes
-
-- name: Copy gau binary to /usr/local/bin
-  become: yes
-  copy:
-    src: "{{ ansible_env.HOME }}/go/bin/gau"
-    dest: "/usr/local/bin/gau"
-    mode: "0755"
-
-
-- name: Install anti-burl
-  command: "/usr/local/go/bin/go install github.com/tomnomnom/hacks/anti-burl@latest"
-  environment:
-    GOPATH: "{{ ansible_env.HOME }}/go"
-    GOROOT: "/usr/local/go"
-    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
-  become: yes
-
-- name: Copy anti-burl binary to /usr/local/bin
-  become: yes
-  copy:
-    src: "{{ ansible_env.HOME }}/go/bin/anti-burl"
-    dest: "/usr/local/bin/anti-burl"
-    mode: "0755"
-
-
-
-- name: Install unfurl
-  command: "/usr/local/go/bin/go install github.com/tomnomnom/unfurl@latest"
-  environment:
-    GOPATH: "{{ ansible_env.HOME }}/go"
-    GOROOT: "/usr/local/go"
-    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
-  become: yes
-
-- name: Copy unfurl binary to /usr/local/bin
-  become: yes
-  copy:
-    src: "{{ ansible_env.HOME }}/go/bin/unfurl"
-    dest: "/usr/local/bin/unfurl"
-    mode: "0755"
-
-
-- name: Install anew
-  command: "/usr/local/go/bin/go install github.com/tomnomnom/anew@latest"
-  environment:
-    GOPATH: "{{ ansible_env.HOME }}/go"
-    GOROOT: "/usr/local/go"
-    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
-  become: yes
-
-- name: Copy anew binary to /usr/local/bin
-  become: yes
-  copy:
-    src: "{{ ansible_env.HOME }}/go/bin/anew"
-    dest: "/usr/local/bin/anew"
-    mode: "0755"
-
-- name: Install fff
-  command: "/usr/local/go/bin/go install github.com/tomnomnom/fff@latest"
-  environment:
-    GOPATH: "{{ ansible_env.HOME }}/go"
-    GOROOT: "/usr/local/go"
-    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
-  become: yes
-
-- name: Copy fff binary to /usr/local/bin
-  become: yes
-  copy:
-    src: "{{ ansible_env.HOME }}/go/bin/fff"
-    dest: "/usr/local/bin/fff"
-    mode: "0755"
-
-
-- name: Install gron
-  command: "/usr/local/go/bin/go install github.com/tomnomnom/gron@latest"
-  environment:
-    GOPATH: "{{ ansible_env.HOME }}/go"
-    GOROOT: "/usr/local/go"
-    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
-  become: yes
-
-- name: Copy gron binary to /usr/local/bin
-  become: yes
-  copy:
-    src: "{{ ansible_env.HOME }}/go/bin/gron"
-    dest: "/usr/local/bin/gron"
-    mode: "0755"
-
-
-- name: Install qsreplace
-  command: "/usr/local/go/bin/go install github.com/tomnomnom/qsreplace@latest"
-  environment:
-    GOPATH: "{{ ansible_env.HOME }}/go"
-    GOROOT: "/usr/local/go"
-    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
-  become: yes
-
-- name: Copy qsreplace binary to /usr/local/bin
-  become: yes
-  copy:
-    src: "{{ ansible_env.HOME }}/go/bin/qsreplace"
-    dest: "/usr/local/bin/qsreplace"
-    mode: "0755"
-
-
-- name: Install subzy
-  command: "/usr/local/go/bin/go install github.com/LukaSikic/subzy@latest"
-  environment:
-    GOPATH: "{{ ansible_env.HOME }}/go"
-    GOROOT: "/usr/local/go"
-    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
-  become: yes
-
-- name: Copy subzy binary to /usr/local/bin
-  become: yes
-  copy:
-    src: "{{ ansible_env.HOME }}/go/bin/subzy"
-    dest: "/usr/local/bin/subzy"
-    mode: "0755"
-
-
-- name: Install cf_check
-  command: "/usr/local/go/bin/go install github.com/dwisiswant0/cf-check@latest"
-  environment:
-    GOPATH: "{{ ansible_env.HOME }}/go"
-    GOROOT: "/usr/local/go"
-    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
-  become: yes
-
-- name: Copy cf_check binary to /usr/local/bin
-  become: yes
-  copy:
-    src: "{{ ansible_env.HOME }}/go/bin/cf-check"
-    dest: "/usr/local/bin/cf-check"
-    mode: "0755"
-
-
-- name: Install SploitScan using git
-  git:
-    repo: 'https://github.com/xaitax/SploitScan.git'
-    dest: /opt/tools/useful_tools/SploitScan
-  become: yes
-
-
-- name: Install Oralyzer using git
-  git:
-    repo: 'https://github.com/r0075h3ll/Oralyzer.git'
-    dest: /opt/tools/useful_tools/Oralyzer
-  become: yes
-
-- name: Install requirements for Oralyzer in virtual environment
-  become: yes
+- name: Install requirements for Oralyzer
   shell: "cd /opt/tools/useful_tools/Oralyzer && pip3 install -r requirements.txt --break-system-packages"
 
-
-- name: Install Interlace using git
-  git:
-    repo: 'https://github.com/codingo/Interlace.git'
-    dest: /opt/tools/useful_tools/Interlace
-  become: yes
-
-- name: Install requirements for Interlace in virtual environment
-  become: yes
+- name: Install Interlace
   shell: "cd /opt/tools/useful_tools/Interlace && python3 setup.py install"
