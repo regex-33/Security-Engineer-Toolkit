@@ -1,163 +1,112 @@
-- name: Ensure sql_tools and go binary directories exist
-  becom: yes
-  file:
-    path: "{{ item }}"
-    state: directory
-    mode: '0755'
-  loop:
-    - "/opt/tools/sql_tools"
-    - "{{ ansible_env.HOME }}/go/bin"
-
-- name: Clone git repositories
-  becom: yes
-  git:
-    repo: "{{ item.repo }}"
-    dest: "{{ item.dest }}"
-  loop:
-    - { repo: 'https://github.com/aboul3la/Sublist3r.git', dest: '/opt/tools/subdomain_enum/Sublist3r' }
-    - { repo: 'https://github.com/screetsec/Sudomy.git', dest: '/opt/tools/subdomain_enum/Sudomy' }
-    - { repo: 'https://github.com/joda32/CertCrunchy.git', dest: '/opt/tools/subdomain_enum/CertCrunchy' }
-
-- name: Download latest Golang
-  becom: yes
-  uri:
-    url: "https://go.dev/VERSION?m=text"
-    return_content: yes
-  register: go_version
-
-- name: Set Golang version
-  becom: yes
-  set_fact:
-    golang_version: "{{ go_version.content }}"
-
-- name: Download Golang
-  becom: yes
-  get_url:
-    url: "https://go.dev/dl/{{ golang_version }}.linux-amd64.tar.gz"
-    dest: "/tmp/{{ golang_version }}.linux-amd64.tar.gz"
-
-- name: Extract Golang
-  becom: yes
-  unarchive:
-    src: "/tmp/{{ golang_version }}.linux-amd64.tar.gz"
-    dest: "/usr/local/"
-    remote_src: yes
-
-- name: Set Go environment variables
-  becom: yes
-  lineinfile:
-    path: /etc/profile
-    create: yes
-    line: "{{ item }}"
-  loop:
-    - 'export GOROOT=/usr/local/go'
-    - 'export GOPATH=$HOME/go'
-    - 'export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin'
-
-- name: Install Go tools and copy binaries
-  becom: yes
-  environment:
-    GOPATH: "{{ ansible_env.HOME }}/go"
-    GOROOT: "/usr/local/go"
-    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
+- name: Setup tools
+  become: yes
   block:
-    - name: Install Go tools
-      command: "/usr/local/go/bin/go install {{ item }}@latest"
+    - name: Install tools using git
+      git:
+        repo: "{{ item.repo }}"
+        dest: "{{ item.dest }}"
       loop:
-        - github.com/tomnomnom/assetfinder
-        - github.com/projectdiscovery/subfinder/v2/cmd/subfinder
-        - github.com/gwen001/github-subdomains
-        - github.com/cgboal/sonarsearch/cmd/crobat
-        - github.com/projectdiscovery/mapcidr/cmd/mapcidr
-    - name: Copy Go binaries to /usr/local/bin
+        - { repo: 'https://github.com/aboul3la/Sublist3r.git', dest: '/opt/tools/subdomain_enum/Sublist3r' }
+        - { repo: 'https://github.com/screetsec/Sudomy.git', dest: '/opt/tools/subdomain_enum/Sudomy' }
+        - { repo: 'https://github.com/joda32/CertCrunchy.git', dest: '/opt/tools/subdomain_enum/CertCrunchy' }
+
+    - name: Download and extract Golang
+      block:
+        - get_url:
+            url: "https://go.dev/dl/go1.22.2.linux-amd64.tar.gz"
+            dest: "/tmp/go1.22.2.linux-amd64.tar.gz"
+        - unarchive:
+            src: "/tmp/go1.22.2.linux-amd64.tar.gz"
+            dest: "/usr/local/"
+            remote_src: yes
+
+    - name: Set environment variables
+      lineinfile:
+        path: /etc/profile
+        line: "{{ item }}"
+        create: yes
+      loop:
+        - 'export GOROOT=/usr/local/go'
+        - 'export GOPATH=$HOME/go'
+        - 'export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin'
+
+    - name: Ensure Go binary directory exists
+      file:
+        path: "{{ ansible_env.HOME }}/go/bin"
+        state: directory
+        mode: '0755'
+
+    - name: Install tools using go
+      command: "/usr/local/go/bin/go install {{ item.name }}@latest"
+      environment:
+        GOPATH: "{{ ansible_env.HOME }}/go"
+        GOROOT: "/usr/local/go"
+        PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
+      loop:
+        - { name: 'github.com/tomnomnom/assetfinder' }
+        - { name: 'github.com/projectdiscovery/subfinder/v2/cmd/subfinder' }
+        - { name: 'github.com/gwen001/github-subdomains' }
+        - { name: 'github.com/cgboal/sonarsearch/cmd/crobat' }
+        - { name: 'github.com/projectdiscovery/mapcidr/cmd/mapcidr' }
+
+    - name: Install amass
+      apt:
+        name: amass
+        state: present
+
+    - name: Copy binaries to /usr/local/bin
       copy:
         src: "{{ ansible_env.HOME }}/go/bin/{{ item }}"
         dest: "/usr/local/bin/{{ item }}"
         mode: "0755"
       loop:
-        - assetfinder
-        - subfinder
-        - github-subdomains
-        - crobat
-        - mapcidr
+        - 'subfinder'
+        - 'github-subdomains'
+        - 'crobat'
+        - 'mapcidr'
 
-- name: Install amass
-  becom: yes
-  apt:
-    name: amass
-    state: present
+    - name: Download and extract Findomain
+      block:
+        - get_url:
+            url: "https://github.com/findomain/findomain/releases/latest/download/findomain-linux-i386.zip"
+            dest: "/tmp/findomain-linux-i386.zip"
+        - unarchive:
+            src: "/tmp/findomain-linux-i386.zip"
+            dest: "/usr/bin/"
+            remote_src: yes
+        - file:
+            path: "/usr/bin/findomain"
+            mode: "u+x"
 
-- name: Download latest Findomain release
-  becom: yes
-  uri:
-    url: "https://api.github.com/repos/findomain/findomain/releases/latest"
-    return_content: yes
-  register: findomain_release
+    - name: Install Sudomy dependencies
+      block:
+        - command: python3 -m venv /opt/tools/subdomain_enum/Sudomy/venv
+        - pip:
+            requirements: /opt/tools/subdomain_enum/Sudomy/requirements.txt
+            virtualenv: /opt/tools/subdomain_enum/Sudomy/venv
+        - apt:
+            name:
+              - npm
+              - jq
+              - nmap
+              - chromium
+              - parallel
+            state: present
+        - shell: "npm i -g wappalyzer wscat"
+        - shell: |
+            cp /opt/tools/subdomain_enum/Sudomy/sudomy /usr/local/bin || true
+            cp /opt/tools/subdomain_enum/Sudomy/sudomy.api.dist /usr/local/bin || true
+            cp /opt/tools/subdomain_enum/Sudomy/slack.conf /usr/local/bin || true
+            cp /opt/tools/subdomain_enum/Sudomy/sudomy.conf /usr/local/bin || true
+          ignore_errors: yes
+        - copy:
+            src: "/opt/tools/subdomain_enum/Sudomy/sudomy"
+            dest: "/usr/local/bin/sudomy"
+            mode: "0755"
 
-- name: Set Findomain version and URL
-  becom: yes
-  set_fact:
-    findomain_url: "{{ findomain_release.json.assets[0].browser_download_url }}"
-
-- name: Download and install Findomain
-  becom: yes
-  block:
-    - name: Download Findomain ZIP file
-      get_url:
-        url: "{{ findomain_url }}"
-        dest: "/tmp/findomain-linux-i386.zip"
-      register: download_findomain
-    - name: Extract Findomain ZIP file
-      unarchive:
-        src: "/tmp/findomain-linux-i386.zip"
-        dest: "/usr/bin/"
-        remote_src: yes
-      register: extract_findomain
-      ignore_errors: yes
-    - name: Make Findomain executable
-      file:
-        path: "/usr/bin/findomain"
-        mode: "u+x"
-
-- name: Setup Sudomy
-  becom: yes
-  block:
-    - name: Create virtual environment for Sudomy
-      command: python3 -m venv /opt/tools/subdomain_enum/Sudomy/venv
-    - name: Install requirements for Sudomy in virtual environment
-      pip:
-        requirements: /opt/tools/subdomain_enum/Sudomy/requirements.txt
-        virtualenv: /opt/tools/subdomain_enum/Sudomy/venv
-    - name: Install required packages for Sudomy
-      apt:
-        name:
-          - npm
-          - jq
-          - nmap
-          - chromium
-          - parallel
-        state: present
-    - name: Install global npm packages for Sudomy
-      shell: "npm i -g wappalyzer wscat"
-    - name: Copy Sudomy scripts
-      shell: |
-        cp /opt/tools/subdomain_enum/Sudomy/sudomy /usr/local/bin || true
-        cp /opt/tools/subdomain_enum/Sudomy/sudomy.api.dist /usr/local/bin || true
-        cp /opt/tools/subdomain_enum/Sudomy/slack.conf /usr/local/bin || true
-        cp /opt/tools/subdomain_enum/Sudomy/sudomy.conf /usr/local/bin || true
-      ignore_errors: yes
-    - name: Copy Sudomy binary to /usr/local/bin
-      copy:
-        src: "/opt/tools/subdomain_enum/Sudomy/sudomy"
-        dest: "/usr/local/bin/sudomy"
-        mode: "0755"
-
-- name: Setup CertCrunchy
-  becom: yes
-  block:
-    - name: Create virtual environment for CertCrunchy
-      command: python3 -m venv /opt/tools/subdomain_enum/CertCrunchy/venv
-    - name: Install requirements for CertCrunchy in virtual environment
-      pip:
-        requirements: /opt/tools/subdomain_enum/CertCrunchy/requirements.txt
-        virtualenv: /opt/tools/subdomain_enum/CertCrunchy/venv
+    - name: Setup CertCrunchy
+      block:
+        - command: python3 -m venv /opt/tools/subdomain_enum/CertCrunchy/venv
+        - pip:
+            requirements: /opt/tools/subdomain_enum/CertCrunchy/requirements.txt
+            virtualenv: /opt/tools/subdomain_enum/CertCrunchy/venv

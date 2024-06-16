@@ -13,7 +13,7 @@
     - customize-terminal
     - directory_fuzzers
     - dns_resolver
-    - exploitation
+    # - exploitation
     - frameworks
     - git_hunting
     - http_parameter
@@ -21,7 +21,7 @@
     - inspecting_js
     - js_hunting
     - lfi_tools
-    - network_scanner
+    # - network_scanner
     - open_redirect
     - request_smuggling
     - sensitive_finding
@@ -35,7 +35,7 @@
     - web_technologies
     - wordlists
     - xss_tools
-     
+
 
     # - network_sacanner
     # - http_parameter 

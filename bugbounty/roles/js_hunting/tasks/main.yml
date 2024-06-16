@@ -1,167 +1,81 @@
-- name: Ensure js_hunting directory exists
-  become: yes
-  file:
-    path: /opt/tools/js_hunting
-    state: directory
-
-- name: Install Getjs
-  become: yes
-  block:
-    - name: Install Getjs
-      command: "/usr/local/go/bin/go install github.com/003random/getJS@latest"
-      environment:
-        GOPATH: "{{ ansible_env.HOME }}/go"
-        GOROOT: "/usr/local/go"
-        PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
-
-    - name: Copy Getjs binary to /usr/local/bin
-      copy:
+- name: Set tools
+  set_fact:
+    tools:
+      - name: Getjs
+        install: "/usr/local/go/bin/go install github.com/003random/getJS@latest"
         src: "{{ ansible_env.HOME }}/go/bin/getJS"
         dest: "/usr/local/bin/getJS"
-        mode: "0755"
-
-- name: Install tools using git and install their requirements
-  become: yes
-  vars:
-    tools:
       - name: LinkFinder
         repo: 'https://github.com/GerbenJavado/LinkFinder.git'
-        reqs:
-          - requirements.txt
+        requirements: "pip3 install -r requirements.txt --break-system-packages"
       - name: SecretFinder
         repo: 'https://github.com/m4ll0k/SecretFinder.git'
-        reqs:
-          - requirements.txt
-          - jsbeautifier
-          - lxml
+        requirements: "pip3 install -r requirements.txt --break-system-packages && pip3 install jsbeautifier --break-system-packages && pip3 install lxml --break-system-packages"
       - name: JSScanner
         repo: 'https://github.com/dark-warlord14/JSScanner'
-        install_cmd: "bash install.sh"
-    subjs_url: "https://github.com/lc/subjs/releases/download/v1.0.1/subjs_1.0.1_linux_amd64.tar.gz"
+        requirements: "bash install.sh"
 
-  block:
-    - name: Clone and install tools
-      loop:
-        - "{{ tools }}"
-      loop_control:
-        loop_var: tool
-      block:
-        - name: Clone {{ tool.name }} repository
-          git:
-            repo: "{{ tool.repo }}"
-            dest: "/opt/tools/js_hunting/{{ tool.name }}"
-        
-        - name: Install requirements for {{ tool.name }}
-          shell: |
-            cd "/opt/tools/js_hunting/{{ tool.name }}"
-            {% for req in tool.reqs %}
-            pip3 install -r {{ req }} --break-system-packages
-            {% endfor %}
+- name: Ensure js_hunting directory exists
+  file:
+    path: "/opt/tools/js_hunting"
+    state: directory
+  become: yes
 
-    - name: Download and install subjs
-      block:
-        - name: Download subjs
-          get_url:
-            url: "{{ subjs_url }}"
-            dest: "/tmp/subjs.tar.gz"
+- name: Install {{ item.name }}
+  command: "{{ item.install | default(omit) }}"
+  environment:
+    GOPATH: "{{ ansible_env.HOME }}/go"
+    GOROOT: "/usr/local/go"
+    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
+  become: yes
+  when: item.install is defined
+  loop: "{{ tools }}"
 
-        - name: Ensure subjs directory exists
-          file:
-            path: "/opt/tools/js_hunting/subjs"
-            state: directory
+- name: Copy {{ item.name }} binary to /usr/local/bin
+  become: yes
+  copy:
+    src: "{{ item.src | default(omit) }}"
+    dest: "{{ item.dest | default(omit) }}"
+    mode: "0755"
+  when: item.src is defined and item.dest is defined
+  loop: "{{ tools }}"
 
-        - name: Extract subjs
-          unarchive:
-            src: "/tmp/subjs.tar.gz"
-            dest: "/opt/tools/js_hunting/subjs"
-            remote_src: yes
+- name: Install {{ item.name }} using git
+  git:
+    repo: "{{ item.repo | default(omit) }}"
+    dest: "/opt/tools/js_hunting/{{ item.name }}"
+  become: yes
+  when: item.repo is defined
+  loop: "{{ tools }}"
 
-        - name: Copy subjs binary to /usr/local/bin
-          copy:
-            src: "/opt/tools/js_hunting/subjs/subjs"
-            dest: "/usr/local/bin/subjs"
-            mode: "0755"
+- name: Install requirements for {{ item.name }}
+  shell: "cd /opt/tools/js_hunting/{{ item.name }}/ && {{ item.requirements }}"
+  become: yes
+  when: item.requirements is defined
+  loop: "{{ tools }}"
 
-# - name: Ensure js_hunting directory exists
-#   file:
-#     path: "/opt/tools/js_hunting"
-#     state: directory
-#   become: yes
+- name: Download subjs
+  become: yes
+  get_url:
+    url: "https://github.com/lc/subjs/releases/download/v1.0.1/subjs_1.0.1_linux_amd64.tar.gz"
+    dest: "/tmp/subjs_1.0.1_linux_amd64.tar.gz"
 
+- name: Ensure subjs directory exists
+  file:
+    path: "/opt/tools/js_hunting/subjs"
+    state: directory
+  become: yes
 
-# - name: Install Getjs
-#   command: "/usr/local/go/bin/go install github.com/003random/getJS@latest"
-#   environment:
-#     GOPATH: "{{ ansible_env.HOME }}/go"
-#     GOROOT: "/usr/local/go"
-#     PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
-#   become: yes
+- name: Extract subjs
+  become: yes
+  unarchive:
+    src: "/tmp/subjs_1.0.1_linux_amd64.tar.gz"
+    dest: "/opt/tools/js_hunting/subjs"
+    remote_src: yes
 
-# - name: Copy Getjs binary to /usr/local/bin
-#   become: yes
-#   copy:
-#     src: "{{ ansible_env.HOME }}/go/bin/getJS"
-#     dest: "/usr/local/bin/getJS"
-#     mode: "0755"
-
-# - name: Install LinkFinder using git
-#   git:
-#     repo: 'https://github.com/GerbenJavado/LinkFinder.git'
-#     dest: /opt/tools/js_hunting/LinkFinder
-#   become: yes
-
-
-# - name: Install requirements for LinkFinder
-#   shell: "cd /opt/tools/js_hunting/LinkFinder/ && pip3 install -r requirements.txt --break-system-packages"
-#   become: yes
-
-
-# - name: Install SecretFinder using git
-#   git:
-#     repo: 'https://github.com/m4ll0k/SecretFinder.git'
-#     dest: /opt/tools/js_hunting/SecretFinder
-#   become: yes
-
-
-# - name: Install requirements for SecretFinder
-#   shell: "cd /opt/tools/js_hunting/SecretFinder/ && pip3 install -r requirements.txt --break-system-packages && pip3 install jsbeautifier --break-system-packages && pip3 install lxml --break-system-packages"
-#   become: yes
-
-
-# - name: Download subjs
-#   become: yes
-#   get_url:
-#     url: "https://github.com/lc/subjs/releases/download/v1.0.1/subjs_1.0.1_linux_amd64.tar.gz"
-#     dest: "/tmp/subjs_1.0.1_linux_amd64.tar.gz"
-
-# - name: Ensure subjs directory exists
-#   file:
-#     path: "/opt/tools/js_hunting/subjs"
-#     state: directory
-#   become: yes
-
-
-# - name: Extract subjs
-#   become: yes
-#   unarchive:
-#     src: "/tmp/subjs_1.0.1_linux_amd64.tar.gz"
-#     dest: "/opt/tools/js_hunting/subjs"
-#     remote_src: yes
-
-# - name: Copy subjs binary to /usr/local/bin
-#   become: yes
-#   copy:
-#     src: "/opt/tools/js_hunting/subjs/subjs"
-#     dest: "/usr/local/bin/subjs"
-#     mode: "0755"
-
-
-# - name: Install JSScanner using git
-#   git:
-#     repo: 'https://github.com/dark-warlord14/JSScanner'
-#     dest: /opt/tools/js_hunting/JSScanner
-#   become: yes
-
-# - name: Install requirements for JSScanner
-#   shell: "cd /opt/tools/js_hunting/JSScanner && bash install.sh"
-#   become: yes
+- name: Copy subjs binary to /usr/local/bin
+  become: yes
+  copy:
+    src: "/opt/tools/js_hunting/subjs/subjs"
+    dest: "/usr/local/bin/subjs"
+    mode: "0755"

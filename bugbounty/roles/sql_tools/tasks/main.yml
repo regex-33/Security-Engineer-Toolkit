@@ -1,95 +1,157 @@
+- name: Set sql_tools
+  set_fact:
+    sql_tools:
+      - name: Jeeves
+        install: "/usr/local/go/bin/go install github.com/ferreiraklet/Jeeves@latest"
+        src: "{{ ansible_env.HOME }}/go/bin/Jeeves"
+        dest: "/usr/local/bin/Jeeves"
+      - name: time-sql
+        install: "/usr/local/go/bin/go install github.com/mrco24/time-sql@latest"
+        src: "{{ ansible_env.HOME }}/go/bin/time-sql"
+        dest: "/usr/local/bin/time-sql"
+      - name: mrco24-error-sql
+        install: "/usr/local/go/bin/go install github.com/mrco24/mrco24-error-sql@latest"
+        src: "{{ ansible_env.HOME }}/go/bin/mrco24-error-sql"
+        dest: "/usr/local/bin/mrco24-error-sql"
+      - name: ghauri
+        repo: 'https://github.com/r0oth3x49/ghauri.git'
+        install: "cd /opt/tools/sql_tools/ghauri && python3 -m pip install --upgrade -r requirements.txt --break-system-packages && python3 setup.py install"
+
 - name: Ensure sql_tools directory exists
-  ansible.builtin.file:
+  file:
     path: "/opt/tools/sql_tools"
     state: directory
   become: yes
 
-- name: Install tools
-  ansible.builtin.block:
-    become: yes
-    vars:
-      tools_to_install:
-        - name: Jeeves
-          repo: github.com/ferreiraklet/Jeeves
-          binaries:
-            - name: Jeeves
-              install_cmd: "/usr/local/go/bin/go install github.com/ferreiraklet/Jeeves@latest"
-
-        - name: time-sql
-          repo: github.com/mrco24/time-sql
-          binaries:
-            - name: time-sql
-              install_cmd: "/usr/local/go/bin/go install github.com/mrco24/time-sql@latest"
-
-        - name: mrco24-error-sql
-          repo: github.com/mrco24/mrco24-error-sql
-          binaries:
-            - name: mrco24-error-sql
-              install_cmd: "/usr/local/go/bin/go install github.com/mrco24/mrco24-error-sql@latest"
-
-        - name: ghauri
-          repo: github.com/r0oth3x49/ghauri
-          install_cmd: "python3 -m pip install --upgrade -r requirements.txt --break-system-packages && python3 setup.py install"
-
-    ansible.builtin.loop:
-      - name: "{{ item.name }}"
-        ansible.builtin.git:
-          repo: "https://{{ item.repo }}.git"
-          dest: "/opt/tools/sql_tools/{{ item.name }}"
-        when: item.name == "ghauri"
-
-      - name: "Install {{ item.name }} binaries"
-        ansible.builtin.command:
-          cmd: "{{ item.install_cmd }}"
-        when: item.name != "ghauri"
-        loop: "{{ item.binaries }}"
-        loop_control:
-          loop_var: binary
-
-- name: Copy binaries to /usr/local/bin
-  ansible.builtin.copy:
-    src: "{{ ansible_env.HOME }}/go/bin/{{ item.name }}"
-    dest: "/usr/local/bin/{{ item.name }}"
-    mode: "0755"
-  with_items:
-    - { name: Jeeves }
-    - { name: time-sql }
-    - { name: mrco24-error-sql }
+- name: Clone {{ item.name }} repository
+  git:
+    repo: "{{ item.repo | default(omit) }}"
+    dest: "/opt/tools/sql_tools/{{ item.name }}"
   become: yes
+  when: item.repo is defined
+  loop: "{{ sql_tools }}"
 
+- name: Install {{ item.name }}
+  command: "{{ item.install | default(omit) }}"
+  environment:
+    GOPATH: "{{ ansible_env.HOME }}/go"
+    GOROOT: "/usr/local/go"
+    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
+  become: yes
+  when: item.install is defined
+  loop: "{{ sql_tools }}"
 
-# - name: Install NoSQLMap using git
-#   git:
-#     repo: 'https://github.com/codingo/NoSQLMap.git'
-#     dest: /opt/tools/sql_tools/NoSQLMap
+- name: Copy {{ item.name }} binary to /usr/local/bin
+  become: yes
+  copy:
+    src: "{{ item.src | default(omit) }}"
+    dest: "{{ item.dest | default(omit) }}"
+    mode: "0755"
+  when: item.src is defined and item.dest is defined
+  loop: "{{ sql_tools }}"
+
+  
+# - name: Ensure sql_tools directory exists
+#   file:
+#     path: "/opt/tools/sql_tools"
+#     state: directory
 #   become: yes
 
-# - name: Ensure Python virtual environment for NoSQLMap exists
-#   become: yes
-#   command: python3 -m venv /opt/tools/sql_tools/NoSQLMap/venv
-#   args:
-#     creates: /opt/tools/sql_tools/NoSQLMap/venv
 
-# - name: Create a requirements.txt file for NoSQLMap
+# - name: Install Jeeves
+#   command: "/usr/local/go/bin/go install github.com/ferreiraklet/Jeeves@latest"
+#   environment:
+#     GOPATH: "{{ ansible_env.HOME }}/go"
+#     GOROOT: "/usr/local/go"
+#     PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
+#   become: yes
+
+# - name: Copy Jeeves binary to /usr/local/bin
 #   become: yes
 #   copy:
-#     dest: /opt/tools/sql_tools/NoSQLMap/requirements.txt
-#     content: |
-#       CouchDB==1.0
-#       httplib2==0.19.0
-#       ipcalc==1.1.3
-#       pbkdf2==1.3
-#       pymongo==3.12.0  # Update to a more recent version that is compatible with modern Python versions
+#     src: "{{ ansible_env.HOME }}/go/bin/Jeeves"
+#     dest: "/usr/local/bin/Jeeves"
+#     mode: "0755"
 
-# - name: Install requirements for NoSQLMap in virtual environment
+
+
+
+# - name: Install time-sql
+#   command: "/usr/local/go/bin/go install github.com/mrco24/time-sql@latest"
+#   environment:
+#     GOPATH: "{{ ansible_env.HOME }}/go"
+#     GOROOT: "/usr/local/go"
+#     PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
 #   become: yes
-#   shell: |
-#     . /opt/tools/sql_tools/NoSQLMap/venv/bin/activate
-#     pip install --upgrade pip
-#     pip install --upgrade -r /opt/tools/sql_tools/NoSQLMap/requirements.txt --break-system-packages
-#     pip install -e /opt/tools/sql_tools/NoSQLMap
-#   args:
-#     executable: /bin/bash
+
+# - name: Copy time-sql binary to /usr/local/bin
+#   become: yes
+#   copy:
+#     src: "{{ ansible_env.HOME }}/go/bin/time-sql"
+#     dest: "/usr/local/bin/time-sql"
+#     mode: "0755"
 
 
 
+# - name: Install mrco24-error-sql
+#   command: "/usr/local/go/bin/go install github.com/mrco24/mrco24-error-sql@latest"
+#   environment:
+#     GOPATH: "{{ ansible_env.HOME }}/go"
+#     GOROOT: "/usr/local/go"
+#     PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
+#   become: yes
+
+# - name: Copy mrco24-error-sql binary to /usr/local/bin
+#   become: yes
+#   copy:
+#     src: "{{ ansible_env.HOME }}/go/bin/mrco24-error-sql"
+#     dest: "/usr/local/bin/mrco24-error-sql"
+#     mode: "0755"
+
+
+
+# # - name: Install NoSQLMap using git
+# #   git:
+# #     repo: 'https://github.com/codingo/NoSQLMap.git'
+# #     dest: /opt/tools/sql_tools/NoSQLMap
+# #   become: yes
+
+# # - name: Ensure Python virtual environment for NoSQLMap exists
+# #   become: yes
+# #   command: python3 -m venv /opt/tools/sql_tools/NoSQLMap/venv
+# #   args:
+# #     creates: /opt/tools/sql_tools/NoSQLMap/venv
+
+# # - name: Create a requirements.txt file for NoSQLMap
+# #   become: yes
+# #   copy:
+# #     dest: /opt/tools/sql_tools/NoSQLMap/requirements.txt
+# #     content: |
+# #       CouchDB==1.0
+# #       httplib2==0.19.0
+# #       ipcalc==1.1.3
+# #       pbkdf2==1.3
+# #       pymongo==3.12.0  # Update to a more recent version that is compatible with modern Python versions
+
+# # - name: Install requirements for NoSQLMap in virtual environment
+# #   become: yes
+# #   shell: |
+# #     . /opt/tools/sql_tools/NoSQLMap/venv/bin/activate
+# #     pip install --upgrade pip
+# #     pip install --upgrade -r /opt/tools/sql_tools/NoSQLMap/requirements.txt --break-system-packages
+# #     pip install -e /opt/tools/sql_tools/NoSQLMap
+# #   args:
+# #     executable: /bin/bash
+
+
+
+# - name: Install ghauri using git
+#   git:
+#     repo: 'https://github.com/r0oth3x49/ghauri.git'
+#     dest: /opt/tools/sql_tools/ghauri
+#   become: yes
+
+
+# - name: Install requirements for ghauri in virtual environment
+#   become: yes
+#   shell: "cd /opt/tools/sql_tools/ghauri && python3 -m pip install --upgrade -r requirements.txt --break-system-packages && python3 setup.py install"
