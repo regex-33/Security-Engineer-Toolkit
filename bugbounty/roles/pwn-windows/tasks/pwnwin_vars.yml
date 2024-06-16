@@ -17,6 +17,7 @@ pwnwin_tools:
   - https://github.com/GhostPack/SharpRoast
   - https://github.com/cobbr/PSAmsi.git
   - https://github.com/Tylous/Limelighter
+  - https://github.com/S3cur3Th1sSh1t/PowerSharpPack.git
 
 win_ref:
   - https://github.com/S1ckB0y1337/Active-Directory-Exploitation-Cheat-Sheet
@@ -24,3 +25,703 @@ win_ref:
 win_packages:
   - https://download.sysinternals.com/files/SysinternalsSuite.zip
   - https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20210810-2/mimikatz_trunk.zip
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+# - name: Install git
+#   apt:
+#     name: git
+#     state: present
+
+# - name: Clone ADRecon from GitHub
+#   git:
+#     repo: https://github.com/adrecon/ADRecon.git
+#     dest: /opt/windows/ADRecon
+
+# - name: Clone BloodHound and SharpHound from GitHub
+#   git:
+#     repo: https://github.com/BloodHoundAD/BloodHound.git
+#     dest: /opt/windows/BloodHound
+
+# - name: Clone LDAPDomainDump from GitHub
+# - become: yes
+# - shell: pip install ldapdomaindump
+
+# - name: Clone PowerView from GitHub
+#   git:
+#     repo: https://github.com/PowerShellMafia/PowerSploit.git
+#     dest: /opt/windows/PowerSploit
+  
+  
+
+# - name: Download ASREPRoast.ps1
+#   get_url:
+#     url: https://raw.githubusercontent.com/HarmJ0y/ASREPRoast/master/ASREPRoast.ps1
+#     dest: /opt/windows/ASREPRoast/ASREPRoast.ps1
+#     mode: '0755'
+#   become: yes
+
+# - name: Download Rubeus.exe
+#   get_url:
+#     url: https://github.com/GhostPack/Rubeus/releases/download/1.6.3/Rubeus.exe
+#     dest: /opt/windows/Rubeus/Rubeus.exe
+#     mode: '0755'
+#   become: yes
+
+# - name: Download SharpHound.ps1
+#   get_url:
+#     url: https://raw.githubusercontent.com/BloodHoundAD/BloodHound/master/Ingestors/SharpHound.ps1
+#     dest: /opt/windows/SharpHound/SharpHound.ps1
+#     mode: '0755'
+#   become: yes
+
+
+# - name: Clone Mimikatz from GitHub
+#   git:
+#     repo: https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20210810-2/mimikatz_trunk.zip
+#     dest: /opt/windows/Mimikatz
+#   become: yes
+
+# - name: Download SharpGPOAbuse.exe
+#   get_url:
+#     url: https://github.com/byronkg/SharpGPOAbuse/releases/download/1.0/SharpGPOAbuse.exe 
+#     dest: /opt/windows/SharpGPOAbuse/SharpGPOAbuse.exe
+#     mode: '0755'
+#   become: yes
+
+
+# - name: Download SharpLAPS.exe
+#   get_url:
+#     url: https://github.com/swisskyrepo/SharpLAPS/releases/download/latest-SharpLAPS/SharpLAPS.exe
+#     dest: /opt/windows/SharpLAPS/SharpLAPS.exe
+#     mode: '0755'
+#   become: yes
+
+
+# - name: Clone Spraykatz from GitHub
+#   git:
+#     repo: https://github.com/aas-n/spraykatz.git
+#     dest: /opt/windows/Spraykatz
+#   become: yes
+
+# - name: Install requirements for Spraykatz
+#   pip:
+#     name: -r /opt/windows/Spraykatz/requirements.txt
+#     state: present
+#   become: yes
+
+
+# - name: Download Invoke-DCOM.ps1
+#   get_url:
+#     url: https://raw.githubusercontent.com/PowerShellEmpire/PowerTools/master/PowerView/powershell/PowerView.ps1
+#     dest: /opt/windows/Invoke-DCOM/Invoke-DCOM.ps1
+#     mode: '0755'
+
+# - name: Download Invoke-WMI.ps1
+#   get_url:
+#     url: https://raw.githubusercontent.com/PowerShellEmpire/PowerTools/master/PowerView/powershell/PowerView.ps1
+#     dest: /opt/windows/Invoke-WMI/Invoke-WMI.ps1
+#     mode: '0755'
+  
+# - name: Download Invoke-ACLScanner.ps1
+#   get_url:
+#     url: https://raw.githubusercontent.com/PowerShellEmpire/PowerTools/master/PowerView/powershell/PowerView.ps1
+#     dest: /opt/windows/Invoke-ACLScanner/Invoke-ACLScanner.ps1
+#     mode: '0755'
+
+# - name: Download Invoke-ShareFinder.ps1
+#   get_url:
+#     url: https://raw.githubusercontent.com/PowerShellEmpire/PowerTools/master/PowerView/powershell/PowerView.ps1
+#     dest: /opt/windows/Invoke-ShareFinder/Invoke-ShareFinder.ps1
+#     mode: '0755'
+
+# - name: Download PowerView.ps1
+#   get_url:
+#     url: https://raw.githubusercontent.com/PowerShellEmpire/PowerTools/master/PowerView/powershell/PowerView.ps1
+#     dest: /opt/windows/PowerView/PowerView.ps1
+#     mode: '0755'
+
+# - name: Clone Nishang from GitHub
+#   git:
+#     repo: https://github.com/samratashok/nishang.git
+#     dest: /opt/windows/nishang
+#   become: yes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# - name: Download Inveigh.ps1
+#   get_url:
+#     url: https://raw.githubusercontent.com/Kevin-Robertson/Inveigh/master/Inveigh.ps1
+#     dest: /opt/windows/Inveigh/Inveigh.ps1
+#     mode: '0755'
+
+# - name: Download PowerUp.ps1
+#   get_url:
+#     url: https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Privesc/PowerUp.ps1
+#     dest: /opt/windows/PowerUp/PowerUp.ps1
+#     mode: '0755'
+
+# - name: Download SharpUp.exe
+#   get_url:
+#     url: https://github.com/GhostPack/SharpUp/releases/download/1.0/SharpUp.exe
+#     dest: /opt/windows/SharpUp/SharpUp.exe
+#     mode: '0755'
+
+# - name: Download SharpDump.exe
+#   get_url:
+#     url: https://raw.githubusercontent.com/GhostPack/SharpDump/master/SharpDump.exe
+#     dest: /opt/windows/SharpDump/SharpDump.exe
+#     mode: '0755'
+#   become: yes
+
+# - name: Download SharpWMI.exe
+#   get_url:
+#     url: https://raw.githubusercontent.com/GhostPack/SharpWMI/master/SharpWMI.exe
+#     dest: /opt/windows/SharpWMI/SharpWMI.exe
+#     mode: '0755'
+#   become: yes
+
+# - name: Download SharpRoast.exe
+#   get_url:
+#     url: https://raw.githubusercontent.com/GhostPack/SharpRoast/master/SharpRoast.exe
+#     dest: /opt/windows/SharpRoast/SharpRoast.exe
+#     mode: '0755'
+#   become: yes
+
+# - name: Download SharpDPAPI.exe
+#   get_url:
+#     url: https://raw.githubusercontent.com/GhostPack/SharpDPAPI/master/SharpDPAPI.exe
+#     dest: /opt/windows/SharpDPAPI/SharpDPAPI.exe
+#     mode: '0755'
+#   become: yes
+
+# - name: Download Lockless.exe
+#   get_url:
+#     url: https://raw.githubusercontent.com/GhostPack/Lockless/master/Lockless.exe
+#     dest: /opt/windows/Lockless/Lockless.exe
+#     mode: '0755'
+#   become: yes
+
+# - name: Download SafetyKatz.exe
+#   get_url:
+#     url: https://raw.githubusercontent.com/GhostPack/SafetyKatz/master/SafetyKatz.exe
+#     dest: /opt/windows/SafetyKatz/SafetyKatz.exe
+#     mode: '0755'
+#   become: yes
+
+# - name: Download KeeThief.exe
+#   get_url:
+#     url: https://raw.githubusercontent.com/GhostPack/KeeThief/master/KeeThief.exe
+#     dest: /opt/windows/KeeThief/KeeThief.exe
+#     mode: '0755'
+#   become: yes
+
+# - name: Download Seatbelt.exe
+#   get_url:
+#     url: https://raw.githubusercontent.com/GhostPack/Seatbelt/master/Seatbelt.exe
+#     dest: /opt/windows/Seatbelt/Seatbelt.exe
+#     mode: '0755'
+#   become: yes
+
+# - name: Download Rubeus.exe
+#   get_url:
+#     url: https://raw.githubusercontent.com/GhostPack/Rubeus/master/Rubeus.exe
+#     dest: /opt/windows/Rubeus/Rubeus.exe
+#     mode: '0755'
+#   become: yes
+
+# - name: Download Limelighter.exe
+#   get_url:
+#     url: https://raw.githubusercontent.com/Tylous/Limelighter/master/Limelighter.exe
+#     dest: /opt/windows/Limelighter/Limelighter.exe
+#     mode: '0755'
+#   become: yes
+
+# - name: Install CrackMapExec
+#   pip:
+#     name: crackmapexec
+#     state: present
+#   become: yes
+
+# - name: Install Evil-WinRM
+#   pip:
+#     name: evil-winrm
+#     state: present
+#   become: yes
+
+# - name: Install Unicorn
+#   pip:
+#     name: unicorn
+#     state: present
+#   become: yes
+
+# - name: Install BloodHound
+#   pip:
+#     name: bloodhound
+#     state: present
+#   become: yes
+
+
+# - name: Install ConvertTo-SharpGen.ps1
+# get_url:
+#   url: https://raw.githubusercontent.com/GhostPack/SharpGen/master/ConvertTo-SharpGen.ps1
+#   dest: /opt/windows/SharpGen/ConvertTo-SharpGen.ps1
+#   mode: '0755'
+# become: yes
+
+# - name: Install Convenant
+#   git:
+#     repo: https://github.com/cobbr/Covenant.git
+#     dest: /opt/windows/Covenant
+#   become: yes
+
+# - name: Install Empire
+#   apt:
+#     name: empire
+#     state: present
+#   become: yes
+
+# - name: Install Merlin
+#   get_url:
+#     url: https://github.com/Ne0nd0g/merlin/releases/latest/download/merlinServer-Linux-x64.7z
+#     dest: /opt/windows/Merlin/merlinServer-Linux-x64.7z
+#     mode: '0755'
+#   become: yes
+
+# - name: Unzip Merlin
+#   unarchive:
+#     src: /opt/windows/Merlin/merlinServer-Linux-x64.7z
+#     dest: /opt/windows/Merlin
+#     remote_src: yes
+#   become: yes
+
+
+# - name: Install PoshC2
+#   shell: curl -sSL https://raw.githubusercontent.com/nettitude/PoshC2/dev/Install.sh | sudo bash -s -- -b dev
+#   become: yes
+
+
+
+# - name: Download Invoke-Mimikatz.ps1
+#   get_url:
+#     url: https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Exfiltration/Invoke-Mimikatz.ps1
+#     dest: /opt/windows/Invoke-Mimikatz/Invoke-Mimikatz.ps1
+#     mode: '0755'
+
+# - name: Download LaZagne.exe
+#   get_url:
+#     url: https://raw.githubusercontent.com/AlessandroZ/LaZagne/master/Windows/bin/lazagne.exe
+#     dest: /opt/windows/LaZagne/LaZagne.exe
+#     mode: '0755'
+#   become: yes
+
+# - name: Download QuarksPwDump.exe
+#   get_url:
+#     url: https://raw.githubusercontent.com/QuarksLab/QuarksPwDump/master/QuarksPwDump.exe
+#     dest: /opt/windows/QuarksPwDump/QuarksPwDump.exe
+#     mode: '0755'
+#   become: yes
+
+# - name: Download Invoke-TheHash.ps1
+#   get_url:
+#     urls: https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-TheHash.ps1
+#     dest: /opt/windows/Invoke-TheHash/Invoke-TheHash.ps1
+#     mode: '0755'
+#   become: yes
+
+
+
+# - name: Install git
+#   apt:
+#     name: git
+#     state: present
+
+# - name: Clone repos from GitHub
+#   git:
+#     repo: "{{ item.repo }}"
+#     dest: "{{ item.dest }}"
+#   loop:
+#     - { repo: 'https://github.com/adrecon/ADRecon.git', dest: '/opt/windows/ADRecon' }
+#     - { repo: 'https://github.com/BloodHoundAD/BloodHound.git', dest: '/opt/windows/BloodHound' }
+#     - { repo: 'https://github.com/PowerShellMafia/PowerSploit.git', dest: '/opt/windows/PowerSploit' }
+#     - { repo: 'https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20210810-2/mimikatz_trunk.zip', dest: '/opt/windows/Mimikatz' }
+#     - { repo: 'https://github.com/aas-n/spraykatz.git', dest: '/opt/windows/Spraykatz' }
+#     - { repo: 'https://github.com/samratashok/nishang.git', dest: '/opt/windows/nishang' }
+
+# - name: Install LDAPDomainDump
+#   become: yes
+#   shell: pip install ldapdomaindump
+
+# - name: Download files
+#   get_url:
+#     url: "{{ item.url }}"
+#     dest: "{{ item.dest }}"
+#     mode: '0755'
+#   become: yes
+#   loop:
+#     - { url: 'https://raw.githubusercontent.com/HarmJ0y/ASREPRoast/master/ASREPRoast.ps1', dest: '/opt/windows/ASREPRoast/ASREPRoast.ps1' }
+#     - { url: 'https://github.com/GhostPack/Rubeus/releases/download/1.6.3/Rubeus.exe', dest: '/opt/windows/Rubeus/Rubeus.exe' }
+#     - { url: 'https://raw.githubusercontent.com/BloodHoundAD/BloodHound/master/Ingestors/SharpHound.ps1', dest: '/opt/windows/SharpHound/SharpHound.ps1' }
+#     - { url: 'https://github.com/byronkg/SharpGPOAbuse/releases/download/1.0/SharpGPOAbuse.exe', dest: '/opt/windows/SharpGPOAbuse/SharpGPOAbuse.exe' }
+#     - { url: 'https://github.com/swisskyrepo/SharpLAPS/releases/download/latest-SharpLAPS/SharpLAPS.exe', dest: '/opt/windows/SharpLAPS/SharpLAPS.exe' }
+#     - { url: 'https://raw.githubusercontent.com/PowerShellEmpire/PowerTools/master/PowerView/powershell/PowerView.ps1', dest: '/opt/windows/Invoke-DCOM/Invoke-DCOM.ps1' }
+#     - { url: 'https://raw.githubusercontent.com/PowerShellEmpire/PowerTools/master/PowerView/powershell/PowerView.ps1', dest: '/opt/windows/Invoke-WMI/Invoke-WMI.ps1' }
+#     - { url: 'https://raw.githubusercontent.com/PowerShellEmpire/PowerTools/master/PowerView/powershell/PowerView.ps1', dest: '/opt/windows/Invoke-ACLScanner/Invoke-ACLScanner.ps1' }
+#     - { url: 'https://raw.githubusercontent.com/PowerShellEmpire/PowerTools/master/PowerView/powershell/PowerView.ps1', dest: '/opt/windows/Invoke-ShareFinder/Invoke-ShareFinder.ps1' }
+#     - { url: 'https://raw.githubusercontent.com/PowerShellEmpire/PowerTools/master/PowerView/powershell/PowerView.ps1', dest: '/opt/windows/PowerView/PowerView.ps1' }
+
+# - name: Install requirements for Spraykatz
+#   pip:
+#     name: -r /opt/windows/Spraykatz/requirements.txt
+#     state: present
+#   become: yes
+
+# - name: Download files
+#   get_url:
+#     url: "{{ item.url }}"
+#     dest: "{{ item.dest }}"
+#     mode: '0755'
+#   become: yes
+#   loop:
+#     - { url: 'https://raw.githubusercontent.com/Kevin-Robertson/Inveigh/master/Inveigh.ps1', dest: '/opt/windows/Inveigh/Inveigh.ps1' }
+#     - { url: 'https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Privesc/PowerUp.ps1', dest: '/opt/windows/PowerUp/PowerUp.ps1' }
+#     - { url: 'https://github.com/GhostPack/SharpUp/releases/download/1.0/SharpUp.exe', dest: '/opt/windows/SharpUp/SharpUp.exe' }
+#     - { url: 'https://raw.githubusercontent.com/GhostPack/SharpDump/master/SharpDump.exe', dest: '/opt/windows/SharpDump/SharpDump.exe' }
+#     - { url: 'https://raw.githubusercontent.com/GhostPack/SharpWMI/master/SharpWMI.exe', dest: '/opt/windows/SharpWMI/SharpWMI.exe' }
+#     - { url: 'https://raw.githubusercontent.com/GhostPack/SharpRoast/master/SharpRoast.exe', dest: '/opt/windows/SharpRoast/SharpRoast.exe' }
+#     - { url: 'https://raw.githubusercontent.com/GhostPack/SharpDPAPI/master/SharpDPAPI.exe', dest: '/opt/windows/SharpDPAPI/SharpDPAPI.exe' }
+#     - { url: 'https://raw.githubusercontent.com/GhostPack/Lockless/master/Lockless.exe', dest: '/opt/windows/Lockless/Lockless.exe' }
+#     - { url: 'https://raw.githubusercontent.com/GhostPack/SafetyKatz/master/SafetyKatz.exe', dest: '/opt/windows/SafetyKatz/SafetyKatz.exe' }
+#     - { url: 'https://raw.githubusercontent.com/GhostPack/KeeThief/master/KeeThief.exe', dest: '/opt/windows/KeeThief/KeeThief.exe' }
+#     - { url: 'https://raw.githubusercontent.com/GhostPack/Seatbelt/master/Seatbelt.exe', dest: '/opt/windows/Seatbelt/Seatbelt.exe' }
+#     - { url: 'https://raw.githubusercontent.com/GhostPack/Rubeus/master/Rubeus.exe', dest: '/opt/windows/Rubeus/Rubeus.exe' }
+#     - { url: 'https://raw.githubusercontent.com/Tylous/Limelighter/master/Limelighter.exe', dest: '/opt/windows/Limelighter/Limelighter.exe' }
+#     - { url: 'https://raw.githubusercontent.com/GhostPack/SharpGen/master/ConvertTo-SharpGen.ps1', dest: '/opt/windows/SharpGen/ConvertTo-SharpGen.ps1' }
+#     - { url: 'https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Exfiltration/Invoke-Mimikatz.ps1', dest: '/opt/windows/Invoke-Mimikatz/Invoke-Mimikatz.ps1' }
+#     - { url: 'https://raw.githubusercontent.com/AlessandroZ/LaZagne/master/Windows/bin/lazagne.exe', dest: '/opt/windows/LaZagne/LaZagne.exe' }
+#     - { url: 'https://raw.githubusercontent.com/QuarksLab/QuarksPwDump/master/QuarksPwDump.exe', dest: '/opt/windows/QuarksPwDump/QuarksPwDump.exe' }
+#     - { url: 'https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-TheHash.ps1', dest: '/opt/windows/Invoke-TheHash/Invoke-TheHash.ps1' }
+#     - { url: 'https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-DCSync.ps1', dest: '/opt/windows/Invoke-DCSync/Invoke-DCSync.ps1' }
+#     - { url: 'https://raw.githubusercontent.com/NytroRST/NetRipper/master/NetRipper.exe', dest: '/opt/windows/NetRipper/NetRipper.exe' }
+#     - { url: 'https://raw.githubusercontent.com/SecureAuthCorp/impacket/master/examples/wmiexec.py', dest: '/opt/windows/WMIExec/WMIExec.py' }
+#     - { url: 'https://raw.githubusercontent.com/danielbohannon/Invoke-Obfuscation/master/Invoke-Obfuscation.ps1', dest: '/opt/windows/Invoke-Obfuscation/Invoke-Obfuscation.ps1' }
+#     - { url: 'https://raw.githubusercontent.com/danielbohannon/Invoke-CradleCrafter/master/Invoke-CradleCrafter.ps1', dest: '/opt/windows/Invoke-CradleCrafter/Invoke-CradleCrafter.ps1' }
+#     - { url: 'https://raw.githubusercontent.com/hlldz/Invoke-Phant0m/master/Invoke-Phant0m.ps1', dest: '/opt/windows/Invoke-Phant0m/Invoke-Phant0m.ps1' }
+#     - { url: 'https://raw.githubusercontent.com/3gstudent/Out-CompressedDll/master/Out-CompressedDll.ps1', dest: '/opt/windows/Out-CompressedDll/Out-CompressedDll.ps1' }
+#     - { url: 'https://live.sysinternals.com/Sysmon.exe', dest: '/opt/windows/Sysmon/Sysmon.exe' }
+#     - { url: 'https://raw.githubusercontent.com/outflanknl/ADFSDump/master/ADFSDump.exe', dest: '/opt/windows/ADFSDump/ADFSDump.exe' }
+#     - { url: 'https://raw.githubusercontent.com/darkoperator/dnsrecon/master/dnsrecon.py', dest: '/opt/windows/DNSRecon/DNSRecon.py' }
+#     - { url: 'https://raw.githubusercontent.com/dirkjanm/adidnsdump/master/adidnsdump.py', dest: '/opt/windows/ADIDNSdump/ADIDNSdump.py' }
+#     - { url: 'https://raw.githubusercontent.com/byronkg/SharpGPOAbuse/master/SharpGPOAbuse.exe', dest: '/opt/windows/SharpGPOAbuse/SharpGPOAbuse.exe' }
+#     - { url: 'https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Exfiltration/PowerGPOAbuse.ps1', dest: '/opt/windows/PowerGPOAbuse/PowerGPOAbuse.ps1' }
+#     - { url: 'https://raw.githubusercontent.com/outflanknl/ADFSpoof/master/ADFSpoof.exe', dest: '/opt/windows/ADFSpoof/ADFSpoof.exe' }
+#     - { url: 'https://raw.githubusercontent.com/fox-it/Invoke-ACLPwn/master/Invoke-ACLPwn.ps1', dest: '/opt/windows/Invoke-ACLPwn/Invoke-ACLPwn.ps1' }
+#     - { url: 'https://github.com/Ne0nd0g/merlin/releases/latest/download/merlinServer-Linux-x64.7z', dest: '/opt/windows/Merlin/merlinServer-Linux-x64.7z' }
+
+# - name: Install packages
+#   pip:
+#     name: "{{ item }}"
+#     state: present
+#   become: yes
+#   loop:
+#     - crackmapexec
+#     - evil-winrm
+#     - unicorn
+#     - bloodhound
+#     - certipy-ad
+
+# - name: Install Empire
+#   apt:
+#     name: empire
+#     state: present
+#   become: yes
+
+# - name: Clone repos from GitHub
+#   git:
+#     repo: "{{ item.repo }}"
+#     dest: "{{ item.dest }}"
+#   become: yes
+#   loop:
+#     - { repo: 'https://github.com/cobbr/Covenant.git', dest: '/opt/windows/Covenant' }
+#     - { repo: 'https://github.com/GoSecure/pyGPOAbuse.git', dest: '/opt/windows/pyGPOAbuse' }
+#     - { repo: 'https://github.com/r3motecontrol/Ghostpack-CompiledBinaries.git', dest: '/opt/windows/Ghostpack-CompiledBinaries' }
+
+# - name: Unzip Merlin
+#   unarchive:
+#     src: /opt/windows/Merlin/merlinServer-Linux-x64.7z
+#     dest: /opt/windows/Merlin
+#     remote_src: yes
+#   become: yes
+
+# - name: Install PoshC2
+#   shell: curl -sSL https://raw.githubusercontent.com/nettitude/PoshC2/dev/Install.sh | sudo bash -s -- -b dev
+#   become: yes
+
+# - name: Install requirements for pyGPOAbuse
+#   shell:  "/opt/windows/pyGPOAbuse && pip3 install -r requirements.txt"
+  # become: yes
+# - name: Download files
+#   get_url:
+#     url: "{{ item.url }}"
+#     dest: "{{ item.dest }}"
+#     mode: '0755'
+#   become: yes
+#   loop:
+#     - { url: 'https://raw.githubusercontent.com/Kevin-Robertson/Inveigh/master/Inveigh.ps1', dest: '/opt/windows/Inveigh/Inveigh.ps1' }
+#     - { url: 'https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Privesc/PowerUp.ps1', dest: '/opt/windows/PowerUp/PowerUp.ps1' }
+#     - { url: 'https://github.com/GhostPack/SharpUp/releases/download/1.0/SharpUp.exe', dest: '/opt/windows/SharpUp/SharpUp.exe' }
+#     - { url: 'https://raw.githubusercontent.com/GhostPack/SharpDump/master/SharpDump.exe', dest: '/opt/windows/SharpDump/SharpDump.exe' }
+#     - { url: 'https://raw.githubusercontent.com/GhostPack/SharpWMI/master/SharpWMI.exe', dest: '/opt/windows/SharpWMI/SharpWMI.exe' }
+#     - { url: 'https://raw.githubusercontent.com/GhostPack/SharpRoast/master/SharpRoast.exe', dest: '/opt/windows/SharpRoast/SharpRoast.exe' }
+#     - { url: 'https://raw.githubusercontent.com/GhostPack/SharpDPAPI/master/SharpDPAPI.exe', dest: '/opt/windows/SharpDPAPI/SharpDPAPI.exe' }
+#     - { url: 'https://raw.githubusercontent.com/GhostPack/Lockless/master/Lockless.exe', dest: '/opt/windows/Lockless/Lockless.exe' }
+#     - { url: 'https://raw.githubusercontent.com/GhostPack/SafetyKatz/master/SafetyKatz.exe', dest: '/opt/windows/SafetyKatz/SafetyKatz.exe' }
+#     - { url: 'https://raw.githubusercontent.com/GhostPack/KeeThief/master/KeeThief.exe', dest: '/opt/windows/KeeThief/KeeThief.exe' }
+#     - { url: 'https://raw.githubusercontent.com/GhostPack/Seatbelt/master/Seatbelt.exe', dest: '/opt/windows/Seatbelt/Seatbelt.exe' }
+#     - { url: 'https://raw.githubusercontent.com/GhostPack/Rubeus/master/Rubeus.exe', dest: '/opt/windows/Rubeus/Rubeus.exe' }
+#     - { url: 'https://raw.githubusercontent.com/Tylous/Limelighter/master/Limelighter.exe', dest: '/opt/windows/Limelighter/Limelighter.exe' }
+#     - { url: 'https://raw.githubusercontent.com/GhostPack/SharpGen/master/ConvertTo-SharpGen.ps1', dest: '/opt/windows/SharpGen/ConvertTo-SharpGen.ps1' }
+#     - { url: 'https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Exfiltration/Invoke-Mimikatz.ps1', dest: '/opt/windows/Invoke-Mimikatz/Invoke-Mimikatz.ps1' }
+#     - { url: 'https://raw.githubusercontent.com/AlessandroZ/LaZagne/master/Windows/bin/lazagne.exe', dest: '/opt/windows/LaZagne/LaZagne.exe' }
+#     - { url: 'https://raw.githubusercontent.com/QuarksLab/QuarksPwDump/master/QuarksPwDump.exe', dest: '/opt/windows/QuarksPwDump/QuarksPwDump.exe' }
+#     - { url: 'https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-TheHash.ps1', dest: '/opt/windows/Invoke-TheHash/Invoke-TheHash.ps1' }
+
+# - name: Install packages
+#   pip:
+#     name: "{{ item }}"
+#     state: present
+#   become: yes
+#   loop:
+#     - crackmapexec
+#     - evil-winrm
+#     - unicorn
+#     - bloodhound
+
+# - name: Install Empire
+#   apt:
+#     name: empire
+#     state: present
+#   become: yes
+
+# - name: Install Convenant
+#   git:
+#     repo: https://github.com/cobbr/Covenant.git
+#     dest: /opt/windows/Covenant
+#   become: yes
+
+# - name: Install Merlin
+#   get_url:
+#     url: https://github.com/Ne0nd0g/merlin/releases/latest/download/merlinServer-Linux-x64.7z
+#     dest: /opt/windows/Merlin/merlinServer-Linux-x64.7z
+#     mode: '0755'
+#   become: yes
+
+# - name: Unzip Merlin
+#   unarchive:
+#     src: /opt/windows/Merlin/merlinServer-Linux-x64.7z
+#     dest: /opt/windows/Merlin
+#     remote_src: yes
+#   become: yes
+
+# - name: Install PoshC2
+#   shell: curl -sSL https://raw.githubusercontent.com/nettitude/PoshC2/dev/Install.sh | sudo bash -s -- -b dev
+#   become: yes
+
+
+# - name: Download files
+#   get_url:
+#     url: "{{ item.url }}"
+#     dest: "{{ item.dest }}"
+#     mode: '0755'
+#   become: yes
+#   loop:
+#     - { url: 'https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-DCSync.ps1', dest: '/opt/windows/Invoke-DCSync/Invoke-DCSync.ps1' }
+#     - { url: 'https://raw.githubusercontent.com/NytroRST/NetRipper/master/NetRipper.exe', dest: '/opt/windows/NetRipper/NetRipper.exe' }
+#     - { url: 'https://raw.githubusercontent.com/SecureAuthCorp/impacket/master/examples/wmiexec.py', dest: '/opt/windows/WMIExec/WMIExec.py' }
+#     - { url: 'https://raw.githubusercontent.com/danielbohannon/Invoke-Obfuscation/master/Invoke-Obfuscation.ps1', dest: '/opt/windows/Invoke-Obfuscation/Invoke-Obfuscation.ps1' }
+#     - { url: 'https://raw.githubusercontent.com/danielbohannon/Invoke-CradleCrafter/master/Invoke-CradleCrafter.ps1', dest: '/opt/windows/Invoke-CradleCrafter/Invoke-CradleCrafter.ps1' }
+#     - { url: 'https://raw.githubusercontent.com/hlldz/Invoke-Phant0m/master/Invoke-Phant0m.ps1', dest: '/opt/windows/Invoke-Phant0m/Invoke-Phant0m.ps1' }
+#     - { url: 'https://raw.githubusercontent.com/3gstudent/Out-CompressedDll/master/Out-CompressedDll.ps1', dest: '/opt/windows/Out-CompressedDll/Out-CompressedDll.ps1' }
+#     - { url: 'https://live.sysinternals.com/Sysmon.exe', dest: '/opt/windows/Sysmon/Sysmon.exe' }
+#     - { url: 'https://raw.githubusercontent.com/outflanknl/ADFSDump/master/ADFSDump.exe', dest: '/opt/windows/ADFSDump/ADFSDump.exe' }
+#     - { url: 'https://raw.githubusercontent.com/darkoperator/dnsrecon/master/dnsrecon.py', dest: '/opt/windows/DNSRecon/DNSRecon.py' }
+#     - { url: 'https://raw.githubusercontent.com/dirkjanm/adidnsdump/master/adidnsdump.py', dest: '/opt/windows/ADIDNSdump/ADIDNSdump.py' }
+#     - { url: 'https://raw.githubusercontent.com/byronkg/SharpGPOAbuse/master/SharpGPOAbuse.exe', dest: '/opt/windows/SharpGPOAbuse/SharpGPOAbuse.exe' }
+#     - { url: 'https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Exfiltration/PowerGPOAbuse.ps1', dest: '/opt/windows/PowerGPOAbuse/PowerGPOAbuse.ps1' }
+#     - { url: 'https://raw.githubusercontent.com/outflanknl/ADFSpoof/master/ADFSpoof.exe', dest: '/opt/windows/ADFSpoof/ADFSpoof.exe' }
+#     - { url: 'https://raw.githubusercontent.com/fox-it/Invoke-ACLPwn/master/Invoke-ACLPwn.ps1', dest: '/opt/windows/Invoke-ACLPwn/Invoke-ACLPwn.ps1' }
+
+# - name: Clone repos from GitHub
+#   git:
+#     repo: "{{ item.repo }}"
+#     dest: "{{ item.dest }}"
+#   become: yes
+#   loop:
+#     - { repo: 'https://github.com/GoSecure/pyGPOAbuse.git', dest: '/opt/windows/pyGPOAbuse' }
+#     - { repo: 'https://github.com/r3motecontrol/Ghostpack-CompiledBinaries.git', dest: '/opt/windows/Ghostpack-CompiledBinaries' }
+
+# - name: Install requirements for pyGPOAbuse
+#   shell:  "/opt/windows/pyGPOAbuse && pip3 install -r requirements.txt"
+#   become: yes
+
+# - name: Install Certipy
+#   pip:
+#     name: certipy-ad
+#     state: present 
+#   become: yes
+
+
+
+# - name: Download Invoke-DCSync.ps1
+#   get_url:
+#     urls: https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-DCSync.ps1
+#     dest: /opt/windows/Invoke-DCSync/Invoke-DCSync.ps1
+#     mode: '0755'
+#   become: yes
+
+# - name: Download NetRipper.exe
+#   get_url:
+#     url: https://raw.githubusercontent.com/NytroRST/NetRipper/master/NetRipper.exe
+#     dest: /opt/windows/NetRipper/NetRipper.exe
+#     mode: '0755'
+#   become: yes
+
+# - name: Download WMIExec.py
+#   get_url:
+#     url: https://raw.githubusercontent.com/SecureAuthCorp/impacket/master/examples/wmiexec.py
+#     dest: /opt/windows/WMIExec/WMIExec.py
+#     mode: '0755'
+#   become: yes
+
+# - name: Download Invoke-Obfuscation.ps1
+#   get_url:
+#     url: https://raw.githubusercontent.com/danielbohannon/Invoke-Obfuscation/master/Invoke-Obfuscation.ps1
+#     dest: /opt/windows/Invoke-Obfuscation/Invoke-Obfuscation.ps1
+#     mode: '0755'
+#   become: yes
+
+# - name: Download Invoke-CradleCrafter.ps1
+#   get_url:
+#     url: https://raw.githubusercontent.com/danielbohannon/Invoke-CradleCrafter/master/Invoke-CradleCrafter.ps1
+#     dest: /opt/windows/Invoke-CradleCrafter/Invoke-CradleCrafter.ps1
+#     mode: '0755'
+#   become: yes
+
+# - name: Download Invoke-Phant0m.ps1
+#   get_url:
+#     url: https://raw.githubusercontent.com/hlldz/Invoke-Phant0m/master/Invoke-Phant0m.ps1
+#     dest: /opt/windows/Invoke-Phant0m/Invoke-Phant0m.ps1
+#     mode: '0755'
+#   become: yes
+
+# - name: Download Out-CompressedDll.ps1
+#   get_url:
+#     url: https://raw.githubusercontent.com/3gstudent/Out-CompressedDll/master/Out-CompressedDll.ps1
+#     dest: /opt/windows/Out-CompressedDll/Out-CompressedDll.ps1
+#     mode: '0755'
+#   become: yes
+
+
+# - name: Download Sysmon
+#   get_url:
+#     url: https://live.sysinternals.com/Sysmon.exe
+#     dest: /opt/windows/Sysmon/Sysmon.exe
+#     mode: '0755'
+#   become: yes
+
+# - name: Download ADFSDump.exe
+#   get_url:
+#     url: https://raw.githubusercontent.com/outflanknl/ADFSDump/master/ADFSDump.exe
+#     dest: /opt/windows/ADFSDump/ADFSDump.exe
+#     mode: '0755'
+#   become: yes
+
+# - name: Download DNSRecon
+#   get_url:
+#     url: https://raw.githubusercontent.com/darkoperator/dnsrecon/master/dnsrecon.py
+#     dest: /opt/windows/DNSRecon/DNSRecon.py 
+#     mode: '0755'
+#   become: yes
+
+# - name: Download ADIDNSdump
+#   get_url:
+#     url: https://raw.githubusercontent.com/dirkjanm/adidnsdump/master/adidnsdump.py
+#     dest: /opt/windows/ADIDNSdump/ADIDNSdump.py
+#     mode: '0755'
+#   become: yes
+
+# - name: Download SharpGPOAbuse.exe
+#   get_url:
+#     url: https://raw.githubusercontent.com/byronkg/SharpGPOAbuse/master/SharpGPOAbuse.exe
+#     dest: /opt/windows/SharpGPOAbuse/SharpGPOAbuse.exe
+#     mode: '0755'
+#   become: yes
+
+# - name: Download PowerGPOAbuse.ps1
+#   get_url:
+#     url: https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Exfiltration/PowerGPOAbuse.ps1
+#     dest: /opt/windows/PowerGPOAbuse/PowerGPOAbuse.ps1
+#     mode: '0755'
+#   become: yes
+
+
+# - name: Clone pyGPOAbuse from GitHub
+#   git:
+#     repo: https://github.com/GoSecure/pyGPOAbuse.git
+#     dest: /opt/windows/pyGPOAbuse
+#   become: yes
+
+# - name: Install requirements for pyGPOAbuse
+#   shell:  "/opt/windows/pyGPOAbuse && pip3 install -r requirements.txt"
+#   become: yes
+
+# - name: Download ADFSpoof.exe
+#   get_url:
+#     url: https://raw.githubusercontent.com/outflanknl/ADFSpoof/master/ADFSpoof.exe
+#     dest: /opt/windows/ADFSpoof/ADFSpoof.exe
+#     mode: '0755'
+#   become: yes
+
+# - name: Download Certify from Ghostpack-CompiledBinaries
+#   git:
+#     repo: https://github.com/r3motecontrol/Ghostpack-CompiledBinaries.git
+#     dest: /opt/windows/Ghostpack-CompiledBinaries
+#   become: yes
+
+# - name: Download Certipy
+#   pip:
+#     name: certipy-ad
+#     state: present 
+#   become: yes
+
+# - name: Download Invoke-ACLPwn.ps1
+#   get_url:
+#     url: https://raw.githubusercontent.com/fox-it/Invoke-ACLPwn/master/Invoke-ACLPwn.ps1
+#     dest: /opt/windows/Invoke-ACLPwn/Invoke-ACLPwn.ps1
+#     mode: '0755'
+#   become: yes
+
+

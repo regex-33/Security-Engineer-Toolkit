@@ -1,0 +1,101 @@
+Windows
+
+    AD Explorer
+    ADRecon
+    BloodHound
+    LDAPDomainDump
+    PowerView
+    SharpHound
+
+    ASREPRoast
+    DCSync
+    DCSync (Mimikatz)
+    Kerberoast
+    Mimikatz
+    Rubeus
+    SharpGPOAbuse
+    SharpHound
+    SharpLAPS
+    Spraykatz
+
+    DSInternals
+    Invoke-DCOM
+    Invoke-WMI
+    Nishang
+    PowerSploit
+    PSTools
+
+    Inveigh
+    PowerUp
+    SharpUp
+
+    Covenant
+    Empire
+    Merlin
+    PoshC2
+
+    Invoke-Mimikatz
+    LaZagne
+    Quarks PwDump
+    SafetyKatz
+
+    CrackMapExec
+    Invoke-TheHash
+    NetRipper
+    WMIExec
+
+    Invoke-Obfuscation
+    Invoke-Phant0m
+    Out-CompressedDll
+
+    EventComb
+    Sysmon
+
+    ADFSDump
+
+    DNSRecon
+    ADIDNSdump
+
+    SharpGPOAbuse
+    PowerGPOAbuse
+    pyGPOAbuse
+
+    ADFSpoof
+    Certify
+    Certipy
+ 
+
+Linux
+
+    BloodHound (Python version)
+    LDAPDomainDump
+
+    Impacket
+    Kerberoast (Impacket)
+    LDAPDomainDump
+    Responder
+
+
+    PowerSploit (via PowerShell on Linux)
+
+    LinEnum
+    LinPEAS
+
+    Empire (via Python on Linux)
+    Metasploit
+    Pupy
+
+
+    Mimikatz (via Wine)
+    LaZagne (Python version)
+
+
+    CrackMapExec
+    Impacket-SMBExec
+
+
+    Invoke-Obfuscation (via PowerShell on Linux)
+
+    Osquery
+
+    CrackMapExec (for certificate services)
