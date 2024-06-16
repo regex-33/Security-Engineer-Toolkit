@@ -1,4 +1,4 @@
-- include: gem-tools.yml
+- include_tasks: gem-tools.yml
 - name: Include vars of pwnwin_vars.yml file.
   include_vars:
     file: pwnwin_vars.yml
@@ -53,7 +53,7 @@
 - name: Install packages
   apt:
     name: "{{ item }}"
-  state: present
+    state: present
   loop:
       - git
       - empire

@@ -2,67 +2,87 @@
   hosts: local
   become: yes
   roles:
-    - pwn-windows
-    # - network_sacanner
-    # - http_parameter 
-    # - subdomain_enum
-    # - visual_tools
-    # - http_probe
-    # - web_crawling
-    # - apt-gem-stuff
-    # - api
-    # - content_discovery
-    # - exploitation
-    # - frameworks
-    # - inspecting_js
-    # - wordlists
-    # - other
-    # - directory_fuzzers
-    #  - lfi_tools 
-    #  - open_redirect
-    # - ssrf_tools 
-    # - ssti_tools 
-    # - xss_tools 
-    # - sql_tools 
-    # - useful_tools
-    # - sensitive_finding
-    # - web_technologies 
-    #   - cms_scanner
-    # - git_hunting
-    # - js_hunting
-    # - dns_resolver
-    # - configure-tmux
-    # - request_smuggling 
-    # - api
-    # - apt-gem-stuff
-    # - cms_scanner
-    # - configure-logging
-    # - configure-system
-    # - configure-tmux-vim
-    # - content_discovery
-    # - customize-browser
-    # - customize-terminal
-    # - directory_fuzzers
-    # - dns_resolver
-    # # - exploitation
-    # - frameworks
-    # - git_hunting
-    # - http_parameter
-    # - http_probe
-    # - inspecting_js
-    # - js_hunting
-    # - lfi_tools
-    # # - network_scanner
-    # - open_redirect
-    # - request_smuggling
-    # - sensitive_finding
-    # - sql_tools
-    # - ssrf_tools
-    # - subdomain_enum
-    # - ssti_tools
-    # - useful_tools
-    # - visual_tools
-    # - web_crawling
-    # - web_technologies
-    # - wordlists
-    # - xss_tools
+    - role: configure-logging
+      tags: config
+    - role: configure-system
+      tags: config
+    - role: configure-tmux-vim
+      tags: config
+    - role: customize-browser
+      tags: config
+    - role: customize-terminal
+      tags: config
+    - role: pwn-windows
+      tags: windows
+    - role: network_scanner
+      tags: bugbounty
+    - role: http_parameter 
+      tags: bugbounty
+    - role: subdomain_enum
+      tags: bugbounty
+    - role: visual_tools
+      tags: bugbounty
+    - role: http_probe
+      tags: bugbounty
+    - role: web_crawling
+      tags: bugbounty
+    - role: apt-gem-stuff
+      tags: bugbounty
+    - role: api
+      tags: bugbounty
+    - role: content_discovery
+      tags: bugbounty
+    - role: frameworks
+      tags: bugbounty
+    - role: inspecting_js
+      tags: bugbounty
+    - role: wordlists
+      tags: bugbounty
+    - role: directory_fuzzers
+      tags: bugbounty
+    - role: lfi_tools 
+      tags: bugbounty
+    - role: open_redirect
+      tags: bugbounty
+    - role: ssrf_tools 
+      tags: bugbounty
+    - role: ssti_tools 
+      tags: bugbounty
+    - role: xss_tools 
+      tags: bugbounty
+    - role: sql_tools 
+      tags: bugbounty
+    - role: useful_tools
+      tags: bugbounty
+    - role: sensitive_finding
+      tags: bugbounty
+    - role: web_technologies 
+      tags: bugbounty
+    - role: cms_scanner
+      tags: bugbounty
+    - role: git_hunting
+      tags: bugbounty
+    - role: js_hunting
+      tags: bugbounty
+    - role: dns_resolver
+      tags: bugbounty
+    - role: request_smuggling
+      tags: bugbounty
+  
+
+
+# Now you can run the playbook with the `--tags` option to only run the roles with the specified tag:
+
+# ```bash
+# sudo ansible-playbook main.yml --tags "windows"
+# sudo ansible-playbook main.yml --tags "config"
+# sudo ansible-playbook main.yml --tags "bugbounty"
+# ```
+
+# If you want to run all roles except those with certain tags, you can use the `--skip-tags` option:
+
+# ```bash
+# sudo ansible-playbook main.yml --skip-tags "windows,config"
+# ```
+
+# This will run all roles except those tagged with "windows" or "config".

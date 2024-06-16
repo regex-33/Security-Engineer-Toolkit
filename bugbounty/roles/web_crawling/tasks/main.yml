@@ -44,7 +44,7 @@
         dest: /opt/tools/web_crawling/gauplus
         build: "cd /opt/tools/web_crawling/gauplus && go build "
         src: "/opt/tools/web_crawling/gauplus/gauplus"
-        dest: "/usr/local/bin/gauplus"
+        bin_dest: "/usr/local/bin/gauplus"
       - name: freq
         repo: 'https://github.com/takshal/freq.git'
         dest: /opt/tools/web_crawling/freq
