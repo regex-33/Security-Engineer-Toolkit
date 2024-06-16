@@ -67,35 +67,18 @@ Windows
 
 Linux
 
-    BloodHound (Python version)
-    LDAPDomainDump
 
     Impacket
-    Kerberoast (Impacket)
-    LDAPDomainDump
-    Responder
 
 
-    PowerSploit (via PowerShell on Linux)
 
     LinEnum
     LinPEAS
 
-    Empire (via Python on Linux)
-    Metasploit
     Pupy
 
 
-    Mimikatz (via Wine)
-    LaZagne (Python version)
 
 
-    CrackMapExec
-    Impacket-SMBExec
-
-
-    Invoke-Obfuscation (via PowerShell on Linux)
 
     Osquery
-
-    CrackMapExec (for certificate services)

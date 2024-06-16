@@ -2,41 +2,7 @@
   hosts: local
   become: yes
   roles:
-    - api
-    - apt-gem-stuff
-    - cms_scanner
-    - configure-logging
-    - configure-system
-    - configure-tmux-vim
-    - content_discovery
-    - customize-browser
-    - customize-terminal
-    - directory_fuzzers
-    - dns_resolver
-    # - exploitation
-    - frameworks
-    - git_hunting
-    - http_parameter
-    - http_probe
-    - inspecting_js
-    - js_hunting
-    - lfi_tools
-    # - network_scanner
-    - open_redirect
-    - request_smuggling
-    - sensitive_finding
-    - sql_tools
-    - ssrf_tools
-    - subdomain_enum
-    - ssti_tools
-    - useful_tools
-    - visual_tools
-    - web_crawling
-    - web_technologies
-    - wordlists
-    - xss_tools
-
-
+    - pwn-windows
     # - network_sacanner
     # - http_parameter 
     # - subdomain_enum
@@ -67,3 +33,36 @@
     # - dns_resolver
     # - configure-tmux
     # - request_smuggling 
+    # - api
+    # - apt-gem-stuff
+    # - cms_scanner
+    # - configure-logging
+    # - configure-system
+    # - configure-tmux-vim
+    # - content_discovery
+    # - customize-browser
+    # - customize-terminal
+    # - directory_fuzzers
+    # - dns_resolver
+    # # - exploitation
+    # - frameworks
+    # - git_hunting
+    # - http_parameter
+    # - http_probe
+    # - inspecting_js
+    # - js_hunting
+    # - lfi_tools
+    # # - network_scanner
+    # - open_redirect
+    # - request_smuggling
+    # - sensitive_finding
+    # - sql_tools
+    # - ssrf_tools
+    # - subdomain_enum
+    # - ssti_tools
+    # - useful_tools
+    # - visual_tools
+    # - web_crawling
+    # - web_technologies
+    # - wordlists
+    # - xss_tools

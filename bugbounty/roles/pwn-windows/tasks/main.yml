@@ -1,15 +1,82 @@
+- include: gem-tools.yml
+- name: Include vars of pwnwin_vars.yml file.
+  include_vars:
+    file: pwnwin_vars.yml
+
+
+- name: Cloning Windows Reference Material
+  git:
+    repo: "{{ item }}"
+    dest: "/opt/windows/references/{{ item.split('/')[-1].replace('.git','')}}"
+    version: master
+  with_items: "{{ win_ref }} "
+  become: yes
+
+- name: Downloading precompiled Packages
+  get_url:
+    url: "{{ item }}"
+    dest: "/opt/windows/"
+    mode: 644
+    owner: "{{ user_dir }}"
+  with_items: "{{ win_packages }}"
+  become: yes
+
+- name: Create temporary build directory
+  ansible.builtin.tempfile:
+    state: directory
+  register: build_dir
+
+- name: "Copying python script to download github releases"
+  copy:
+    src: "files/githubdownload.py"
+    dest: "{{ build_dir.path }}/githubdownload.py"
+    owner: root
+    group: root
+    mode: 0755
+  become: true
+  become_method: sudo
+
+- name: "Downloading github releases"
+  shell: "{{ build_dir.path }}/githubdownload.py {{ item.repo }} {{ item.regex }} {{ item.location }} {% if item.filename is defined %}{{ item.filename }}{% endif %}"
+  loop:
+    - { repo: "jpillora/chisel",  regex: "_linux_amd64.gz", location: "/opt/windows/chisel" }
+    - { repo: "jpillora/chisel",  regex: "_windows_amd64.gz", location: "/opt/windows/chisel" }
+    - { repo: "carlospolop/PEASS-ng",  regex: "linpeas.sh", location: "/opt/windows/peas" }
+    - { repo: "carlospolop/PEASS-ng",  regex: "winPEASx64.exe", location: "/opt/windows/peas" }
+    - { repo: "WithSecureLabs/chainsaw",  regex: "chainsaw_all_", location: "/opt/windows" }
+    - { repo: "BloodHoundAD/BloodHound", regex: "BloodHound-linux-x64.zip", location: "/opt/windows" }
+  async: 45
+  poll: 0
+  become: true
+  become_method: sudo
+
 - name: Install packages
   apt:
-    name: 
+    name: "{{ item }}"
+  state: present
+  loop:
       - git
       - empire
-  state: present
+      - bloodhound
+      - bloodhound.py
+      - crackmapexec
+      - evil-winrm
+      - unicorn
+      - certipy-ad
+      - responder
+      - powershell-empire
+      - impacket
+      - powersploit
+  become: yes
+
+
 
 - name: Clone repositories
   git:
     repo: "{{ item.repo }}"
     dest: "{{ item.dest }}"
   loop:
+    - { repo: "https://github.com/Flangvik/SharpCollection", dest: "/opt/windows/SharpCollection" }
     - { repo: 'https://github.com/adrecon/ADRecon.git', dest: '/opt/windows/ADRecon' }
     - { repo: 'https://github.com/BloodHoundAD/BloodHound.git', dest: '/opt/windows/BloodHound' }
     - { repo: 'https://github.com/PowerShellMafia/PowerSploit.git', dest: '/opt/windows/PowerSploit' }
@@ -18,19 +85,22 @@
     - { repo: 'https://github.com/cobbr/Covenant.git', dest: '/opt/windows/Covenant' }
     - { repo: 'https://github.com/GoSecure/pyGPOAbuse.git', dest: '/opt/windows/pyGPOAbuse' }
     - { repo: 'https://github.com/r3motecontrol/Ghostpack-CompiledBinaries.git', dest: '/opt/windows/Ghostpack-CompiledBinaries' }
+    - { repo: 'https://github.com/danielbohannon/Invoke-Obfuscation.git', dest: '/opt/windows/Invoke-Obfuscation' }
+    - { repo: 'https://github.com/S3cur3Th1sSh1t/PowerSharpPack.git', dest: '/opt/windows/bfuscation' }
+    - { repo: 'https://github.com/cobbr/PSAmsi.git', dest: '/opt/windows/PSAmsi' }
 
-- name: Clone and unzip specific repository
-  git:
-    repo: 'https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20210810-2/mimikatz_trunk.zip'
-    dest: '/opt/windows/Mimikatz'
-  register: download_merlin
+# - name: Clone and unzip specific repository
+#   git:
+#     repo: 'https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20210810-2/mimikatz_trunk.zip'
+#     dest: '/opt/windows/Mimikatz'
+#   register: download_merlin
 
-- name: Unzip Merlin
-  unarchive:
-    src: /opt/windows/Merlin/merlinServer-Linux-x64.7z
-    dest: /opt/windows/Merlin
-    remote_src: yes
-  when: download_merlin is changed
+# - name: Unzip Merlin
+#   unarchive:
+#     src: /opt/windows/Merlin/merlinServer-Linux-x64.7z
+#     dest: /opt/windows/Merlin
+#     remote_src: yes
+#   when: download_merlin is changed
 
 - name: Install requirements for Spraykatz and pyGPOAbuse
   pip:
@@ -43,15 +113,6 @@
   pip:
     name: ldapdomaindump
 
-- name: Install additional pip packages
-  pip:
-    name: "{{ item }}"
-  loop:
-    - crackmapexec
-    - evil-winrm
-    - unicorn
-    - bloodhound
-    - certipy-ad
 
 - name: Download files
   get_url:
@@ -86,7 +147,7 @@
     - { url: 'https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-DCSync.ps1', dest: '/opt/windows/Invoke-DCSync/Invoke-DCSync.ps1' }
     - { url: 'https://raw.githubusercontent.com/NytroRST/NetRipper/master/NetRipper.exe', dest: '/opt/windows/NetRipper/NetRipper.exe' }
     - { url: 'https://raw.githubusercontent.com/SecureAuthCorp/impacket/master/examples/wmiexec.py', dest: '/opt/windows/WMIExec/WMIExec.py' }
-    - { url: 'https://raw.githubusercontent.com/danielbohannon/Invoke-Obfuscation/master/Invoke-Obfuscation.ps1', dest: '/opt/windows/Invoke-Obfuscation/Invoke-Obfuscation.ps1' }
+    # - { url: 'https://raw.githubusercontent.com/danielbohannon/Invoke-Obfuscation/master/Invoke-Obfuscation.ps1', dest: '/opt/windows/Invoke-Obfuscation/Invoke-Obfuscation.ps1' }
     - { url: 'https://raw.githubusercontent.com/danielbohannon/Invoke-CradleCrafter/master/Invoke-CradleCrafter.ps1', dest: '/opt/windows/Invoke-CradleCrafter/Invoke-CradleCrafter.ps1' }
     - { url: 'https://raw.githubusercontent.com/hlldz/Invoke-Phant0m/master/Invoke-Phant0m.ps1', dest: '/opt/windows/Invoke-Phant0m/Invoke-Phant0m.ps1' }
     - { url: 'https://raw.githubusercontent.com/3gstudent/Out-CompressedDll/master/Out-CompressedDll.ps1', dest: '/opt/windows/Out-CompressedDll/Out-CompressedDll.ps1' }
@@ -98,7 +159,6 @@
     - { url: 'https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Exfiltration/PowerGPOAbuse.ps1', dest: '/opt/windows/PowerGPOAbuse/PowerGPOAbuse.ps1' }
     - { url: 'https://raw.githubusercontent.com/outflanknl/ADFSpoof/master/ADFSpoof.exe', dest: '/opt/windows/ADFSpoof/ADFSpoof.exe' }
     - { url: 'https://raw.githubusercontent.com/fox-it/Invoke-ACLPwn/master/Invoke-ACLPwn.ps1', dest: '/opt/windows/Invoke-ACLPwn/Invoke-ACLPwn.ps1' }
-    - { url: 'https://github.com/Ne0nd0g/merlin/releases/latest/download/merlinServer-Linux-x64.7z', dest: '/opt/windows/Merlin/merlinServer-Linux-x64.7z' }
 
 - name: Install PoshC2
   shell: curl -sSL https://raw.githubusercontent.com/nettitude/PoshC2/dev/Install.sh | sudo bash -s -- -b dev
@@ -131,41 +191,14 @@
   loop: "{{ ansible_play_batch.files | selectattr('path', 'search', '.*\\.ps1$') }}"
   when: ansible_play_batch.files | selectattr('path', 'search', '.*\\.ps1$') | list | length > 0
 
+- name: "install Kerbrute"
+  shell:  go install github.com/ropnop/kerbrute@master
+  args:
+    chdir: /opt/windows/kerbrute
+  become: true
+  become_method: sudo
 
-# - name: Include vars of pwnwin_vars.yml file.
-#   include_vars:
-#     file: pwnwin_vars.yml
-
-# - name: Creating Windows Pwn directory in "{{ pwn_win_dir }}"
-#   file:
-#     path: "{{ pwn_win_dir }}"
-#     state: directory
-#     owner: "{{ user_dir }}"
-#     mode: "0755"
-#   become: yes
-
-# - name: Cloning Windows Focused tools
-#   git:
-#     repo: "{{ item }}"
-#     dest: "{{ pwn_win_dir }}{{ item.split('/')[-1].replace('.git','')}}"
-#     version: master
-#   with_items: "{{ pwnwin_tools }}"
-#   become: yes
-
-# - name: Cloning Windows Reference Material
-#   git:
-#     repo: "{{ item }}"
-#     dest: "{{ pwn_win_dir }}/references/{{ item.split('/')[-1].replace('.git','')}}"
-#     version: master
-#   with_items: "{{ win_ref }} "
-#   become: yes
-
-# - name: Downloading precompiled Packages
-#   get_url:
-#     url: "{{ item }}"
-#     dest: "{{ pwn_win_dir }}"
-#     mode: 644
-#     owner: "{{ user_dir }}"
-#   with_items: "{{ win_packages }}"
-#   become: yes
-
+- name: "Copy kerbrute to /usr/local/bin"
+  shell: cp /opt/windows/kerbrute/kerbrute /usr/local/bin/kerbrute
+  become: true
+  become_method: sudo

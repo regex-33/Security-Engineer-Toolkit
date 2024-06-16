@@ -1,30 +1,10 @@
----
-pwnwin_tools:
-  - https://github.com/BloodHoundAD/BloodHound
-  - https://github.com/byt3bl33d3r/CrackMapExec
-  - https://github.com/trustedsec/unicorn
-  - https://github.com/Hackplayers/evil-winrm
-  - https://github.com/PowerShellMafia/PowerSploit.git
-  - https://github.com/GhostPack/KeeThief
-  - https://github.com/GhostPack/Seatbelt
-  - https://github.com/GhostPack/SharpUp
-  - https://github.com/GhostPack/SafetyKatz
-  - https://github.com/GhostPack/SharpDump
-  - https://github.com/GhostPack/SharpWMI
-  - https://github.com/GhostPack/Rubeus
-  - https://github.com/GhostPack/SharpDPAPI
-  - https://github.com/GhostPack/Lockless
-  - https://github.com/GhostPack/SharpRoast
-  - https://github.com/cobbr/PSAmsi.git
-  - https://github.com/Tylous/Limelighter
-  - https://github.com/S3cur3Th1sSh1t/PowerSharpPack.git
-
 win_ref:
   - https://github.com/S1ckB0y1337/Active-Directory-Exploitation-Cheat-Sheet
 
 win_packages:
   - https://download.sysinternals.com/files/SysinternalsSuite.zip
   - https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20210810-2/mimikatz_trunk.zip
+  - https://github.com/Ne0nd0g/merlin/releases/latest/download/merlinServer-Linux-x64.7z
 
 
 
@@ -37,6 +17,54 @@ win_packages:
 
 
 
+# pip install aeroot
+
+# -----
+
+# pip install frida-tools
+# ----
+
+
+# sudo apt-get install python3.8
+
+# 3. Install latest version of JDK
+
+
+# sudo apt install python3-dev python3-venv python3-pip build-essential libffi-dev libssl-dev libxml2-dev libxslt1-dev libjpeg62-turbo-dev zlib1g-dev wkhtmltopdf
+
+
+# git clone https://github.com/MobSF/Mobile-Security-Framework-MobSF.git
+
+
+# sudo ./setup.sh
+
+
+# ---
+# Drozer
+
+#     apt-get install python2.7
+
+#     cd /usr/lib/python2.7
+
+#     curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py
+
+
+#     python2.7 get-pip.py
+
+
+#     pip install twisted
+
+#     pip install pyOpenSSL
+
+#     pip install protobuf
+
+
+#     wget https://github.com/FSecureLABS/drozer/releases/download/2.4.4/drozer-2.4.4-py2-none-any.whl
+
+#     pip2.7 install drozer-2.4.4-py2-none-any.whl
+
+
+# ---
 
 # - name: Install git
 #   apt:
