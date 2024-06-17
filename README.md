@@ -61,25 +61,31 @@ This tool uses Ansible, a powerful automation tool for IT operations. You can sp
 For example, if you want to install the tools related to Windows, you can use the following command:
 
 ```bash
-sudo ansible-playbook main.yml --tags "windows"
+sudo ansible-playbook playbooks/main.yml --tags "windows"
 ```
 
 to install tools related to configuration, you can use the following command:
 
 ```bash
-sudo ansible-playbook main.yml --tags "config"
+sudo ansible-playbook playbooks/main.yml --tags "config"
 ```
 
 to install tools related to bug bounty, you can use the following command:
 
 ```bash
-sudo ansible-playbook main.yml --tags "bugbounty"
+sudo ansible-playbook playbooks/main.yml --tags "bugbounty"
+```
+
+If you want to install all tools except those with certain tags, you can use the `--skip-tags` option:
+
+```bash
+sudo ansible-playbook playbooks/main.yml --skip-tags "windows,config"
 ```
 
 If you want to install all tools, you can use the following command:
 
 ```bash
-sudo ansible-playbook main.yml --skip-tags "windows,config"
+sudo ansible-playbook playbooks/main.yml --skip-tags "windows,config"
 ```
 
 
