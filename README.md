@@ -13,6 +13,77 @@
   * [Android](#-android)
   * [Bug Bounty](#-bug-bounty)
 
+# Security-Engineer-Toolkit:
+[![username - Security-Engineer-Toolkit](https://img.shields.io/static/v1?label=username&message=Security-Engineer-Toolkit&color=blue&logo=github)](https://github.com/regex-33/Security-Engineer-Toolkit)
+[![stars - Security-Engineer-Toolkit](https://img.shields.io/github/stars/regex-33/Security-Engineer-Toolkit?style=social)](https://github.com/regex-33/Security-Engineer-Toolkit)
+[![forks - Security-Engineer-Toolkit](https://img.shields.io/github/forks/regex-33/Security-Engineer-Toolkit?style=social)](https://github.com/regex-33/Security-Engineer-Toolkit)
+[![GitHub release](https://img.shields.io/github/release/regex-33/Security-Engineer-Toolkit?include_prereleases=&sort=semver)](https://github.com/regex-33/Security-Engineer-Toolkit/releases/)
+[![License](https://img.shields.io/badge/License-MIT-blue)](#license)
+[![issues - Security-Engineer-Toolkit](https://img.shields.io/github/issues/regex-33/Security-Engineer-Toolkit)](https://github.com/regex-33/Security-Engineer-Toolkit/issues)
+
+<a href="#license"><img align="right"  src="resources/images/logo.png"></a>
+
+<i>In the following tables, you can find the tools you need according to the heading.</i>
+  * [Installation](#-installation)
+  * [Usage](#-usage)
+  * [Pwn Windows](#-pwn-windows)
+  * [Android](#-android)
+  * [Bug Bounty](#-bug-bounty)
+
+## Installation:
+
+Before using this tool, you need to install Ansible. Here are the steps to install Ansible on a Linux machine:
+
+```bash
+# Update the system
+sudo apt update
+
+# Install software-properties-common (if not installed)
+sudo apt install software-properties-common
+
+# Add Ansible PPA
+sudo apt-add-repository --yes --update ppa:ansible/ansible
+
+# Install Ansible
+sudo apt install ansible
+
+# Clone the repo
+git clone git@github.com:regex-33/Security-Engineer-Toolkit.git
+
+# Make sure we have a sudo token
+sudo whoami
+```
+
+## Usage:
+
+This tool uses Ansible, a powerful automation tool for IT operations. You can specify what tasks to run with the `--tags` option.
+
+For example, if you want to install the tools related to Windows, you can use the following command:
+
+```bash
+sudo ansible-playbook main.yml --tags "windows"
+```
+
+to install tools related to configuration, you can use the following command:
+
+```bash
+sudo ansible-playbook main.yml --tags "config"
+```
+
+to install tools related to bug bounty, you can use the following command:
+
+```bash
+sudo ansible-playbook main.yml --tags "bugbounty"
+```
+
+If you want to install all tools, you can use the following command:
+
+```bash
+sudo ansible-playbook main.yml --skip-tags "windows,config"
+```
+
+
+
 ## 🖥️ Pwn-Windows
 <i>Pwn Windows Tools</i>
 
