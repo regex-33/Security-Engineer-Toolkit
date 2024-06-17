@@ -89,18 +89,6 @@
     - { repo: 'https://github.com/S3cur3Th1sSh1t/PowerSharpPack.git', dest: '/opt/windows/bfuscation' }
     - { repo: 'https://github.com/cobbr/PSAmsi.git', dest: '/opt/windows/PSAmsi' }
 
-# - name: Clone and unzip specific repository
-#   git:
-#     repo: 'https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20210810-2/mimikatz_trunk.zip'
-#     dest: '/opt/windows/Mimikatz'
-#   register: download_merlin
-
-# - name: Unzip Merlin
-#   unarchive:
-#     src: /opt/windows/Merlin/merlinServer-Linux-x64.7z
-#     dest: /opt/windows/Merlin
-#     remote_src: yes
-#   when: download_merlin is changed
 
 - name: Install requirements for Spraykatz and pyGPOAbuse
   pip:
