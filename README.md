@@ -1,12 +1,11 @@
-# Bug Bounty Tools
-[![username - bugbounty](https://img.shields.io/static/v1?label=username&message=bugbounty&color=blue&logo=github)](https://github.com/username/bugbounty)
-[![stars - bugbounty](https://img.shields.io/github/stars/username/bugbounty?style=social)](https://github.com/username/bugbounty)
-[![forks - bugbounty](https://img.shields.io/github/forks/username/bugbounty?style=social)](https://github.com/username/bugbounty)
-[![GitHub release](https://img.shields.io/github/release/username/bugbounty?include_prereleases=&sort=semver)](https://github.com/username/bugbounty/releases/)
+# Security-Engineer-Toolkit:
+[![username - Security-Engineer-Toolkit](https://img.shields.io/static/v1?label=username&message=Security-Engineer-Toolkit&color=blue&logo=github)](https://github.com/username/Security-Engineer-Toolkit)
+[![stars - Security-Engineer-Toolkit](https://img.shields.io/github/stars/username/Security-Engineer-Toolkit?style=social)](https://github.com/username/Security-Engineer-Toolkit)
+[![forks - Security-Engineer-Toolkit](https://img.shields.io/github/forks/username/Security-Engineer-Toolkit?style=social)](https://github.com/username/Security-Engineer-Toolkit)
+[![GitHub release](https://img.shields.io/github/release/username/Security-Engineer-Toolkit?include_prereleases=&sort=semver)](https://github.com/username/Security-Engineer-Toolkit/releases/)
 [![License](https://img.shields.io/badge/License-MIT-blue)](#license)
-[![issues - bugbounty](https://img.shields.io/github/issues/username/bugbounty)](https://github.com/username/bugbounty/issues)
+[![issues - Security-Engineer-Toolkit](https://img.shields.io/github/issues/username/Security-Engineer-Toolkit)](https://github.com/username/Security-Engineer-Toolkit/issues)
 
-<strong>A set of tools for bug bounty hunting.</strong><br>
 <a href="#license"><img align="right"  src="resources/images/logo.png"></a>
 
 <i>In the following tables, you can find the tools you need according to the heading.</i>
