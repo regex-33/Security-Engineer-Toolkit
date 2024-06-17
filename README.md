@@ -13,7 +13,7 @@
 * [ Tools](https://github.com/username/bugbounty)
   * [Pwn Windows](#Pwn-windows)
   * [Android](#-android)
-  * [Bug Bounty](#Bug-Bounty)
+  * [Bug Bounty](#bug-bounty)
 
 ## 🖥️ Pwn-Windows
 <i>Pwn Windows Tools</i>
