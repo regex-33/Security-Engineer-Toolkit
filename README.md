@@ -13,7 +13,7 @@
 * [ Tools](https://github.com/username/bugbounty)
   * [Pwn Windows](#Pwn-windows)
   * [Bug Bounty](#Bug-Bounty)
-  * [Mobile](#mobile)
+  * [Android](#-android)
   * [📔 Bug Bounty Books](#-bug-bounty-books)
   * [📎 Target and Practice](#-target-and-practice)
 
@@ -75,9 +75,8 @@
 
 
 
-## 📱 Mobile Tools
-
-<i>Mobile Security Tools</i>
+## 📱 Android
+<i>Android tools</i>
 
 | Name             | Descriptions                                                                 | Download |
 | ---------------- | --------------------------------------------------------------------------- | -------- |
