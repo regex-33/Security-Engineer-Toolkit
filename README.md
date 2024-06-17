@@ -12,10 +12,8 @@
 <i>In the following tables, you can find the tools you need according to the heading.</i>
 * [ Tools](https://github.com/username/bugbounty)
   * [Pwn Windows](#Pwn-windows)
-  * [Bug Bounty](#Bug-Bounty)
   * [Android](#-android)
-  * [📔 Bug Bounty Books](#-bug-bounty-books)
-  * [📎 Target and Practice](#-target-and-practice)
+  * [Bug Bounty](#Bug-Bounty)
 
 ## 🖥️ Pwn-Windows
 <i>Pwn Windows Tools</i>
@@ -102,7 +100,7 @@
 
 
 
-## 🌐 Bug Bounty 
+## 🌐 Bug Bounty
 
 
 
@@ -371,20 +369,3 @@
 | **XSStrike**   | Advanced XSS detection suite.                                  | [GitHub](https://github.com/s0md3v/XSStrike)                                                        |
 | **XSS_VIBES**  | XSS vulnerability scanner and payload generator.               | [GitHub](https://github.com/faiyazahmad07/xss_vibes.git)                                            |
 
-
-<i>Recommended Books</i>
-
-| Name  | Author | Purchase | 
-| ----- | ------ | -------- |
-| **`Book1`** | Author1 | [Buy](https://example.com/book1) |
-| **`Book2`** | Author2 | [Buy](https://example.com/book2) |
-| **`Book3`** | Author3 | [Buy](https://example.com/book3) |
-
-## 📎 Target and Practice
-<i>Places to practice and find bug bounty targets</i>
-
-| Name  | Description | Visit | 
-| ----- | ----------- | ----- |
-| **`Platform1`** | Description for Platform1. | [Visit](https://example.com/platform1) |
-| **`Platform2`** | Description for Platform2. | [Visit](https://example.com/platform2) |
-| **`Platform3`** | Description for Platform3. | [Visit](https://example.com/platform3) |
