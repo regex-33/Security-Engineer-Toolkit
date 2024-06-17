@@ -9,21 +9,6 @@
 <a href="#license"><img align="right"  src="resources/images/logo.png"></a>
 
 <i>In the following tables, you can find the tools you need according to the heading.</i>
-  * [Pwn Windows](#-pwn-windows)
-  * [Android](#-android)
-  * [Bug Bounty](#-bug-bounty)
-
-# Security-Engineer-Toolkit:
-[![username - Security-Engineer-Toolkit](https://img.shields.io/static/v1?label=username&message=Security-Engineer-Toolkit&color=blue&logo=github)](https://github.com/regex-33/Security-Engineer-Toolkit)
-[![stars - Security-Engineer-Toolkit](https://img.shields.io/github/stars/regex-33/Security-Engineer-Toolkit?style=social)](https://github.com/regex-33/Security-Engineer-Toolkit)
-[![forks - Security-Engineer-Toolkit](https://img.shields.io/github/forks/regex-33/Security-Engineer-Toolkit?style=social)](https://github.com/regex-33/Security-Engineer-Toolkit)
-[![GitHub release](https://img.shields.io/github/release/regex-33/Security-Engineer-Toolkit?include_prereleases=&sort=semver)](https://github.com/regex-33/Security-Engineer-Toolkit/releases/)
-[![License](https://img.shields.io/badge/License-MIT-blue)](#license)
-[![issues - Security-Engineer-Toolkit](https://img.shields.io/github/issues/regex-33/Security-Engineer-Toolkit)](https://github.com/regex-33/Security-Engineer-Toolkit/issues)
-
-<a href="#license"><img align="right"  src="resources/images/logo.png"></a>
-
-<i>In the following tables, you can find the tools you need according to the heading.</i>
   * [Installation](#-installation)
   * [Usage](#-usage)
   * [Pwn Windows](#-pwn-windows)
