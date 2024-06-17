@@ -70,7 +70,7 @@ sudo ansible-playbook playbooks/main.yml --skip-tags "windows,config"
 If you want to install all tools, you can use the following command:
 
 ```bash
-sudo ansible-playbook playbooks/main.yml --skip-tags "windows,config"
+sudo ansible-playbook playbooks/main.yml
 ```
 
 
