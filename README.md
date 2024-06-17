@@ -11,9 +11,9 @@
 
 <i>In the following tables, you can find the tools you need according to the heading.</i>
 * [ Tools](https://github.com/username/bugbounty)
-  * [Pwn Windows](#Pwn-windows)
+  * [Pwn Windows](#-Pwn-windows)
   * [Android](#-android)
-  * [Bug Bounty](#bug-bounty)
+  * [Bug Bounty](#-bug-bounty)
 
 ## 🖥️ Pwn-Windows
 <i>Pwn Windows Tools</i>
