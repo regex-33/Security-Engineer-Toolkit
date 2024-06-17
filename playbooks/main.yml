@@ -70,19 +70,3 @@
       tags: bugbounty
   
 
-
-# Now you can run the playbook with the `--tags` option to only run the roles with the specified tag:
-
-# ```bash
-# sudo ansible-playbook main.yml --tags "windows"
-# sudo ansible-playbook main.yml --tags "config"
-# sudo ansible-playbook main.yml --tags "bugbounty"
-# ```
-
-# If you want to run all roles except those with certain tags, you can use the `--skip-tags` option:
-
-# ```bash
-# sudo ansible-playbook main.yml --skip-tags "windows,config"
-# ```
-
-# This will run all roles except those tagged with "windows" or "config".

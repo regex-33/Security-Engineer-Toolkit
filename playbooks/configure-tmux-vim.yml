@@ -2,5 +2,5 @@
   hosts: localhost
   become: yes
   roles:
-    # - apt-gem-stuff
+    - apt-gem-stuff
     - configure-tmux-vim
