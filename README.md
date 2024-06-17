@@ -10,8 +10,7 @@
 <a href="#license"><img align="right"  src="resources/images/logo.png"></a>
 
 <i>In the following tables, you can find the tools you need according to the heading.</i>
-* [ Tools](https://github.com/username/bugbounty)
-  * [Pwn Windows](#-Pwn-windows)
+  * [Pwn Windows](#-pwn-windows)
   * [Android](#-android)
   * [Bug Bounty](#-bug-bounty)
 
