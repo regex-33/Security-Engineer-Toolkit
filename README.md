@@ -11,9 +11,9 @@
 
 <i>In the following tables, you can find the tools you need according to the heading.</i>
 * [ Tools](https://github.com/username/bugbounty)
-  * [Pwn Windows](#-Pwn-windows)
-  * [Bug Bounty](#-Bug Bounty)
-  * [Mobile](#-mobile)
+  * [Pwn Windows](#Pwn-windows)
+  * [Bug Bounty](#Bug-Bounty)
+  * [Mobile](#mobile)
   * [📔 Bug Bounty Books](#-bug-bounty-books)
   * [📎 Target and Practice](#-target-and-practice)
 
