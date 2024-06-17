@@ -15,7 +15,7 @@
   * [Android](#-android)
   * [Bug Bounty](#-bug-bounty)
 
-## Installation:
+## Installation
 
 Before using this tool, you need to install Ansible. Here are the steps to install Ansible on a Linux machine:
 
@@ -39,7 +39,7 @@ git clone git@github.com:regex-33/Security-Engineer-Toolkit.git
 sudo whoami
 ```
 
-## Usage:
+## Usage
 
 This tool uses Ansible, a powerful automation tool for IT operations. You can specify what tasks to run with the `--tags` option.
 
