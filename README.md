@@ -14,10 +14,7 @@
   * [Pwn Windows](#-pwn-windows)
   * [Android](#-android)
   * [Bug Bounty](#-bug-bounty)
-  * [Installation](#-installation)
-  * [Usage](#-usage)
-
-## 📱 Installation
+## Installation
 
 Before using this tool, you need to install Ansible. Here are the steps to install Ansible on a Linux machine:
 
