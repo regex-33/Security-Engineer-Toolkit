@@ -81,7 +81,7 @@ to install tools related to configuration, you can use the following command:
 sudo ansible-playbook playbooks/main.yml --tags "config"
 ```
 
-The `--tags "config"` option will configure the browser, terminal, Vim, Tmux, and logging as part of the IppSec build, including Firefox extensions.
+The `--tags "config"` option will configure the browser, terminal, Vim, Tmux, and logging as part of the [IppSec build](https://github.com/IppSec/parrot-build), including Firefox extensions.
 
 
 
