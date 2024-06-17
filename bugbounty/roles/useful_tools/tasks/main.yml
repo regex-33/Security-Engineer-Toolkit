@@ -1,6 +1,6 @@
-- name: Ensure sql_tools directory exists
+- name: Ensure useful_tools directory exists
   file:
-    path: "/opt/tools/sql_tools"
+    path: "/opt/tools/useful_tools"
     state: directory
 
 - name: Install Go tools and copy binaries

@@ -10,9 +10,9 @@
 <a href="#license"><img align="right"  src="resources/images/logo.png"></a>
 
 <i>In the following tables, you can find the tools you need according to the heading.</i>
-* [Bug Bounty Tools](https://github.com/username/bugbounty)
+* [ Tools](https://github.com/username/bugbounty)
   * [Pwn Windows](#-Pwn-windows)
-  * [Web](#-web)
+  * [Bug Bounty](#-Bug Bounty)
   * [Mobile](#-mobile)
   * [📔 Bug Bounty Books](#-bug-bounty-books)
   * [📎 Target and Practice](#-target-and-practice)
@@ -76,6 +76,7 @@
 
 
 ## 📱 Mobile Tools
+
 <i>Mobile Security Tools</i>
 
 | Name             | Descriptions                                                                 | Download |
@@ -102,7 +103,9 @@
 
 
 
-## 🌐 Web
+## 🌐 Bug Bounty 
+
+
 
 #### API TOOLS:
 
@@ -110,7 +113,7 @@
 | ------------- | -------------------------------------------------------------------------- | ----------------------------------------------------------------- |
 | **Kiterunner** | Security testing tool for APIs, focusing on GraphQL and REST endpoints.     | [Download](https://github.com/assetnote/kiterunner/releases/latest) |
 
-## 🌐 Web
+
 
 #### CMS SCANNERS:
 
@@ -152,7 +155,7 @@
 
 
 
-#### Git Hunting:
+#### Git Hunting Tools:
 
 | Name         | Descriptions                                       | Download |
 | ------------ | -------------------------------------------------- | -------- |
@@ -161,6 +164,213 @@
 | **GitTools** | Collection of tools for reconnaissance of Git repositories. | [GitHub Repo](https://github.com/internetwache/GitTools) |
 | **GitHacker**| Tool for finding exposed `.git` directories.      | [PyPI](https://pypi.org/project/GitHacker/) |
 
+
+#### 📜 HTTP Parameter Tools: 
+
+| Name               | Descriptions                           | Download |
+| ------------------ | -------------------------------------- | -------- |
+| **Arjun**          | HTTP parameter discovery suite.         | Install via pip3  |
+| **x8**             | Tool for discovering hidden HTTP parameters. | [Download](https://github.com/mrco24/x8/raw/main/x8)  |
+
+
+#### 🛠️ HTTP Probe Tools:
+
+
+| Name    | Descriptions                                                | Download                                                                    |
+| ------- | ----------------------------------------------------------- | --------------------------------------------------------------------------- |
+| **httpx** | A fast and multi-purpose HTTP toolkit that allows running multiple probers using retryablehttp library. | [GitHub](https://github.com/projectdiscovery/httpx) |
+| **httprobe** | A tool that takes a list of domains and probes for working HTTP and HTTPS servers. | [GitHub](https://github.com/tomnomnom/httprobe) |
+
+
+#### 🔍 JavaScript Inspection Tools
+
+| Name       | Descriptions                                                                 | Download                                             |
+| ---------- | ---------------------------------------------------------------------------- | ---------------------------------------------------- |
+| **LinkFinder** | A python script that finds endpoints in JavaScript files using regex.       | [GitHub](https://github.com/GerbenJavado/LinkFinder) |
+| **JSParser**   | A python 2.7 script that parses JavaScript files to extract URLs and endpoints. | [GitHub](https://github.com/nahamsec/JSParser)       |
+
+
+
+#### 🕵️‍♂️ JavaScript Hunting Tools
+
+| Name          | Descriptions                                                                                       | Download                                                                                 |
+| ------------- | -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| **GetJS**         | A Go-based tool to extract JavaScript files from a target website.                                  | [GitHub](https://github.com/003random/getJS)                                             |
+| **LinkFinder**    | A python script that finds endpoints in JavaScript files using regex.                              | [GitHub](https://github.com/GerbenJavado/LinkFinder)                                     |
+| **SecretFinder**  | A python script to find sensitive data (e.g., API keys, tokens) in JavaScript files.                | [GitHub](https://github.com/m4ll0k/SecretFinder)                                         |
+| **JSScanner**     | A tool to scan JavaScript files for sensitive information and vulnerabilities.                      | [GitHub](https://github.com/dark-warlord14/JSScanner)                                    |
+| **subjs**         | A Go-based tool that fetches JavaScript files from a target website to help with subdomain enumeration. | [GitHub](https://github.com/lc/subjs/releases/download/v1.0.1/subjs_1.0.1_linux_amd64.tar.gz) |
+
+
+#### 🛠️ Local File Inclusion (LFI) Tools
+
+| Name         | Descriptions                                                 | Download                                                                             |
+| ------------ | ------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| **LFISuite** | A complete automated Local File Inclusion (LFI) exploitation and scanning suite. | [GitHub](https://github.com/D35m0nd142/LFISuite)                                     |
+| **mrco24-lfi** | A Go-based tool to exploit Local File Inclusion vulnerabilities. | [GitHub](https://github.com/mrco24/mrco24-lfi)                                       |
+
+
+#### 🌐 Network Scanners
+
+| Name         | Descriptions                                                 | Download                                                                             |
+| ------------ | ------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| **Masscan**  | The fastest Internet port scanner.                           | [GitHub](https://github.com/robertdavidgraham/masscan)                               |
+| **Naabu**    | A fast port scanner written in Go.                           | [GitHub](https://github.com/projectdiscovery/naabu)                                  |
+| **Unimap**   | A simple and effective tool for network scanning and mapping.| [GitHub](https://github.com/Edu4rdSHL/unimap)                                        |
+
+
+#### Open Redirect: 
+
+| Name           | Descriptions                                                 | Download                                                                             |
+| -------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| **Open-Redirect** | A tool to detect open redirects.                             | [GitHub](https://github.com/mrco24/open-redirect)                                    |
+
+
+#### Sensitive Finding:
+
+| Name           | Descriptions                                                 | Download                                                                             |
+| -------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| **EarlyBird**  | EarlyBird is a tool for searching through email data.          | [GitHub](https://github.com/americanexpress/earlybird.git)                           |
+| **Ripgrep**    | Ripgrep is a fast search tool combining usability and speed.   | *Installation:* `apt-get install -y ripgrep`                                          |
+| **Gau-Expose** | Gau-Expose extracts sensitive URLs from Google Search Appliance URLs. | [GitHub](https://github.com/tamimhasan404/Gau-Expose.git)                           |
+| **Mantra**     | Mantra automates malware analysis tasks.                       | *Installation:* `/usr/local/go/bin/go install github.com/MrEmpy/mantra@latest`        |
+
+#### Request Smuggling:
+
+| Name                        | Descriptions                                                           | Download                                                                             |
+| --------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| **http-request-smuggling**  | A tool for detecting HTTP request smuggling vulnerabilities.           | [GitHub](https://github.com/anshumanpattnaik/http-request-smuggling.git)             |
+
+
+
+#### Sql Tools:
+
+| Name                  | Descriptions                                                                  | Download                                                                                   |
+| --------------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| **Jeeves**            | A tool for automated SQL injection detection and exploitation.                | [GitHub](https://github.com/ferreiraklet/Jeeves)                                            |
+| **time-sql**          | A tool for exploiting blind SQL injection vulnerabilities.                    | [GitHub](https://github.com/mrco24/time-sql)                                                 |
+| **mrco24-error-sql**  | A tool for detecting SQL injection vulnerabilities based on error messages.   | [GitHub](https://github.com/mrco24/mrco24-error-sql)                                         |
+| **ghauri**            | A SQL injection detection and exploitation tool.                              | [GitHub](https://github.com/r0oth3x49/ghauri)                                                |
+
+
+
+#### SSRF Tools:
+
+| Name            | Descriptions                                                                 | Download                                                                                         |
+| --------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| **Interactsh**  | A tool for HTTP request smuggling, SSRF, and DNS rebinding detection.        | [GitHub](https://github.com/projectdiscovery/interactsh/cmd/interactsh-client)                   |
+| **SSRFmap**     | A tool for testing SSRF vulnerabilities.                                     | [GitHub](https://github.com/swisskyrepo/SSRFmap)                                                  |
+| **Gopherus**    | A tool designed to generate gopher payloads for exploiting SSRF.             | [GitHub](https://github.com/tarunkant/Gopherus.git)                                               |
+
+
+#### SSTI Tools
+
+| Name       | Descriptions                                                    | Download                                     |
+| ---------- | ---------------------------------------------------------------- | -------------------------------------------- |
+| **tplmap** | A tool to detect and exploit Server-Side Template Injection.     | [GitHub](https://github.com/epinna/tplmap)   |
+
+
+#### Subdomain Enumeration Tools
+
+| Name          | Description                                                   | Download                                                                          |
+| ------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| **Sublist3r** | Fast subdomains enumeration tool for penetration testers.     | [GitHub](https://github.com/aboul3la/Sublist3r)                                   |
+| **Sudomy**    | Subdomain enumeration tool to collect subdomains and analyze. | [GitHub](https://github.com/screetsec/Sudomy)                                     |
+| **CertCrunchy** | Subdomain discovery using certificate transparency logs.      | [GitHub](https://github.com/joda32/CertCrunchy)                                   |
+| **assetfinder** | Finds domains and subdomains potentially related to a given domain. | [GitHub](https://github.com/tomnomnom/assetfinder)                                |
+| **subfinder**  | Subdomain discovery tool that discovers valid subdomains.      | [GitHub](https://github.com/projectdiscovery/subfinder)                           |
+| **github-subdomains** | Tool to find subdomains via GitHub search.               | [GitHub](https://github.com/gwen001/github-subdomains)                            |
+| **crobat**    | Fast and flexible subdomain enumeration tool.                 | [GitHub](https://github.com/cgboal/sonarsearch)                                   |
+| **mapcidr**   | Tool to perform operations on IP addresses and CIDR ranges.   | [GitHub](https://github.com/projectdiscovery/mapcidr)                             |
+| **Findomain** | The fastest subdomain enumeration tool.                       | [GitHub](https://github.com/findomain/findomain)                                  |
+
+
+#### Useful Tools:
+
+| Name             | Description                                                      | Download                                                                                  |
+| ---------------- | ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| **notify**       | Send notifications on the command line.                          | [GitHub](https://github.com/projectdiscovery/notify)                                      |
+| **tok**          | Tool for extracting tokens from content.                         | [GitHub](https://github.com/mrco24/tok)                                                   |
+| **gau**          | Get all URLs from AlienVault's Open Threat Exchange.             | [GitHub](https://github.com/lc/gau)                                                       |
+| **anti-burl**    | Tool for detecting and removing URLs with specific patterns.     | [GitHub](https://github.com/tomnomnom/hacks/tree/master/anti-burl)                        |
+| **unfurl**       | Extract and process URLs from input data.                        | [GitHub](https://github.com/tomnomnom/unfurl)                                             |
+| **anew**         | Append new, unique lines to a file.                              | [GitHub](https://github.com/tomnomnom/anew)                                               |
+| **fff**          | Find files and filter.                                           | [GitHub](https://github.com/tomnomnom/fff)                                                |
+| **gron**         | Transform JSON into discrete assignments.                        | [GitHub](https://github.com/tomnomnom/gron)                                               |
+| **qsreplace**    | Query string parameter replacer.                                 | [GitHub](https://github.com/tomnomnom/qsreplace)                                          |
+| **subzy**        | Subdomain takeover tool.                                         | [GitHub](https://github.com/LukaSikic/subzy)                                              |
+| **cf-check**     | Cloudflare check tool.                                           | [GitHub](https://github.com/dwisiswant0/cf-check)                                         |
+| **SploitScan**   | Automated vulnerability scanner.                                 | [GitHub](https://github.com/xaitax/SploitScan)                                            |
+| **Oralyzer**     | Open redirect vulnerability scanner.                             | [GitHub](https://github.com/r0075h3ll/Oralyzer)                                           |
+| **Interlace**    | Tool for performing parallelized tasks in security testing.      | [GitHub](https://github.com/codingo/Interlace)                                            |
+
+
+#### Visual Tools:
+
+| Name           | Description                                                  | Download                                                                                          |
+| -------------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
+| **Gowitness**  | A tool to screenshot webpages and generate reports.          | [GitHub](https://github.com/sensepost/gowitness)                                                  |
+| **Aquatone**   | A tool for visual inspection of websites across a large number of hosts. | [GitHub](https://github.com/michenriksen/aquatone/releases/download/v1.7.0/aquatone_linux_amd64_1.7.0.zip) |
+
+
+#### Vulnerability Scanners Tools: 
+
+| Name           | Description                                                  | Download                                                                                          |
+| -------------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
+| **Afrog**      | A versatile security testing tool.                           | [GitHub](https://github.com/zan8in/afrog)                                                         |
+| **Xray**       | An automated web security scanner.                            | [GitHub](https://github.com/chaitin/xray/releases/latest)                                          |
+| **Jaeles**     | A powerful scanning tool for hunting vulnerabilities in web applications. | [GitHub](https://github.com/jaeles-project/jaeles/releases/latest)                                |
+| **Nuclei**     | A fast scanner for configurable targeted scanning based on templates. | [GitHub](https://github.com/projectdiscovery/nuclei/releases/latest)                              |
+| **POC-bomber** | A Python-based platform for security testing.                 | [GitHub](https://github.com/tr0uble-mAker/POC-bomber)                                              |
+
+
+
+#### Web Crawling Tools:
+
+| Name            | Description                                                  | Download                                                                                          |
+| --------------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
+| **Gospider**    | Versatile web spidering and scraping tool.                    | [GitHub](https://github.com/jaeles-project/gospider)                                               |
+| **Hakrawler**   | Simple, fast web crawler designed for easy, quick discovery of endpoints and assets. | [GitHub](https://github.com/hakluke/hakrawler)                                                     |
+| **Waybackurls** | Fetch all the URLs that the Wayback Machine knows about for a domain. | [GitHub](https://github.com/tomnomnom/waybackurls)                                                 |
+| **katana**      | Multi-protocol security/penetration testing framework designed for servers. | [GitHub](https://github.com/projectdiscovery/katana/cmd/katana)                                     |
+| **Parameters**  | A tool to brute-force parameters for GET and POST requests.    | [GitHub](https://github.com/mrco24/parameters)                                                     |
+| **GF**          | A wrapper around grep to help you grep data from websites.     | [GitHub](https://github.com/tomnomnom/gf)                                                          |
+| **otx-url**     | Extracts URLs from AlienVault's Open Threat Exchange (OTX).    | [GitHub](https://github.com/mrco24/otx-url)                                                        |
+| **Web-archive** | A tool to archive web pages, maintained for archival purposes. | [GitHub](https://github.com/mrco24/web-archive)                                                    |
+| **xnLinkFinder**| A tool written in Python for finding subdomains, XSS, SSTI, etc. | Installation via pip: `pip install xnLinkFinder`                                                  |
+| **ParamSpider** | A reconnaissance tool that identifies parameters and bugs on web applications. | [GitHub](https://github.com/devanshbatham/paramspider)                                             |
+| **Guaplus**     | A powerful reconnaissance tool designed for GitHub and GitLab. | [GitHub](https://github.com/bp0lr/gauplus.git)                                                     |
+| **freq**        | A fast web crawler optimized for performance and flexibility.  | [GitHub](https://github.com/takshal/freq.git)                                                      |
+
+
+
+#### Web Technologies:
+
+| Name              | Description                                                  | Download                                                                                          |
+| ----------------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
+| **Wappalyzer CLI**| A command-line interface for Wappalyzer, used to identify technologies used on websites. | [GitHub](https://github.com/gokulapap/wappalyzer-cli)                                               |
+
+
+#### Wordlists:
+
+| Name         | Description                                            | Download                                                                                      |
+| ------------ | ------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
+| **SecLists** | A collection of security-related lists for penetration testing and ethical hacking. | [GitHub](https://github.com/danielmiessler/SecLists)                                         |
+
+
+
+#### XSS Tools:
+
+| Name           | Description                                                   | Download                                                                                           |
+| -------------- | ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| **Dalfox**     | A fast and powerful XSS scanner with a variety of features.    | [GitHub](https://github.com/hahwul/dalfox)                                                         |
+| **kxss**       | A fast XSS scanner written in Go.                              | [GitHub](https://github.com/Emoe/kxss)                                                              |
+| **Gxss**       | A powerful XSS scanner and payload injector.                   | [GitHub](https://github.com/KathanP19/Gxss)                                                         |
+| **Bxss**       | An XSS scanner that focuses on detection and exploitation.     | [GitHub](https://github.com/ethicalhackingplayground/bxss)                                         |
+| **knoxnl**     | Cross-Site Scripting (XSS) vulnerability scanner.              | N/A                                                                                                |
+| **Findom-xss** | XSS vulnerability scanner that integrates with LinkFinder.    | [GitHub](https://github.com/dwisiswant0/findom-xss)                                                 |
+| **XSStrike**   | Advanced XSS detection suite.                                  | [GitHub](https://github.com/s0md3v/XSStrike)                                                        |
+| **XSS_VIBES**  | XSS vulnerability scanner and payload generator.               | [GitHub](https://github.com/faiyazahmad07/xss_vibes.git)                                            |
 
 
 <i>Recommended Books</i>
