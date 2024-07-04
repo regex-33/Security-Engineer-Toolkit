@@ -38,7 +38,7 @@
 
 - name: Ensure destination directories exist
   file:
-    path: "{{ item.dest | dirname }}"
+    path: "{{ item.dest }}" # | dirname }}"
     state: directory
     mode: '0755'
   loop:
@@ -270,7 +270,7 @@
     - { url: 'https://raw.githubusercontent.com/Dionach/PassHunt/master/passhunt.py', dest: '/opt/windows/Credentials-collection/passhunt.py' }
     - { url: 'https://raw.githubusercontent.com/Dionach/PassHunt/master/passhunt.exe', dest: '/opt/windows/Credentials-collection/passhunt.exe' }
     - { url: 'https://github.com/SnaffCon/Snaffler/releases/latest/download/Snaffler.exe', dest: '/opt/windows/Credentials-collection/Snaffler.exe' }
-    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Credentials-collection/Invoke-Snaffler.ps1', dest: '/opt/windows/Credentials-collection/Invoke-Snaffler.ps1' }
+      #- { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Credentials-collection/Invoke-Snaffler.ps1', dest: '/opt/windows/Credentials-collection/Invoke-Snaffler.ps1' }
     - { url: 'https://raw.githubusercontent.com/GhostPack/KeeThief/master/PowerShell/KeeThief.ps1', dest: '/opt/windows/Credentials-collection/KeeThief.ps1' }
     - { url: 'https://github.com/GossiTheDog/HiveNightmare/releases/latest/download/HiveNightmare.exe', dest: '/opt/windows/Credentials-collection/HiveNightmare.exe' }
     - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpChromium.exe', dest: '/opt/windows/Credentials-collection/SharpChromium.exe' }
@@ -288,7 +288,7 @@
     - { url: 'https://raw.githubusercontent.com/BC-SECURITY/Empire/master/empire/server/data/module_source/credentials/dumpCredStore.ps1', dest: '/opt/windows/Credentials-collection/dumpCredStore.ps1' }
     - { url: 'https://github.com/login-securite/DonPAPI/archive/master.zip', dest: '/opt/windows/Credentials-collection/DonPAPI.zip' }
     - { url: 'https://raw.githubusercontent.com/helpsystems/nanodump/main/dist/nanodump.x64.exe', dest: '/opt/windows/Credentials-collection/nanodump.x64.exe' }
-    - { url: 'https://raw.githubusercontent.com/helpsystems/nanodump/main/dist/nanodump_ppl.x64.exe', dest: '/opt/windows/Credentials-collection/nanodump_ppl.x64.exe' }
+      #- { url: 'https://raw.githubusercontent.com/helpsystems/nanodump/main/dist/nanodump_ppl.x64.exe', dest: '/opt/windows/Credentials-collection/nanodump_ppl.x64.exe' }
     - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-NanoDump.ps1', dest: '/opt/windows/Credentials-collection/Invoke-NanoDump.ps1' }
     - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t//Creds/master/PowershellScripts/Invoke-Handlekatz.ps1', dest: '/opt/windows/Credentials-collection/Invoke-Handlekatz.ps1' }
 
@@ -426,8 +426,8 @@
 
     - { url: 'https://raw.githubusercontent.com/samratashok/ADModule/master/Microsoft.ActiveDirectory.Management.dll', dest: '/opt/windows/AD-Module/Microsoft.ActiveDirectory.Management.dll' }
 
-    - { url: 'https://raw.githubusercontent.com/BloodHoundAD/BloodHound/master/Collectors/SharpHound.exe', dest: '/opt/windows/SharpHound/AD-Enum/SharpHound.exe' }
-    - { url: 'https://raw.githubusercontent.com/BloodHoundAD/BloodHound/master/Collectors/SharpHound.ps1', dest: '/opt/windows/SharpHound/AD-Enum/SharpHound.ps1' }
+    - { url: 'https://raw.githubusercontent.com/BloodHoundAD/BloodHound/master/Collectors/SharpHound.exe', dest: '/opt/windows/AD-Enum/SharpHound.exe' }
+    - { url: 'https://raw.githubusercontent.com/BloodHoundAD/BloodHound/master/Collectors/SharpHound.ps1', dest: '/opt/windows/AD-Enum/SharpHound.ps1' }
     - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-SharpHound4.ps1', dest: '/opt/windows/AD-Enum/Invoke-SharpHound4.ps1' }
     - { url: 'https://raw.githubusercontent.com/adrecon/ADRecon/master/ADRecon.ps1', dest: '/opt/windows/AD-Enum/ADRecon.ps1' }
     - { url: 'https://github.com/Flangvik/SharpCollection/raw/master/NetFramework_4.7_Any/Grouper2.exe', dest: '/opt/windows/AD-Enum/Grouper2.exe' }
@@ -513,9 +513,9 @@
 
     - { url: 'https://raw.githubusercontent.com/BC-SECURITY/Empire/master/empire/server/data/module_source/credentials/Invoke-DCSync.ps1', dest: '/opt/windows/Invoke-DCSync.ps1' }
     
-    - { url: 'https://github.com/p0dalirius/LDAPmonitor/releases/latest/download/psLDAPmonitor.ps1', dest: '/opt/windows/Monitor/psLDAPmonitor.ps1' }
-    - { url: 'https://github.com/p0dalirius/LDAPmonitor/releases/latest/download/pyLDAPmonitor.py', dest: '/opt/windows/Monitor/pyLDAPmonitor.py' }
-    - { url: 'https://github.com/p0dalirius/LDAPmonitor/releases/latest/download/SharpLDAPmonitor.exe', dest: '/opt/windows/Monitor/SharpLDAPmonitor.exe' }
+      #- { url: 'https://github.com/p0dalirius/LDAPmonitor/releases/latest/download/psLDAPmonitor.ps1', dest: '/opt/windows/Monitor/psLDAPmonitor.ps1' }
+      #- { url: 'https://github.com/p0dalirius/LDAPmonitor/releases/latest/download/pyLDAPmonitor.py', dest: '/opt/windows/Monitor/pyLDAPmonitor.py' }
+      #- { url: 'https://github.com/p0dalirius/LDAPmonitor/releases/latest/download/SharpLDAPmonitor.exe', dest: '/opt/windows/Monitor/SharpLDAPmonitor.exe' }
 
     - { url: 'https://raw.githubusercontent.com/NetSPI/PowerUpSQL/master/PowerUpSQL.ps1', dest: '/opt/windows/SQL/PowerUpSQL.ps1' }
     - { url: 'https://github.com/NetSPI/ESC/releases/latest/download/esc-example.ps1', dest: '/opt/windows/SQL/esc-example.ps1' }
@@ -598,5 +598,5 @@
 
 - name: "Copy kerbrute to /usr/local/bin"
   ignore_errors: yes
-  shell: cp /root/go/bin/kerbute /usr/local/bin/kerbrute
+  shell: cp /root/go/bin/kerbrute /usr/local/bin/kerbrute
   become: true
