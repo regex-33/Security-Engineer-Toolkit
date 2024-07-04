@@ -1,6 +1,0 @@
-- name: Setup dns resolver tools
-  hosts: localhost
-  become: yes
-  roles:
-    - apt-gem-stuff
-    - dns_resolver

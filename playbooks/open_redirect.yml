@@ -1,6 +1,0 @@
-- name: Setup open redirection tools
-  hosts: localhost
-  become: yes
-  roles:
-    - apt-gem-stuff
-    - open_redirect

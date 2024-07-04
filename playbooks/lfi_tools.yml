@@ -1,6 +1,0 @@
-- name: Setup lfi tools
-  hosts: localhost
-  become: yes
-  roles:
-    - apt-gem-stuff
-    - lfi_tools

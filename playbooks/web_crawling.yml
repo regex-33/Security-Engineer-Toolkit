@@ -1,6 +1,0 @@
-- name: Setup Web Crawling tools
-  hosts: localhost
-  become: yes
-  roles:
-    - apt-gem-stuff
-    - web_crawling

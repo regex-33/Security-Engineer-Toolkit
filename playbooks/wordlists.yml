@@ -1,6 +1,0 @@
-- name: Setup wordlists tools
-  hosts: localhost
-  become: yes
-  roles:
-    - apt-gem-stuff
-    - wordlists

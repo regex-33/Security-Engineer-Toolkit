@@ -1,6 +1,0 @@
-- name: Setup frameworks tools
-  hosts: localhost
-  become: yes
-  roles:
-    - apt-gem-stuff
-    - frameworks

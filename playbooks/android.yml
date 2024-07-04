@@ -1,6 +1,0 @@
-- name: Setup Android tools
-  hosts: localhost
-  become: yes
-  roles:
-    - apt-gem-stuff
-    - android 

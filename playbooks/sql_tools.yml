@@ -1,6 +1,0 @@
-- name: Setup Sql tools
-  hosts: localhost
-  become: yes
-  roles:
-    - apt-gem-stuff
-    - sql_tools

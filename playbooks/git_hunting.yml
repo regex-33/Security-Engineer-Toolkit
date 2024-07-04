@@ -1,6 +1,0 @@
-- name: Setup git hunting tools
-  hosts: localhost
-  become: yes
-  roles:
-    - apt-gem-stuff
-    - git_hunting

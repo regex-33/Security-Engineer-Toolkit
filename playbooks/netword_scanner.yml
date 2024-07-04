@@ -1,6 +1,0 @@
-- name: Setup network_scanner tools
-  hosts: localhost
-  become: yes
-  roles:
-    - apt-gem-stuff
-    - network_scanner

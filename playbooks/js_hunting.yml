@@ -1,6 +1,0 @@
-- name: Setup js hunting tools
-  hosts: localhost
-  become: yes
-  roles:
-    - apt-gem-stuff
-    - js_hunting

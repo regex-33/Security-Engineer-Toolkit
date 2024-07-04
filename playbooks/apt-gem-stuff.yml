@@ -1,5 +1,0 @@
-- name: Setup apt & gem tools
-  hosts: localhost
-  become: yes
-  roles:
-    - apt-gem-stuff

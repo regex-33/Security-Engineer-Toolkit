@@ -1,6 +1,0 @@
-- name: Setup content discovery tools
-  hosts: localhost
-  become: yes
-  roles:
-    - apt-gem-stuff
-    - content_discovery

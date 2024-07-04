@@ -1,5 +1,0 @@
-- name: Install SecLists
-  git:
-    repo: 'https://github.com/danielmiessler/SecLists.git'
-    dest: /opt/tools/wordlists/SecLists
-  become: yes

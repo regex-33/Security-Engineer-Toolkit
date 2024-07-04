@@ -1,6 +1,0 @@
-- name: Setup http parameter tools
-  hosts: localhost
-  become: yes
-  roles:
-    - apt-gem-stuff
-    - http_parameter

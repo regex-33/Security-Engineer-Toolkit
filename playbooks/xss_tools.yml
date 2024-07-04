@@ -1,6 +1,0 @@
-- name: Setup xss tools
-  hosts: localhost
-  become: yes
-  roles:
-    - apt-gem-stuff
-    - xss_tools

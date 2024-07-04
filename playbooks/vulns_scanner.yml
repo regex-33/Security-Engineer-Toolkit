@@ -1,6 +1,0 @@
-- name: Setup vulns scanner tools
-  hosts: localhost
-  become: yes
-  roles:
-    - apt-gem-stuff
-    - vulns_scanner 

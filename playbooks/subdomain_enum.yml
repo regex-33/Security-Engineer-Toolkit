@@ -1,6 +1,0 @@
-- name: Setup subdomain enumeration tools
-  hosts: localhost
-  become: yes
-  roles:
-    - apt-gem-stuff
-    - subdomain_enum
