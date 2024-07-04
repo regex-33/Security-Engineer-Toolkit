@@ -36,15 +36,66 @@
   become: true
   become_method: sudo
 
+- name: Ensure destination directories exist
+  file:
+    path: "{{ item.dest | dirname }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - { dest: '/opt/windows/other' }
+    - { dest: '/opt/windows/other/PowerView' }
+    - { dest: '/opt/windows/other/LaZagne' }
+    - { dest: '/opt/windows/other/QuarksPwDump' }
+    - { dest: '/opt/windows/other/Invoke-CradleCrafter' }
+    - { dest: '/opt/windows/other/Invoke-Phant0m' }
+    - { dest: '/opt/windows/other/Out-CompressedDll' }
+    - { dest: '/opt/windows/other/Sysmon' }
+    - { dest: '/opt/windows/other/SharpGPOAbuse' }
+    - { dest: '/opt/windows/other/PowerGPOAbuse' }
+    - { dest: '/opt/windows/other/Invoke-ACLPwn' }
+
+    - { dest: '/opt/windows/Priv-Esc' }
+    - { dest: '/opt/windows/Enumeration' }
+    - { dest: '/opt/windows/Credentials-collection' }
+    - { dest: '/opt/windows/Remote-connection' }
+    - { dest: '/opt/windows/Evasion-and-bypass' }
+    - { dest: '/opt/windows/Macro-and-WScript' }
+    - { dest: '/opt/windows/SwissArmyKnife' }
+    - { dest: '/opt/windows/Inveigh-NTLM-relay' }
+    - { dest: '/opt/windows/SMB-Enum' }
+    - { dest: '/opt/windows/Exploits' }
+    - { dest: '/opt/windows/Windows-Misc-Utilities' }
+    - { dest: '/opt/windows/AD-Module' }
+    - { dest: '/opt/windows/AD-Enum' }
+    - { dest: '/opt/windows/ACL' }
+    - { dest: '/opt/windows/ADCS' }
+    - { dest: '/opt/windows/GPO' }
+    - { dest: '/opt/windows/Kerberos' }
+    - { dest: '/opt/windows/Mail-Users-Web' }
+    - { dest: '/opt/windows/LAPS-gMSA' }
+    - { dest: '/opt/windows/PasswordSpray' }
+    - { dest: '/opt/windows/Delegation' }
+    - { dest: '/opt/windows/DNS' }
+    - { dest: '/opt/windows/DCSync' }
+    - { dest: '/opt/windows/Monitor' }
+    - { dest: '/opt/windows/SQL' }
+    - { dest: '/opt/windows/Persistence' }
+    - { dest: '/opt/windows/Adversary-Simulation-Emulation' }
+
+
+
+
+
+
 - name: "Downloading github releases"
   shell: "{{ build_dir.path }}/githubdownload.py {{ item.repo }} {{ item.regex }} {{ item.location }} {% if item.filename is defined %}{{ item.filename }}{% endif %}"
   loop:
-    - { repo: "jpillora/chisel",  regex: "_linux_amd64.gz", location: "/opt/windows/chisel" }
-    - { repo: "jpillora/chisel",  regex: "_windows_amd64.gz", location: "/opt/windows/chisel" }
-    - { repo: "carlospolop/PEASS-ng",  regex: "linpeas.sh", location: "/opt/windows/peas" }
-    - { repo: "carlospolop/PEASS-ng",  regex: "winPEASx64.exe", location: "/opt/windows/peas" }
+    - { repo: "jpillora/chisel",  regex: "_linux_amd64.gz", location: "/opt/windows/Persistence/chisel" }
+    - { repo: "jpillora/chisel",  regex: "_windows_amd64.gz", location: "/opt/windows/Persistence/chisel" }
+    - { repo: "carlospolop/PEASS-ng",  regex: "linpeas.sh", location: "/opt/windows/Priv-Esc/peas" }
+    - { repo: "carlospolop/PEASS-ng",  regex: "winPEASx64.exe", location: "/opt/windows/Priv-Esc/peas" }
     - { repo: "WithSecureLabs/chainsaw",  regex: "chainsaw_all_", location: "/opt/windows" }
-    - { repo: "BloodHoundAD/BloodHound", regex: "BloodHound-linux-x64.zip", location: "/opt/windows" }
+    - { repo: "BloodHoundAD/BloodHound", regex: "BloodHound-linux-x64.zip", location: "/opt/windows/AD-Enum" }
   async: 45
   poll: 0
   become: true
@@ -117,27 +168,24 @@
     dest: "{{ item.dest }}"
   loop:
     - { repo: "https://github.com/Flangvik/SharpCollection", dest: "/opt/windows/SharpCollection" }
-    - { repo: 'https://github.com/adrecon/ADRecon.git', dest: '/opt/windows/ADRecon' }
-    - { repo: 'https://github.com/BloodHoundAD/BloodHound.git', dest: '/opt/windows/BloodHound' }
-    - { repo: 'https://github.com/PowerShellMafia/PowerSploit.git', dest: '/opt/windows/PowerSploit' }
-    - { repo: 'https://github.com/aas-n/spraykatz.git', dest: '/opt/windows/Spraykatz' }
-    - { repo: 'https://github.com/samratashok/nishang.git', dest: '/opt/windows/nishang' }
-    - { repo: 'https://github.com/cobbr/Covenant.git', dest: '/opt/windows/Covenant' }
-    # - { repo: 'https://github.com/GoSecure/pyGPOAbuse.git', dest: '/opt/windows/pyGPOAbuse' }
-    - { repo: 'https://github.com/r3motecontrol/Ghostpack-CompiledBinaries.git', dest: '/opt/windows/Ghostpack-CompiledBinaries' }
-    - { repo: 'https://github.com/danielbohannon/Invoke-Obfuscation.git', dest: '/opt/windows/Invoke-Obfuscation' }
-    - { repo: 'https://github.com/S3cur3Th1sSh1t/PowerSharpPack.git', dest: '/opt/windows/bfuscation' }
-    - { repo: 'https://github.com/cobbr/PSAmsi.git', dest: '/opt/windows/PSAmsi' }
+    - { repo: 'https://github.com/adrecon/ADRecon.git', dest: '/opt/windows/other/ADRecon' }
+    - { repo: 'https://github.com/BloodHoundAD/BloodHound.git', dest: '/opt/windows/other/BloodHound' }
+    - { repo: 'https://github.com/PowerShellMafia/PowerSploit.git', dest: '/opt/windows/other/PowerSploit' }
+    - { repo: 'https://github.com/aas-n/spraykatz.git', dest: '/opt/windows/other/Spraykatz' }
+    - { repo: 'https://github.com/samratashok/nishang.git', dest: '/opt/windows/other/nishang' }
+    - { repo: 'https://github.com/cobbr/Covenant.git', dest: '/opt/windows/other/Covenant' }
+    - { repo: 'https://github.com/r3motecontrol/Ghostpack-CompiledBinaries.git', dest: '/opt/windows/other/Ghostpack-CompiledBinaries' }
+    - { repo: 'https://github.com/danielbohannon/Invoke-Obfuscation.git', dest: '/opt/windows/other/Invoke-Obfuscation' }
+    - { repo: 'https://github.com/S3cur3Th1sSh1t/PowerSharpPack.git', dest: '/opt/windows/other/bfuscation' }
+    - { repo: 'https://github.com/cobbr/PSAmsi.git', dest: '/opt/windows/other/PSAmsi' }
 
-    - { repo: 'https://github.com/r3motecontrol/Ghostpack-CompiledBinaries.git', dest: '/opt/windows/Ghostpack-CompiledBinaries' }
-    - { repo: 'https://github.com/adrecon/ADRecon.git', dest: '/opt/windows/ADRecon' }
-    - { repo: 'https://github.com/Kevin-Robertson/Invoke-TheHash.git', dest: '/opt/windows/Invoke-TheHash' }
-    - { repo: 'https://github.com/topotam/PetitPotam.git', dest: '/opt/windows/PetitPotam' }
-    - { repo: 'https://github.com/t0thkr1s/gpp-decrypt.git', dest: '/opt/windows/gpp-decrypt' }
-    - { repo: 'https://github.com/ropnop/windapsearch.git', dest: '/opt/windows/windapsearch' }
-    - { repo: 'https://github.com/otterpwn/ottertools.git', dest: '/opt/windows/ottertools' }
-    - { repo: 'https://github.com/pentestfactory/Invoke-DCSync.git', dest: '/opt/windows/Invoke-DCSync' }
-    - { repo: 'https://github.com/NytroRST/NetRipper', dest: '/opt/windows/NetRipper' }
+    - { repo: 'https://github.com/Kevin-Robertson/Invoke-TheHash.git', dest: '/opt/windows/other/Invoke-TheHash' }
+    - { repo: 'https://github.com/topotam/PetitPotam.git', dest: '/opt/windows/other/PetitPotam' }
+    - { repo: 'https://github.com/t0thkr1s/gpp-decrypt.git', dest: '/opt/windows/other/gpp-decrypt' }
+    - { repo: 'https://github.com/ropnop/windapsearch.git', dest: '/opt/windows/other/windapsearch' }
+    - { repo: 'https://github.com/otterpwn/ottertools.git', dest: '/opt/windows/other/ottertools' }
+    - { repo: 'https://github.com/pentestfactory/Invoke-DCSync.git', dest: '/opt/windows/other/Invoke-DCSync' }
+    - { repo: 'https://github.com/NytroRST/NetRipper', dest: '/opt/windows/other/NetRipper' }
 
 
 - name: Install Adidnsdump 
@@ -149,56 +197,13 @@
   shell: "pip install -r {{ item }} --break-system-packages"
   loop:
     - /opt/windows/Spraykatz/requirements.txt
-    # - /opt/windows/pyGPOAbuse/requirements.txt
 
 - name: Install LDAPDomainDump
   shell: "pip install ldapdomaindump --break-system-packages"
   ignore_errors: yes
 
 
-- name: Ensure destination directories exist
-  file:
-    path: "{{ item.dest | dirname }}"
-    state: directory
-    mode: '0755'
-  loop:
-    - { dest: '/opt/windows/ASREPRoast' }
-    - { dest: '/opt/windows/Rubeus' }
-    - { dest: '/opt/windows/SharpHound' }
-    - { dest: '/opt/windows/SharpGPOAbuse' }
-    - { dest: '/opt/windows/SharpLAPS' }
-    - { dest: '/opt/windows/PowerView' }
-    - { dest: '/opt/windows/Inveigh' }
-    - { dest: '/opt/windows/PowerUp' }
-    - { dest: '/opt/windows/SharpUp' }
-    - { dest: '/opt/windows/SharpDump' }
-    - { dest: '/opt/windows/SharpWMI' }
-    - { dest: '/opt/windows/SharpRoast' }
-    - { dest: '/opt/windows/SharpDPAPI' }
-    - { dest: '/opt/windows/Lockless' }
-    - { dest: '/opt/windows/SafetyKatz' }
-    - { dest: '/opt/windows/KeeThief' }
-    - { dest: '/opt/windows/Seatbelt' }
-    - { dest: '/opt/windows/Limelighter' }
-    - { dest: '/opt/windows/SharpGen' }
-    - { dest: '/opt/windows/Invoke-Mimikatz' }
-    - { dest: '/opt/windows/LaZagne' }
-    - { dest: '/opt/windows/QuarksPwDump' }
-    - { dest: '/opt/windows/Invoke-TheHash' }
-    - { dest: '/opt/windows/Invoke-DCSync' }
-    - { dest: '/opt/windows/NetRipper' }
-    - { dest: '/opt/windows/WMIExec' }
-    - { dest: '/opt/windows/Invoke-CradleCrafter' }
-    - { dest: '/opt/windows/Invoke-Phant0m' }
-    - { dest: '/opt/windows/Out-CompressedDll' }
-    - { dest: '/opt/windows/Sysmon' }
-    - { dest: '/opt/windows/ADFSDump' }
-    - { dest: '/opt/windows/DNSRecon' }
-    - { dest: '/opt/windows/ADIDNSdump' }
-    - { dest: '/opt/windows/SharpGPOAbuse' }
-    - { dest: '/opt/windows/PowerGPOAbuse' }
-    - { dest: '/opt/windows/ADFSpoof' }
-    - { dest: '/opt/windows/Invoke-ACLPwn' }
+
 
 - name: Download files
   ignore_errors: yes
@@ -207,39 +212,330 @@
     dest: "{{ item.dest }}"
     mode: '0755'
   loop:
-    - { url: 'https://raw.githubusercontent.com/HarmJ0y/ASREPRoast/master/ASREPRoast.ps1', dest: '/opt/windows/ASREPRoast/ASREPRoast.ps1' }
-    - { url: 'https://raw.githubusercontent.com/BloodHoundAD/BloodHound/master/Collectors/DebugBuilds/SharpHound.ps1', dest: '/opt/windows/SharpHound/SharpHound.ps1' }
-    - { url: 'https://github.com/byronkg/SharpGPOAbuse/releases/download/1.0/SharpGPOAbuse.exe', dest: '/opt/windows/SharpGPOAbuse/SharpGPOAbuse.exe' }
-    - { url: 'https://github.com/swisskyrepo/SharpLAPS/releases/download/latest-SharpLAPS/SharpLAPS.exe', dest: '/opt/windows/SharpLAPS/SharpLAPS.exe' }
-    - { url: 'https://raw.githubusercontent.com/PowerShellEmpire/PowerTools/master/PowerView/powerview.ps1', dest: '/opt/windows/PowerView/PowerView.ps1' }
-    - { url: 'https://raw.githubusercontent.com/Kevin-Robertson/Inveigh/master/Inveigh.ps1', dest: '/opt/windows/Inveigh/Inveigh.ps1' }
-    - { url: 'https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Privesc/PowerUp.ps1', dest: '/opt/windows/PowerUp/PowerUp.ps1' }
+    - { url: 'https://raw.githubusercontent.com/PowerShellEmpire/PowerTools/master/PowerView/powerview.ps1', dest: '/opt/windows/other/PowerView/PowerView.ps1' }
+    - { url: 'https://github.com/AlessandroZ/LaZagne/releases/download/v2.4.6/LaZagne.exe', dest: '/opt/windows/other/LaZagne/LaZagne.exe' }
+    - { url: 'https://raw.githubusercontent.com/tuthimi/quarkspwdump/master/Release/QuarksPwDump.exe', dest: '/opt/windows/other/QuarksPwDump/QuarksPwDump.exe' }
+    - { url: 'https://raw.githubusercontent.com/danielbohannon/Invoke-CradleCrafter/master/Invoke-CradleCrafter.ps1', dest: '/opt/windows/other/Invoke-CradleCrafter/Invoke-CradleCrafter.ps1' }
+    - { url: 'https://raw.githubusercontent.com/BC-SECURITY/Empire/main/empire/server/data/module_source/management/Invoke-Phant0m.ps1', dest: '/opt/windows/other/Invoke-Phant0m/Invoke-Phant0m.ps1' }
+    - { url: 'https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/ScriptModification/Out-CompressedDll.ps1', dest: '/opt/windows/other/Out-CompressedDll/Out-CompressedDll.ps1' }
+    - { url: 'https://live.sysinternals.com/Sysmon.exe', dest: '/opt/windows/other/Sysmon/Sysmon.exe' }
+    - { url: 'https://github.com/byronkg/SharpGPOAbuse/releases/download/1.0/SharpGPOAbuse.exe', dest: '/opt/windows/other/SharpGPOAbuse/SharpGPOAbuse.exe' }
+    - { url: 'https://raw.githubusercontent.com/rootSySdk/PowerGPOAbuse/master/PowerGPOAbuse.ps1', dest: '/opt/windows/other/PowerGPOAbuse/PowerGPOAbuse.ps1' }
+    - { url: 'https://raw.githubusercontent.com/fox-it/Invoke-ACLPwn/master/Invoke-ACLPwn.ps1', dest: '/opt/windows/other/Invoke-ACLPwn/Invoke-ACLPwn.ps1' }
 
-   # # - { url: 'https://raw.githubusercontent.com/GhostPack/KeeThief/master/KeeThief.exe', dest: '/opt/windows/KeeThief/KeeThief.exe' }
-    ## - { url: 'https://raw.githubusercontent.com/Tylous/Limelighter/master/Limelighter.exe', dest: '/opt/windows/Limelighter/Limelighter.exe' }
-    ## - { url: 'https://raw.githubusercontent.com/GhostPack/SharpGen/master/ConvertTo-SharpGen.ps1', dest: '/opt/windows/SharpGen/ConvertTo-SharpGen.ps1' }
-    ## - { url: 'https://raw.githubusercontent.com/QuarksLab/QuarksPwDump/master/QuarksPwDump.exe', dest: '/opt/windows/QuarksPwDump/QuarksPwDump.exe' }
+    - { url: 'https://raw.githubusercontent.com/AonCyberLabs/Windows-Exploit-Suggester/776bd91259c081588f99b5b0b9aa54e8c5fdf5ad/windows-exploit-suggester.py', dest: '/opt/windows/Priv-Esc/windows-exploit-suggester.py' }
+    - { url: 'https://raw.githubusercontent.com/bitsadmin/wesng/a67d7a74db7f68d6efee4b8dbd6293fc4b4bcf34/wes.py', dest: '/opt/windows/Priv-Esc/wes.py' }
+    - { url: 'https://raw.githubusercontent.com/pentestmonkey/windows-privesc-check/9f304fdf317536c41120f305f62a37bdeefddfdc/windows_privesc_check.py', dest: '/opt/windows/Priv-Esc/windows_privesc_check.py' }
+    - { url: 'https://github.com/pentestmonkey/windows-privesc-check/blob/9f304fdf317536c41120f305f62a37bdeefddfdc/windows-privesc-check2.exe', dest: '/opt/windows/Priv-Esc/windows-privesc-check2.exe' }
+    - { url: 'https://github.com/carlospolop/PEASS-ng/releases/latest/download/winPEAS.bat', dest: '/opt/windows/Priv-Esc/winPEAS.bat' }
+    - { url: 'https://github.com/carlospolop/PEASS-ng/releases/latest/download/winPEASany_ofs.exe', dest: '/opt/windows/Priv-Esc/winPEASany_ofs.exe' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/winPEAS.exe', dest: '/opt/windows/Priv-Esc/winPEAS.exe' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-winPEAS.ps1', dest: '/opt/windows/Priv-Esc/Invoke-winPEAS.ps1' }
+    - { url: 'https://raw.githubusercontent.com/itm4n/PrivescCheck/master/PrivescCheck.ps1', dest: '/opt/windows/Priv-Esc/PrivescCheck.ps1' }
+    - { url: 'https://github.com/sensepost/rattler/releases/latest/download/Rattler_32.exe', dest: '/opt/windows/Priv-Esc/Rattler_32.exe' }
+    - { url: 'https://github.com/sensepost/rattler/releases/latest/download/Rattler_x64.exe', dest: '/opt/windows/Priv-Esc/Rattler_x64.exe' }
+    - { url: 'https://raw.githubusercontent.com/BC-SECURITY/Empire/master/empire/server/data/module_source/privesc/PowerUp.ps1', dest: '/opt/windows/Priv-Esc/PowerUp.ps1' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/obfuscatedps/UpPower.ps1', dest: '/opt/windows/Priv-Esc/UpPower.ps1' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/Watson.exe', dest: '/opt/windows/Priv-Esc/Watson.exe' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-SharpWatson.ps1', dest: '/opt/windows/Priv-Esc/Invoke-SharpWatson.ps1' }
+    - { url: 'https://raw.githubusercontent.com/r3motecontrol/Ghostpack-CompiledBinaries/master/SharpUp.exe', dest: '/opt/windows/Priv-Esc/SharpUp.exe' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-SharpUp.ps1', dest: '/opt/windows/Priv-Esc/Invoke-SharpUp.ps1' }
 
-    - { url: 'https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Exfiltration/Invoke-Mimikatz.ps1', dest: '/opt/windows/Invoke-Mimikatz/Invoke-Mimikatz.ps1' }
-    - { url: 'https://github.com/AlessandroZ/LaZagne/releases/download/v2.4.6/LaZagne.exe', dest: '/opt/windows/LaZagne/LaZagne.exe' }
-    - { url: 'https://raw.githubusercontent.com/danielbohannon/Invoke-CradleCrafter/master/Invoke-CradleCrafter.ps1', dest: '/opt/windows/Invoke-CradleCrafter/Invoke-CradleCrafter.ps1' }
-    - { url: 'https://raw.githubusercontent.com/BC-SECURITY/Empire/main/empire/server/data/module_source/management/Invoke-Phant0m.ps1', dest: '/opt/windows/Invoke-Phant0m/Invoke-Phant0m.ps1' }
-    - { url: 'https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/ScriptModification/Out-CompressedDll.ps1', dest: '/opt/windows/Out-CompressedDll/Out-CompressedDll.ps1' }
-    - { url: 'https://live.sysinternals.com/Sysmon.exe', dest: '/opt/windows/Sysmon/Sysmon.exe' }
+    - { url: 'https://raw.githubusercontent.com/azmatt/windowsEnum/97aa162fded5e82ac208d258cecc033a019b578b/windowsEnum.bat', dest: '/opt/windows/Enumeration/windowsEnum.bat' }
+    - { url: 'https://raw.githubusercontent.com/r3motecontrol/Ghostpack-CompiledBinaries/master/Seatbelt.exe', dest: '/opt/windows/Enumeration/Seatbelt.exe' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Seatbelt.ps1', dest: '/opt/windows/Enumeration/Invoke-Seatbelt.ps1' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpAppLocker.exe', dest: '/opt/windows/Enumeration/SharpAppLocker.exe' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpEDRChecker.exe', dest: '/opt/windows/Enumeration/SharpEDRChecker.exe' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpPrinter.exe', dest: '/opt/windows/Enumeration/SharpPrinter.exe' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpReg.exe', dest: '/opt/windows/Enumeration/SharpReg.exe' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpWifiGrabber.exe', dest: '/opt/windows/Enumeration/SharpWifiGrabber.exe' }
+    - { url: 'https://raw.githubusercontent.com/samratashok/nishang/master/Gather/Get-WLAN-Keys.ps1', dest: '/opt/windows/Enumeration/Get-WLAN-Keys.ps1' }
+    - { url: 'https://raw.githubusercontent.com/cutaway-security/chaps/master/chaps.ps1', dest: '/opt/windows/Enumeration/chaps.ps1' }
+    - { url: 'https://raw.githubusercontent.com/cutaway-security/chaps/master/chaps-powersploit.ps1', dest: '/opt/windows/Enumeration/chaps-powersploit.ps1' }
 
-    - { url: 'https://github.com/byronkg/SharpGPOAbuse/releases/download/1.0/SharpGPOAbuse.exe', dest: '/opt/windows/SharpGPOAbuse/SharpGPOAbuse.exe' }
-    - { url: 'https://raw.githubusercontent.com/rootSySdk/PowerGPOAbuse/master/PowerGPOAbuse.ps1', dest: '/opt/windows/PowerGPOAbuse/PowerGPOAbuse.ps1' }
-    - { url: 'https://raw.githubusercontent.com/fox-it/Invoke-ACLPwn/master/Invoke-ACLPwn.ps1', dest: '/opt/windows/Invoke-ACLPwn/Invoke-ACLPwn.ps1' }
-    # - { url: 'https://raw.githubusercontent.com/outflanknl/ADFSpoof/master/ADFSpoof.exe', dest: '/opt/windows/ADFSpoof/ADFSpoof.exe' }
-    # see  the too links you find
+    - { url: 'https://github.com/gentilkiwi/mimikatz/releases/latest/download/mimikatz_trunk.zip', dest: '/opt/windows/Credentials-collection/mimikatz_trunk.zip' }
+    - { url: 'https://raw.githubusercontent.com/BC-SECURITY/Empire/master/empire/server/data/module_source/credentials/Invoke-Mimikatz.ps1', dest: '/opt/windows/Credentials-collection/Invoke-Mimikatz.ps1' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/obfuscatedps/loadmimi.ps1', dest: '/opt/windows/Credentials-collection/loadmimi.ps1' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/obfuscatedps/mimi.ps1', dest: '/opt/windows/Credentials-collection/mimi.ps1' }
+    - { url: 'https://raw.githubusercontent.com/r3motecontrol/Ghostpack-CompiledBinaries/master/SafetyKatz.exe', dest: '/opt/windows/Credentials-collection/SafetyKatz.exe' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-SafetyKatz.ps1', dest: '/opt/windows/Credentials-collection/Invoke-SafetyKatz.ps1' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/BetterSafetyKatz.exe', dest: '/opt/windows/Credentials-collection/BetterSafetyKatz.exe' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpKatz.exe', dest: '/opt/windows/Credentials-collection/SharpKatz.exe' }
+    - { url: 'https://raw.githubusercontent.com/BC-SECURITY/Empire/master/empire/server/data/module_source/collection/Out-Minidump.ps1', dest: '/opt/windows/Credentials-collection/Out-Minidump.ps1' }
+    - { url: 'https://raw.githubusercontent.com/r3motecontrol/Ghostpack-CompiledBinaries/master/SharpDump.exe', dest: '/opt/windows/Credentials-collection/SharpDump.exe' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpMiniDump.exe', dest: '/opt/windows/Credentials-collection/SharpMiniDump.exe' }
+    - { url: 'https://github.com/aas-n/spraykatz/archive/master.zip', dest: '/opt/windows/Credentials-collection/spraykatz.zip' }
+    - { url: 'https://raw.githubusercontent.com/BC-SECURITY/Empire/master/empire/server/data/module_source/credentials/Invoke-PowerDump.ps1', dest: '/opt/windows/Credentials-collection/Invoke-PowerDump.ps1' }
+    - { url: 'https://raw.githubusercontent.com/paranoidninja/Pandoras-Box/master/powershell/Invoke-InternalMonologue.ps1', dest: '/opt/windows/Credentials-collection/Invoke-InternalMonologue.ps1' }
+    - { url: 'https://raw.githubusercontent.com/Dionach/PassHunt/master/passhunt.py', dest: '/opt/windows/Credentials-collection/passhunt.py' }
+    - { url: 'https://raw.githubusercontent.com/Dionach/PassHunt/master/passhunt.exe', dest: '/opt/windows/Credentials-collection/passhunt.exe' }
+    - { url: 'https://github.com/SnaffCon/Snaffler/releases/latest/download/Snaffler.exe', dest: '/opt/windows/Credentials-collection/Snaffler.exe' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Credentials-collection/Invoke-Snaffler.ps1', dest: '/opt/windows/Credentials-collection/Invoke-Snaffler.ps1' }
+    - { url: 'https://raw.githubusercontent.com/GhostPack/KeeThief/master/PowerShell/KeeThief.ps1', dest: '/opt/windows/Credentials-collection/KeeThief.ps1' }
+    - { url: 'https://github.com/GossiTheDog/HiveNightmare/releases/latest/download/HiveNightmare.exe', dest: '/opt/windows/Credentials-collection/HiveNightmare.exe' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpChromium.exe', dest: '/opt/windows/Credentials-collection/SharpChromium.exe' }
+    - { url: 'https://raw.githubusercontent.com/Arvanaghi/SessionGopher/master/SessionGopher.ps1', dest: '/opt/windows/Credentials-collection/SessionGopher.ps1' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/obfuscatedps/segoph.ps1', dest: '/opt/windows/Credentials-collection/segoph.ps1' }
+    - { url: 'https://raw.githubusercontent.com/peewpw/Invoke-WCMDump/master/Invoke-WCMDump.ps1', dest: '/opt/windows/Credentials-collection/Invoke-WCMDump.ps1' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/obfuscatedps/DumpWCM.ps1', dest: '/opt/windows/Credentials-collection/DumpWCM.ps1' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/PowershellScripts/SafetyDump.ps1', dest: '/opt/windows/Credentials-collection/SafetyDump.ps1' }
+    - { url: 'https://raw.githubusercontent.com/BC-SECURITY/Empire/master/empire/server/data/module_source/privesc/Get-GPPPassword.ps1', dest: '/opt/windows/Credentials-collection/Get-GPPPassword.ps1' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpSecDump.exe', dest: '/opt/windows/Credentials-collection/SharpSecDump.exe' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-SharpSecDump.ps1', dest: '/opt/windows/Credentials-collection/Invoke-SharpSecDump.ps1' }
+    - { url: 'https://raw.githubusercontent.com/r3motecontrol/Ghostpack-CompiledBinaries/master/SharpDPAPI.exe', dest: '/opt/windows/Credentials-collection/SharpDPAPI.exe' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpCloud.exe', dest: '/opt/windows/Credentials-collection/SharpCloud.exe' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-SharpCloud.ps1', dest: '/opt/windows/Credentials-collection/Invoke-SharpCloud.ps1' }
+    - { url: 'https://raw.githubusercontent.com/BC-SECURITY/Empire/master/empire/server/data/module_source/credentials/dumpCredStore.ps1', dest: '/opt/windows/Credentials-collection/dumpCredStore.ps1' }
+    - { url: 'https://github.com/login-securite/DonPAPI/archive/master.zip', dest: '/opt/windows/Credentials-collection/DonPAPI.zip' }
+    - { url: 'https://raw.githubusercontent.com/helpsystems/nanodump/main/dist/nanodump.x64.exe', dest: '/opt/windows/Credentials-collection/nanodump.x64.exe' }
+    - { url: 'https://raw.githubusercontent.com/helpsystems/nanodump/main/dist/nanodump_ppl.x64.exe', dest: '/opt/windows/Credentials-collection/nanodump_ppl.x64.exe' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-NanoDump.ps1', dest: '/opt/windows/Credentials-collection/Invoke-NanoDump.ps1' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t//Creds/master/PowershellScripts/Invoke-Handlekatz.ps1', dest: '/opt/windows/Credentials-collection/Invoke-Handlekatz.ps1' }
+
+    - { url: 'https://raw.githubusercontent.com/besimorhino/powercat/master/powercat.ps1', dest: '/opt/windows/Remote-connection/powercat.ps1' }
+    - { url: 'https://raw.githubusercontent.com/samratashok/nishang/master/Shells/Invoke-PowerShellTcp.ps1', dest: '/opt/windows/Remote-connection/Invoke-PowerShellTcp.ps1' }
+    - { url: 'https://raw.githubusercontent.com/samratashok/nishang/master/Backdoors/Set-RemoteWMI.ps1', dest: '/opt/windows/Remote-connection/Set-RemoteWMI.ps1' }
+    - { url: 'https://raw.githubusercontent.com/samratashok/nishang/master/Backdoors/Set-RemotePSRemoting.ps1', dest: '/opt/windows/Remote-connection/Set-RemotePSRemoting.ps1' }
+    - { url: 'https://raw.githubusercontent.com/Mr-Un1k0d3r/SCShell/master/SCShell.exe', dest: '/opt/windows/Remote-connection/SCShell.exe' }
+    - { url: 'https://raw.githubusercontent.com/Mr-Un1k0d3r/SCShell/master/scshell.py', dest: '/opt/windows/Remote-connection/scshell.py' }
+    - { url: 'https://raw.githubusercontent.com/BC-SECURITY/Empire/master/empire/server/data/module_source/lateral_movement/Invoke-DCOM.ps1', dest: '/opt/windows/Remote-connection/Invoke-DCOM.ps1' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpCOM.exe', dest: '/opt/windows/Remote-connection/SharpCOM.exe' }
+    - { url: 'https://raw.githubusercontent.com/Alamot/code-snippets/master/mssql/mssql_shell.py', dest: '/opt/windows/Remote-connection/mssql_shell.py' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpExec.exe', dest: '/opt/windows/Remote-connection/SharpExec.exe' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/Sharp-SMBExec.exe', dest: '/opt/windows/Remote-connection/Sharp-SMBExec.exe' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpNoPSExec.exe', dest: '/opt/windows/Remote-connection/SharpNoPSExec.exe' }
+    - { url: 'https://raw.githubusercontent.com/r3motecontrol/Ghostpack-CompiledBinaries/master/SharpWMI.exe', dest: '/opt/windows/Remote-connection/SharpWMI.exe' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpRDP.exe', dest: '/opt/windows/Remote-connection/SharpRDP.exe' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpNamedPipePTH.exe', dest: '/opt/windows/Remote-connection/SharpNamedPipePTH.exe' }
+
+    - { url: 'https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/AntivirusBypass/Find-AVSignature.ps1', dest: '/opt/windows/Evasion-and-bypass/Find-AVSignature.ps1' }
+    - { url: 'https://github.com/danielbohannon/Invoke-Obfuscation/archive/master.zip', dest: '/opt/windows/Evasion-and-bypass/Invoke-Obfuscation.zip' }
+    - { url: 'https://raw.githubusercontent.com/padovah4ck/PSByPassCLM/93f9a248064b3c6d474894ed057afdd8a2b736f9/PSBypassCLM/PSBypassCLM/bin/x64/Debug/PsBypassCLM.exe', dest: '/opt/windows/Evasion-and-bypass/PsBypassCLM.exe' }
+    - { url: 'https://raw.githubusercontent.com/dafthack/HostRecon/master/HostRecon.ps1', dest: '/opt/windows/Evasion-and-bypass/HostRecon.ps1' }
+    - { url: 'https://raw.githubusercontent.com/BC-SECURITY/Empire/master/empire/server/data/module_source/management/Invoke-ReflectivePEInjection.ps1', dest: '/opt/windows/Evasion-and-bypass/Invoke-ReflectivePEInjection.ps1' }
+    - { url: 'https://raw.githubusercontent.com/Cn33liz/MSBuildShell/master/MSBuildShell.csproj', dest: '/opt/windows/Evasion-and-bypass/MSBuildShell.csproj' }
+    - { url: 'https://github.com/RythmStick/AMSITrigger/releases/latest/download/AmsiTrigger_x64.exe', dest: '/opt/windows/Evasion-and-bypass/AmsiTrigger_x64.exe' }
+    - { url: 'https://github.com/RythmStick/AMSITrigger/releases/latest/download/AmsiTrigger_x86.exe', dest: '/opt/windows/Evasion-and-bypass/AmsiTrigger_x86.exe' }
+    - { url: 'https://github.com/Arvanaghi/CheckPlease/archive/refs/heads/master.zip', dest: '/opt/windows/Evasion-and-bypass/CheckPlease.zip' }
+    - { url: 'https://raw.githubusercontent.com/tokyoneon/Chimera/master/chimera.sh', dest: '/opt/windows/Evasion-and-bypass/chimera.sh' }
+    - { url: 'https://github.com/CBHue/PyFuscation/archive/master.zip', dest: '/opt/windows/Evasion-and-bypass/PyFuscation.zip' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/Invoke-Sharpcradle/master/Invoke-Sharpcradle.ps1', dest: '/opt/windows/Evasion-and-bypass/Invoke-Sharpcradle.ps1' }
+    - { url: 'https://raw.githubusercontent.com/BC-SECURITY/Empire/master/empire/server/data/module_source/privesc/Invoke-BypassUAC.ps1', dest: '/opt/windows/Evasion-and-bypass/Invoke-BypassUAC.ps1' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpBypassUAC.exe', dest: '/opt/windows/Evasion-and-bypass/SharpBypassUAC.exe' }
+    - { url: 'https://raw.githubusercontent.com/samratashok/nishang/master/Escalation/Invoke-PsUACme.ps1', dest: '/opt/windows/Evasion-and-bypass/Invoke-PsUACme.ps1' }
+    - { url: 'https://gist.githubusercontent.com/cobbr/d8072d730b24fbae6ffe3aed8ca9c407/raw/fa6dcb69b1f563788af9f3a11a7b07bae34fa8ec/ScriptBlockLogBypass.ps1', dest: '/opt/windows/Evasion-and-bypass/ScriptBlockLogBypass.ps1' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-SharpHandler.ps1', dest: '/opt/windows/Evasion-and-bypass/Invoke-SharpHandler.ps1' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpHandler.exe', dest: '/opt/windows/Evasion-and-bypass/SharpHandler.exe' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpCrashEventLog.exe', dest: '/opt/windows/Evasion-and-bypass/SharpCrashEventLog.exe' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/Shhmon.exe', dest: '/opt/windows/Evasion-and-bypass/Shhmon.exe' }
+    - { url: 'https://raw.githubusercontent.com/sparcflow/GibsonBird/master/chapter4/applocker-bypas-checker.ps1', dest: '/opt/windows/Evasion-and-bypass/applocker-bypas-checker.ps1' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/PowershellScripts/Invoke-BlockETW.ps1', dest: '/opt/windows/Evasion-and-bypass/Invoke-BlockETW.ps1' }
+    - { url: 'https://raw.githubusercontent.com/h4wkst3r/InvisibilityCloak/main/InvisibilityCloak.py', dest: '/opt/windows/Evasion-and-bypass/InvisibilityCloak.py' }
+
+    - { url: 'https://github.com/mdsecactivebreach/SharpShooter/archive/master.zip', dest: '/opt/windows/Macro-and-WScript/SharpShooter.zip' }
+    - { url: 'https://github.com/fireeye/OfficePurge/releases/latest/download/OfficePurge.exe', dest: '/opt/windows/Macro-and-WScript/OfficePurge.exe' }
+    - { url: 'https://github.com/sevagas/macro_pack/releases/latest/download/macro_pack.exe', dest: '/opt/windows/Macro-and-WScript/macro_pack.exe' }
+    - { url: 'https://github.com/tyranid/DotNetToJScript/archive/master.zip', dest: '/opt/windows/Macro-and-WScript/DotNetToJScript.zip' }
+    - { url: 'https://raw.githubusercontent.com/DidierStevens/DidierStevensSuite/master/file2vbscript.py', dest: '/opt/windows/Macro-and-WScript/file2vbscript.py' }
+    - { url: 'https://raw.githubusercontent.com/DidierStevens/DidierStevensSuite/master/oledump.py', dest: '/opt/windows/Macro-and-WScript/oledump.py' }
+
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/WinPwn/master/WinPwn.ps1', dest: '/opt/windows/SwissArmyKnife/WinPwn.ps1' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/WinPwn/master/Offline_WinPwn.ps1', dest: '/opt/windows/SwissArmyKnife/Offline_WinPwn.ps1' }
+    - { url: 'https://raw.githubusercontent.com/mishmashclone/Flangvik-SharpCollection/master/NetFramework_4.7_Any/SharpMapExec.exe', dest: '/opt/windows/SwissArmyKnife/SharpMapExec.exe' }
+    
+    - { url: 'https://raw.githubusercontent.com/BC-SECURITY/Empire/master/empire/server/data/module_source/lateral_movement/Invoke-InveighRelay.ps1', dest: '/opt/windows/Inveigh-NTLM-relay/Invoke-InveighRelay.ps1' }
+    - { url: 'https://raw.githubusercontent.com/Kevin-Robertson/Inveigh/master/Inveigh-Relay.ps1', dest: '/opt/windows/Inveigh-NTLM-relay/Inveigh-Relay.ps1' }
+    - { url: 'https://raw.githubusercontent.com/Kevin-Robertson/Inveigh/master/Inveigh.ps1', dest: '/opt/windows/Inveigh-NTLM-relay/Inveigh.ps1' }
+    - { url: 'https://raw.githubusercontent.com/BC-SECURITY/Empire/master/empire/server/data/module_source/collection/Invoke-Inveigh.ps1', dest: '/opt/windows/Inveigh-NTLM-relay/Invoke-Inveigh.ps1' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/Inveigh.exe', dest: '/opt/windows/Inveigh-NTLM-relay/Inveigh.exe' }
+    - { url: 'https://github.com/Greenwolf/ntlm_theft/archive/refs/heads/master.zip', dest: '/opt/windows/Inveigh-NTLM-relay/ntlm_theft.zip' }
+    - { url: 'https://github.com/CCob/lsarelayx/releases/latest/download/lsarelayx_0.1_ALPHA.zip', dest: '/opt/windows/Inveigh-NTLM-relay/lsarelayx.zip' }
+
+    - { url: 'https://raw.githubusercontent.com/cddmp/enum4linux-ng/master/enum4linux-ng.py', dest: '/opt/windows/SMB-Enum/enum4linux-ng.py' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/PowershellScripts/Invoke-SMBNegotiate.ps1', dest: '/opt/windows/SMB-Enum/Invoke-SMBNegotiate.ps1' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpShares.exe', dest: '/opt/windows/SMB-Enum/SharpShares.exe' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpDir.exe', dest: '/opt/windows/SMB-Enum/SharpDir.exe' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpSearch.exe', dest: '/opt/windows/SMB-Enum/SharpSearch.exe' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SauronEye.exe', dest: '/opt/windows/SMB-Enum/SauronEye.exe' }
+    - { url: 'https://raw.githubusercontent.com/NetSPI/PowerHuntShares/main/PowerHuntShares.psm1', dest: '/opt/windows/SMB-Enum/PowerHuntShares.psm1' }
+
+    - { url: 'https://raw.githubusercontent.com/3ndG4me/AutoBlue-MS17-010/master/zzz_exploit.py', dest: '/opt/windows/Exploits/zzz_exploit.py' }
+    - { url: 'https://raw.githubusercontent.com/3ndG4me/AutoBlue-MS17-010/master/mysmb.py', dest: '/opt/windows/Exploits/mysmb.py' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/PowershellScripts/ms17-10.ps1', dest: '/opt/windows/Exploits/ms17-10.ps1' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/PowershellScripts/bluekeepscan.ps1', dest: '/opt/windows/Exploits/bluekeepscan.ps1' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/SpoolerScanner/master/SpoolerScan.ps1', dest: '/opt/windows/Exploits/SpoolerScan.ps1' }
+    - { url: 'https://github.com/itm4n/PrintSpoofer/releases/latest/download/PrintSpoofer64.exe', dest: '/opt/windows/Exploits/PrintSpoofer64.exe' }
+    - { url: 'https://github.com/itm4n/PrintSpoofer/releases/latest/download/PrintSpoofer32.exe', dest: '/opt/windows/Exploits/PrintSpoofer32.exe' }
+    - { url: 'https://raw.githubusercontent.com/dievus/printspoofer/master/PrintSpoofer.exe', dest: '/opt/windows/Exploits/PrintSpoofer.exe' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/obfuscatedps/printspoof_interactive.ps1', dest: '/opt/windows/Exploits/printspoof_interactive.ps1' }
+    - { url: 'https://raw.githubusercontent.com/topotam/PetitPotam/main/PetitPotam.exe', dest: '/opt/windows/Exploits/PetitPotam.exe' }
+    - { url: 'https://raw.githubusercontent.com/topotam/PetitPotam/main/PetitPotam.py', dest: '/opt/windows/Exploits/PetitPotam.py' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/PowershellScripts/Invoke-Petitpotam.ps1', dest: '/opt/windows/Exploits/Invoke-Petitpotam.ps1' }
+    - { url: 'https://raw.githubusercontent.com/ShutdownRepo/ShadowCoerce/main/shadowcoerce.py', dest: '/opt/windows/Exploits/shadowcoerce.py' }
+    - { url: 'https://raw.githubusercontent.com/Wh04m1001/DFSCoerce/main/dfscoerce.py', dest: '/opt/windows/Exploits/dfscoerce.py' }
+    - { url: 'https://raw.githubusercontent.com/cube0x0/CVE-2021-1675/main/CVE-2021-1675.py', dest: '/opt/windows/Exploits/CVE-2021-1675.py' }
+    - { url: 'https://raw.githubusercontent.com/calebstewart/CVE-2021-1675/main/CVE-2021-1675.ps1', dest: '/opt/windows/Exploits/CVE-2021-1675.ps1' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-SharpPrintNightmare.ps1', dest: '/opt/windows/Exploits/Invoke-SharpPrintNightmare.ps1' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/DeployPrinterNightmare.exe', dest: '/opt/windows/Exploits/DeployPrinterNightmare.exe' }
+    - { url: 'https://github.com/Hackndo/WebclientServiceScanner/archive/refs/heads/master.zip', dest: '/opt/windows/Exploits/WebclientServiceScanner.zip' }
+    - { url: 'https://raw.githubusercontent.com/SecuraBV/CVE-2020-1472/master/zerologon_tester.py', dest: '/opt/windows/Exploits/zerologon_tester.py' }
+    - { url: 'https://raw.githubusercontent.com/dirkjanm/CVE-2020-1472/master/cve-2020-1472-exploit.py', dest: '/opt/windows/Exploits/cve-2020-1472-exploit.py' }
+    - { url: 'https://raw.githubusercontent.com/dirkjanm/CVE-2020-1472/master/restorepassword.py', dest: '/opt/windows/Exploits/cve-2020-1472-restorepassword.py' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpZeroLogon.exe', dest: '/opt/windows/Exploits/SharpZeroLogon.exe' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t//Creds/master/PowershellScripts/Invoke-Zerologon.ps1', dest: '/opt/windows/Exploits/Invoke-Zerologon.ps1' }
+    - { url: 'https://gist.githubusercontent.com/3xocyte/cfaf8a34f76569a8251bde65fe69dccc/raw/7c7f09ea46eff4ede636f69c00c6dfef0541cd14/dementor.py', dest: '/opt/windows/Exploits/dementor.py' }
+    - { url: 'https://github.com/ohpe/juicy-potato/releases/latest/download/JuicyPotato.exe', dest: '/opt/windows/Exploits/JuicyPotato.exe' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/obfuscatedps/juicypotato64.ps1', dest: '/opt/windows/Exploits/juicypotato64.ps1' }
+    - { url: 'https://github.com/antonioCoco/RoguePotato/releases/latest/download/RoguePotato.zip', dest: '/opt/windows/Exploits/RoguePotato.zip' }
+    - { url: 'https://github.com/antonioCoco/JuicyPotatoNG/releases/latest/download/JuicyPotatoNG.zip', dest: '/opt/windows/Exploits/JuicyPotatoNG.zip' }
+    - { url: 'https://raw.githubusercontent.com/Kevin-Robertson/Tater/master/Tater.ps1', dest: '/opt/windows/Exploits/Tater.ps1' }
+    - { url: 'https://raw.githubusercontent.com/foxglovesec/Potato/master/source/Potato/Potato/bin/Release/Potato.exe', dest: '/opt/windows/Exploits/Potato.exe' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SweetPotato.exe', dest: '/opt/windows/Exploits/SweetPotato.exe' }
+    - { url: 'https://gist.github.com/S3cur3Th1sSh1t/0ed2fb0b5ae485b68cbc50e89581baa6/raw/4f0ab724a11c8984c29097250b1a8263e013d183/Invoke-noPac.ps1', dest: '/opt/windows/Exploits/Invoke-noPac.ps1' }
+    - { url: 'https://github.com/WazeHell/sam-the-admin/archive/master.zip', dest: '/opt/windows/Exploits/sam-the-admin.zip' }
+    - { url: 'https://github.com/Ridter/noPac/archive/master.zip', dest: '/opt/windows/Exploits/noPac.zip' }
+    - { url: 'https://raw.githubusercontent.com/ly4k/Pachine/main/pachine.py', dest: '/opt/windows/Exploits/pachine.py' }
+    - { url: 'https://raw.githubusercontent.com/zyn3rgy/LdapRelayScan/main/LdapRelayScan.py', dest: '/opt/windows/Exploits/LdapRelayScan.py' }
+    - { url: 'https://raw.githubusercontent.com/ly4k/SpoolFool/main/SpoolFool.ps1', dest: '/opt/windows/Exploits/SpoolFool.ps1' }
+    - { url: 'https://raw.githubusercontent.com/ly4k/SpoolFool/main/SpoolFool.exe', dest: '/opt/windows/Exploits/SpoolFool.exe' }
+    - { url: 'https://raw.githubusercontent.com/ly4k/SpoolFool/main/AddUser.dll', dest: '/opt/windows/Exploits/SpoolFool_AddUser.dll' }
+    - { url: 'https://raw.githubusercontent.com/dirkjanm/PrivExchange/master/privexchange.py', dest: '/opt/windows/Exploits/privexchange.py' }
+    - { url: 'https://raw.githubusercontent.com/dirkjanm/PrivExchange/master/httpattack.py', dest: '/opt/windows/Exploits/httpattack.py' }
+    - { url: 'https://raw.githubusercontent.com/G0ldenGunSec/PowerPriv/master/powerPriv.ps1', dest: '/opt/windows/Exploits/powerPriv.ps1' }
+    - { url: 'https://raw.githubusercontent.com/fox-it/cve-2019-1040-scanner/master/scan.py', dest: '/opt/windows/Exploits/cve-2019-1040-scan.py' }
+    - { url: 'https://raw.githubusercontent.com/Bdenneu/CVE-2022-33679/main/CVE-2022-33679.py', dest: '/opt/windows/Exploits/CVE-2022-33679.py' }
+
+    - { url: 'https://raw.githubusercontent.com/npocmaka/batch.scripts/master/hybrids/iexpress/bat2exeIEXP.bat', dest: '/opt/windows/Windows-Misc-Utilities/bat2exeIEXP.bat' }
+    - { url: 'https://raw.githubusercontent.com/npocmaka/batch.scripts/master/hybrids/.net/bat2exe.bat', dest: '/opt/windows/Windows-Misc-Utilities/bat2exe.bat' }
+    - { url: 'https://raw.githubusercontent.com/besimorhino/Pause-Process/master/pause-process.ps1', dest: '/opt/windows/Windows-Misc-Utilities/pause-process.ps1' }
+    - { url: 'https://raw.githubusercontent.com/decoder-it/psgetsystem/master/psgetsys.ps1', dest: '/opt/windows/Windows-Misc-Utilities/psgetsys.ps1' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/daadda8791fd9b45401cef4809953ab4d67b07e9/PowershellScripts/PPIDSpoof.ps1', dest: '/opt/windows/Windows-Misc-Utilities/PPIDSpoof.ps1' }
+    - { url: 'https://github.com/deadlydog/Invoke-MsBuild/releases/latest/download/Invoke-MsBuild.psm1', dest: '/opt/windows/Windows-Misc-Utilities/Invoke-MsBuild.psm1' }
+    - { url: 'https://raw.githubusercontent.com/BC-SECURITY/Empire/master/empire/server/data/module_source/collection/Invoke-NinjaCopy.ps1', dest: '/opt/windows/Windows-Misc-Utilities/Invoke-NinjaCopy.ps1' }
+    - { url: 'https://raw.githubusercontent.com/r3motecontrol/Ghostpack-CompiledBinaries/master/LockLess.exe', dest: '/opt/windows/Windows-Misc-Utilities/LockLess.exe' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/obfuscatedps/Run-SecurePS.ps1', dest: '/opt/windows/Windows-Misc-Utilities/Run-SecurePS.ps1' }
+    - { url: 'https://raw.githubusercontent.com/antonioCoco/RunasCs/master/Invoke-RunasCs.ps1', dest: '/opt/windows/Windows-Misc-Utilities/Invoke-RunasCs.ps1' }
+    - { url: 'https://github.com/antonioCoco/RunasCs/releases/latest/download/RunasCs.zip', dest: '/opt/windows/Windows-Misc-Utilities/RunasCs.zip' }
+    - { url: 'https://raw.githubusercontent.com/mubix/IOXIDResolver/master/IOXIDResolver.py', dest: '/opt/windows/Windows-Misc-Utilities/IOXIDResolver.py' }
+    - { url: 'https://github.com/Flangvik/SharpCollection/raw/master/NetFramework_4.7_Any/SharpSCCM.exe', dest: '/opt/windows/Windows-Misc-Utilities/SharpSCCM.exe' }
+    - { url: 'https://raw.githubusercontent.com/tennc/webshell/master/asp/webshell.asp', dest: '/opt/windows/Windows-Misc-Utilities/webshell.asp' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpWebServer.exe', dest: '/opt/windows/Windows-Misc-Utilities/SharpWebServer.exe' }
+    - { url: 'https://raw.githubusercontent.com/FSecureLABS/incognito/394545ffb844afcc18e798737cbd070ff3a4eb29/incognito.exe', dest: '/opt/windows/Windows-Misc-Utilities/Incognito.exe' }
+    - { url: 'https://github.com/GoSecure/pywsus/archive/refs/heads/master.zip', dest: '/opt/windows/Windows-Misc-Utilities/pywsus.zip' }
+    - { url: 'https://raw.githubusercontent.com/wavestone-cdt/powerpxe/master/PowerPXE.ps1', dest: '/opt/windows/Windows-Misc-Utilities/PowerPXE.ps1' }
+
+    - { url: 'https://raw.githubusercontent.com/samratashok/ADModule/master/Microsoft.ActiveDirectory.Management.dll', dest: '/opt/windows/AD-Module/Microsoft.ActiveDirectory.Management.dll' }
+
+    - { url: 'https://raw.githubusercontent.com/BloodHoundAD/BloodHound/master/Collectors/SharpHound.exe', dest: '/opt/windows/SharpHound/AD-Enum/SharpHound.exe' }
+    - { url: 'https://raw.githubusercontent.com/BloodHoundAD/BloodHound/master/Collectors/SharpHound.ps1', dest: '/opt/windows/SharpHound/AD-Enum/SharpHound.ps1' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-SharpHound4.ps1', dest: '/opt/windows/AD-Enum/Invoke-SharpHound4.ps1' }
+    - { url: 'https://raw.githubusercontent.com/adrecon/ADRecon/master/ADRecon.ps1', dest: '/opt/windows/AD-Enum/ADRecon.ps1' }
+    - { url: 'https://github.com/Flangvik/SharpCollection/raw/master/NetFramework_4.7_Any/Grouper2.exe', dest: '/opt/windows/AD-Enum/Grouper2.exe' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Grouper2.ps1', dest: '/opt/windows/AD-Enum/Invoke-Grouper2.ps1' }
+    - { url: 'https://github.com/Flangvik/SharpCollection/raw/master/NetFramework_4.7_Any/Group3r.exe', dest: '/opt/windows/AD-Enum/Group3r.exe' }
+    - { url: 'https://github.com/tevora-threat/SharpView/raw/master/Compiled/SharpView.exe', dest: '/opt/windows/AD-Enum/SharpView.exe' }
+    - { url: 'https://raw.githubusercontent.com/BC-SECURITY/Empire/master/empire/server/data/module_source/situational_awareness/network/powerview.ps1', dest: '/opt/windows/AD-Enum/PowerView.ps1' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/ADSearch.exe', dest: '/opt/windows/AD-Enum/ADSearch.exe' }
+    - { url: 'https://raw.githubusercontent.com/Mr-Un1k0d3r/ADHuntTool/main/ADHuntUser.exe', dest: '/opt/windows/AD-Enum/ADHuntUser.exe' }
+    - { url: 'https://raw.githubusercontent.com/Mr-Un1k0d3r/ADHuntTool/main/ADHuntTool.exe', dest: '/opt/windows/AD-Enum/ADHuntTool.exe' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/ADCollector.exe', dest: '/opt/windows/AD-Enum/ADCollector.exe' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/ADFSDump.exe', dest: '/opt/windows/AD-Enum/ADFSDump.exe' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/TruffleSnout.exe', dest: '/opt/windows/AD-Enum/TruffleSnout.exe' }
+
+    - { url: 'https://raw.githubusercontent.com/canix1/ADACLScanner/master/ADACLScan.ps1', dest: '/opt/windows/ACL/ADACLScan.ps1' }
+    - { url: 'https://github.com/cyberark/ACLight/archive/master.zip', dest: '/opt/windows/ACL/ACLight.zip' }
+    - { url: 'https://raw.githubusercontent.com/cyberark/ACLight/master/ACLight2.ps1', dest: '/opt/windows/ACL/ACLight2.ps1' }
+    - { url: 'https://raw.githubusercontent.com/HarmJ0y/DAMP/master/Add-RemoteRegBackdoor.ps1', dest: '/opt/windows/ACL/Add-RemoteRegBackdoor.ps1' }
+    - { url: 'https://raw.githubusercontent.com/HarmJ0y/DAMP/master/RemoteHashRetrieval.ps1', dest: '/opt/windows/ACL/RemoteHashRetrieval.ps1' }
+
+    - { url: 'https://github.com/bats3c/ADCSPwn/releases/latest/download/ADCSPwn.exe', dest: '/opt/windows/ADCS/ADCSPwn.exe' }
+    - { url: 'https://raw.githubusercontent.com/ShutdownRepo/pywhisker/main/pywhisker.py', dest: '/opt/windows/ADCS/pywhisker.py' }
+    - { url: 'https://raw.githubusercontent.com/dirkjanm/PKINITtools/master/getnthash.py', dest: '/opt/windows/ADCS/getnthash.py' }
+    - { url: 'https://raw.githubusercontent.com/dirkjanm/PKINITtools/master/gettgtpkinit.py', dest: '/opt/windows/ADCS/gettgtpkinit.py' }
+    - { url: 'https://raw.githubusercontent.com/dirkjanm/PKINITtools/master/gets4uticket.py', dest: '/opt/windows/ADCS/gets4uticket.py' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/ForgeCert.exe', dest: '/opt/windows/ADCS/ForgeCert.exe' }
+    - { url: 'https://github.com/GhostPack/PSPKIAudit/archive/master.zip', dest: '/opt/windows/ADCS/PSPKIAudit.zip' }
+    - { url: 'https://raw.githubusercontent.com/r3motecontrol/Ghostpack-CompiledBinaries/master/Certify.exe', dest: '/opt/windows/ADCS/Certify.exe' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Certify.ps1', dest: '/opt/windows/ADCS/Invoke-Certify.ps1' }
+    - { url: 'https://raw.githubusercontent.com/AlmondOffSec/PassTheCert/main/Python/passthecert.py', dest: '/opt/windows/ADCS/passthecert.py' }
+    - { url: 'https://raw.githubusercontent.com/fortalice/modifyCertTemplate/master/modifyCertTemplate.py', dest: '/opt/windows/ADCS/modifyCertTemplate.py' }
+    
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpGPOAbuse.exe', dest: '/opt/windows/GPO/SharpGPOAbuse.exe' }
+    - { url: 'https://raw.githubusercontent.com/PowerShell/GPRegistryPolicyParser/master/GPRegistryPolicyParser.psm1', dest: '/opt/windows/GPO/GPRegistryPolicyParser.psm1' }
+    - { url: 'https://github.com/Hackndo/pyGPOAbuse/archive/master.zip', dest: '/opt/windows/GPO/pyGPOAbuse.zip' }
+
+    - { url: 'https://raw.githubusercontent.com/HarmJ0y/ASREPRoast/master/ASREPRoast.ps1', dest: '/opt/windows/Kerberos/ASREPRoast.ps1' }
+    - { url: 'https://raw.githubusercontent.com/nidem/kerberoast/master/GetUserSPNs.ps1', dest: '/opt/windows/Kerberos/GetUserSPNs.ps1' }
+    - { url: 'https://github.com/gentilkiwi/kekeo/releases/latest/download/kekeo.zip', dest: '/opt/windows/Kerberos/kekeo.zip' }
+    - { url: 'https://raw.githubusercontent.com/Zer1t0/ticket_converter/master/ticket_converter.py', dest: '/opt/windows/Kerberos/ticket_converter.py' }
+    - { url: 'https://raw.githubusercontent.com/ShutdownRepo/targetedKerberoast/main/targetedKerberoast.py', dest: '/opt/windows/Kerberos/targetedKerberoast.py' }
+    - { url: 'https://raw.githubusercontent.com/mubix/pykek/master/ms14-068.py', dest: '/opt/windows/Kerberos/ms14-068.py' }
+    - { url: 'https://raw.githubusercontent.com/BC-SECURITY/Empire/master/empire/server/data/module_source/credentials/Invoke-Kerberoast.ps1', dest: '/opt/windows/Kerberos/Invoke-Kerberoast.ps1' }
+    - { url: 'https://raw.githubusercontent.com/r3motecontrol/Ghostpack-CompiledBinaries/master/SharpRoast.exe', dest: '/opt/windows/Kerberos/SharpRoast.exe' }
+    - { url: 'https://raw.githubusercontent.com/r3motecontrol/Ghostpack-CompiledBinaries/master/Rubeus.exe', dest: '/opt/windows/Kerberos/Rubeus.exe' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Rubeus.ps1', dest: '/opt/windows/Kerberos/Invoke-Rubeus.ps1' }
+    - { url: 'https://github.com/Flangvik/SharpCollection/raw/master/NetFramework_4.7_Any/KrbRelay.exe', dest: '/opt/windows/Kerberos/KrbRelay.exe' }
+    - { url: 'https://github.com/Flangvik/SharpCollection/raw/master/NetFramework_4.7_Any/KrbRelayUp.exe', dest: '/opt/windows/Kerberos/KrbRelayUp.exe' }
+
+    - { url: 'https://raw.githubusercontent.com/dafthack/MailSniper/master/MailSniper.ps1', dest: '/opt/windows/Mail-Users-Web/MailSniper.ps1' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SearchOutlook.exe', dest: '/opt/windows/Mail-Users-Web/SearchOutlook.exe' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpSniper.exe', dest: '/opt/windows/Mail-Users-Web/SharpSniper.exe' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/StickyNotesExtract.exe', dest: '/opt/windows/Mail-Users-Web/StickyNotesExtract.exe' }
+    - { url: 'https://raw.githubusercontent.com/BC-SECURITY/Empire/master/empire/server/data/module_source/collection/Get-ChromeDump.ps1', dest: '/opt/windows/Mail-Users-Web/Get-ChromeDump.ps1' }
+    - { url: 'https://raw.githubusercontent.com/r3motecontrol/Ghostpack-CompiledBinaries/master/SharpChrome.exe', dest: '/opt/windows/Mail-Users-Web/SharpChrome.exe' }
+    - { url: 'https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Sharpweb.ps1', dest: '/opt/windows/Mail-Users-Web/Invoke-Sharpweb.ps1' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpCookieMonster.exe', dest: '/opt/windows/Mail-Users-Web/SharpCookieMonster.exe' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/ThunderFox.exe', dest: '/opt/windows/Mail-Users-Web/ThunderFox.exe' }
+    - { url: 'https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/collection/Get-ClipboardContents.ps1', dest: '/opt/windows/Mail-Users-Web/Get-ClipboardContents.ps1' }
+    - { url: 'https://raw.githubusercontent.com/obscuresec/PowerShell/master/Get-TimedScreenshot', dest: '/opt/windows/Mail-Users-Web/Get-TimedScreenshot.ps1' }
+    - { url: 'https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Exfiltration/Get-Keystrokes.ps1', dest: '/opt/windows/Mail-Users-Web/Get-Keystrokes.ps1' }
+    
+    - { url: 'https://raw.githubusercontent.com/leoloobeek/LAPSToolkit/master/LAPSToolkit.ps1', dest: '/opt/windows/LAPS-gMSA/LAPSToolkit.ps1' }
+    - { url: 'https://raw.githubusercontent.com/n00py/LAPSDumper/main/laps.py', dest: '/opt/windows/LAPS-gMSA/laps.py' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpLAPS.exe', dest: '/opt/windows/LAPS-gMSA/SharpLAPS.exe' }
+    - { url: 'https://raw.githubusercontent.com/micahvandeusen/gMSADumper/main/gMSADumper.py', dest: '/opt/windows/LAPS-gMSA/gMSADumper.py' }
+
+    - { url: 'https://raw.githubusercontent.com/dafthack/DomainPasswordSpray/master/DomainPasswordSpray.ps1', dest: '/opt/windows/PasswordSpray/DomainPasswordSpray.ps1' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpSpray.exe', dest: '/opt/windows/PasswordSpray/SharpSpray.exe' }
+    - { url: 'https://raw.githubusercontent.com/jnqpblc/Misc-PowerShell/master/PowerSpray.ps1', dest: '/opt/windows/PasswordSpray/PowerSpray.ps1' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpHose.exe', dest: '/opt/windows/PasswordSpray/SharpHose.exe' }
+    
+    - { url: 'https://raw.githubusercontent.com/tothi/rbcd-attack/master/rbcd.py', dest: '/opt/windows/Delegation/rbcd.py' }
+    - { url: 'https://gist.githubusercontent.com/3xocyte/4ea8e15332e5008581febdb502d0139c/raw/b3010b795ac55f8f6c72692256a5150884b058fb/rbcd_relay.py', dest: '/opt/windows/Delegation/rbcd_relay.py' }
+    - { url: 'https://raw.githubusercontent.com/dirkjanm/krbrelayx/master/printerbug.py', dest: '/opt/windows/Delegation/printerbug.py' }
+    - { url: 'https://raw.githubusercontent.com/dirkjanm/krbrelayx/master/dnstool.py', dest: '/opt/windows/Delegation/dnstool.py' }
+    - { url: 'https://raw.githubusercontent.com/dirkjanm/krbrelayx/master/addspn.py', dest: '/opt/windows/Delegation/addspn.py' }
+    - { url: 'https://raw.githubusercontent.com/dirkjanm/krbrelayx/master/krbrelayx.py', dest: '/opt/windows/Delegation/krbrelayx.py' }
+
+    - { url: 'https://raw.githubusercontent.com/Sagar-Jangam/DNSUpdate/master/DNSUpdate.py', dest: '/opt/windows/DNS/DNSUpdate.py' }
+    - { url: 'https://raw.githubusercontent.com/Kevin-Robertson/Powermad/master/Powermad.ps1', dest: '/opt/windows/DNS/Powermad.ps1' }
+    - { url: 'https://raw.githubusercontent.com/Kevin-Robertson/Powermad/master/Invoke-DNSUpdate.ps1', dest: '/opt/windows/DNS/Invoke-DNSUpdate.ps1' }
+
+    - { url: 'https://raw.githubusercontent.com/BC-SECURITY/Empire/master/empire/server/data/module_source/credentials/Invoke-DCSync.ps1', dest: '/opt/windows/Invoke-DCSync.ps1' }
+    
+    - { url: 'https://github.com/p0dalirius/LDAPmonitor/releases/latest/download/psLDAPmonitor.ps1', dest: '/opt/windows/Monitor/psLDAPmonitor.ps1' }
+    - { url: 'https://github.com/p0dalirius/LDAPmonitor/releases/latest/download/pyLDAPmonitor.py', dest: '/opt/windows/Monitor/pyLDAPmonitor.py' }
+    - { url: 'https://github.com/p0dalirius/LDAPmonitor/releases/latest/download/SharpLDAPmonitor.exe', dest: '/opt/windows/Monitor/SharpLDAPmonitor.exe' }
+
+    - { url: 'https://raw.githubusercontent.com/NetSPI/PowerUpSQL/master/PowerUpSQL.ps1', dest: '/opt/windows/SQL/PowerUpSQL.ps1' }
+    - { url: 'https://github.com/NetSPI/ESC/releases/latest/download/esc-example.ps1', dest: '/opt/windows/SQL/esc-example.ps1' }
+    - { url: 'https://github.com/NetSPI/ESC/releases/latest/download/esc.csproj', dest: '/opt/windows/SQL/esc.csproj' }
+    - { url: 'https://github.com/NetSPI/ESC/releases/latest/download/esc.exe', dest: '/opt/windows/SQL/esc.exe' }
+    - { url: 'https://github.com/NetSPI/ESC/releases/latest/download/esc.xml', dest: '/opt/windows/SQL/esc.xml' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SqlClient.exe', dest: '/opt/windows/SQL/SqlClient.exe' }
+    
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharPersist.exe', dest: '/opt/windows/Persistence/SharPersist.exe' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpStay.exe', dest: '/opt/windows/Persistence/SharpStay.exe' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpSvc.exe', dest: '/opt/windows/Persistence/SharpSvc.exe' }
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/SharpTask.exe', dest: '/opt/windows/Persistence/SharpTask.exe' }
+    
+    - { url: 'https://raw.githubusercontent.com/Flangvik/SharpCollection/master/NetFramework_4.7_Any/PurpleSharp.exe', dest: '/opt/windows/Adversary-Simulation-Emulation/PurpleSharp.exe' }
+
 
 
 - name: Install PoshC2
   shell: curl -sSL https://raw.githubusercontent.com/nettitude/PoshC2/dev/Install.sh | sudo bash -s -- -b dev
   ignore_errors: yes
-
-
-
 
 
 
@@ -255,29 +551,29 @@
     state: directory
     mode: '0755'
 
-# - name: Find all .exe files in /opt/windows and its subdirectories
-#   find:
-#     paths: /opt/windows
-#     patterns: '*.exe'
-#     recurse: yes
-#   register: exe_files
+- name: Find all .exe files in /opt/windows and its subdirectories
+  find:
+    paths: /opt/windows
+    patterns: '*.exe'
+    recurse: yes
+  register: exe_files
 
-# - name: Debug exe_files variable
-#   debug:
-#     var: exe_files
+- name: Debug exe_files variable
+  debug:
+    var: exe_files
 
-# - name: Copy all .exe files to dot_exe directory
-#   copy:
-#     src: "{{ item.path }}"
-#     dest: "/opt/windows/dot_exe/{{ item.path | basename }}"
-#     mode: '0755'
-#   loop: "{{ exe_files.files }}"
-#   when: exe_files.matched > 0
+- name: Copy all .exe files to dot_exe directory
+  copy:
+    src: "{{ item.path }}"
+    dest: "/opt/windows/dot_exe/{{ item.path | basename }}"
+    mode: '0755'
+  loop: "{{ exe_files.files }}"
+  when: exe_files.matched > 0
 
 - name: Find all .ps1 files in /opt/windows and its subdirectories
   find:
     paths: /opt/windows
-    patterns: '*.ps1'
+    patterns: '*.ps*1'
     recurse: yes
   register: ps1_files
 
