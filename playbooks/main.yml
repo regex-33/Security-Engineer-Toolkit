@@ -1,0 +1,76 @@
+- name: Install all tools
+  hosts: local
+  become: yes
+  roles:
+    - role: "roles/install-tools"
+      tags: config
+    - role: "roles/configure-tmux"
+      tags: config
+    - role: "roles/customize-terminal"
+      tags: config
+    - role: "roles/customize-browser"
+      tags: config
+    - role: "roles/configure-logging"
+      tags: config
+    - role: "roles/configure-system"
+      tags: config
+    # - role: gantsign.visual-studio-code
+      # tags: config
+    - role: pwn-windows
+      tags: windows
+    - role: network_scanner
+      tags: bugbounty
+    - role: http_parameter 
+      tags: bugbounty
+    - role: subdomain_enum
+      tags: bugbounty
+    - role: visual_tools
+      tags: bugbounty
+    - role: http_probe
+      tags: bugbounty
+    - role: web_crawling
+      tags: bugbounty
+    - role: apt-gem-stuff
+      tags: bugbounty
+    - role: api
+      tags: bugbounty
+    - role: content_discovery
+      tags: bugbounty
+    - role: frameworks
+      tags: bugbounty
+    - role: inspecting_js
+      tags: bugbounty
+    - role: wordlists
+      tags: bugbounty
+    - role: directory_fuzzers
+      tags: bugbounty
+    - role: lfi_tools 
+      tags: bugbounty
+    - role: open_redirect
+      tags: bugbounty
+    - role: ssrf_tools 
+      tags: bugbounty
+    - role: ssti_tools 
+      tags: bugbounty
+    - role: xss_tools 
+      tags: bugbounty
+    - role: sql_tools 
+      tags: bugbounty
+    - role: useful_tools
+      tags: bugbounty
+    - role: sensitive_finding
+      tags: bugbounty
+    - role: web_technologies 
+      tags: bugbounty
+    - role: cms_scanner
+      tags: bugbounty
+    - role: git_hunting
+      tags: bugbounty
+    - role: js_hunting
+      tags: bugbounty
+    - role: dns_resolver
+      tags: bugbounty
+    - role: request_smuggling
+      tags: bugbounty
+  
+

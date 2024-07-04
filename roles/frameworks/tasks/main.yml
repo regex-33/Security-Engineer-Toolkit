@@ -1,0 +1,11 @@
+- name: Install w3af
+  git:
+    repo: 'https://github.com/andresriancho/w3af.git'
+    dest: /opt/tools/frameworks/w3af
+  become: yes
+
+- name: Install Arachni
+  shell: |
+    gem install bundler && \
+    gem install arachni
+  become: yes

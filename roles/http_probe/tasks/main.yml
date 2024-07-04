@@ -1,0 +1,27 @@
+- name: Install Go-based tools and copy binaries
+  become: yes
+  vars:
+    go_tools:
+      - name: httpx
+        repo: github.com/projectdiscovery/httpx/cmd/httpx@latest
+      - name: httprobe
+        repo: github.com/tomnomnom/httprobe@latest
+  block:
+    - name: Install Go tools
+      command: "/usr/local/go/bin/go install -v {{ item.repo }}"
+      environment:
+        GOPATH: "{{ ansible_env.HOME }}/go"
+        GOROOT: "/usr/local/go"
+        PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
+      loop: "{{ go_tools }}"
+      loop_control:
+        label: "{{ item.name }}"
+
+    - name: Copy Go tool binaries to /usr/local/bin
+      copy:
+        src: "{{ ansible_env.HOME }}/go/bin/{{ item.name }}"
+        dest: "/usr/local/bin/{{ item.name }}"
+        mode: '0755'
+      loop: "{{ go_tools }}"
+      loop_control:
+        label: "{{ item.name }}"

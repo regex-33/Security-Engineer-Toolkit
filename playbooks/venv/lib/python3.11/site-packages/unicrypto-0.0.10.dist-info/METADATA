@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: unicrypto
+Version: 0.0.10
+Summary: Unified interface for cryptographic libraries
+Home-page: https://github.com/skelsec/unicrypto
+Author: Tamas Jos
+Author-email: info@skelsecprojects.com
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+License-File: LICENSE
+Requires-Dist: pycryptodomex
+

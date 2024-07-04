@@ -1,0 +1,70 @@
+- name: Ensure dns_resolver directory exists
+  become: yes
+  file:
+    path: /opt/tools/dns_resolver
+    state: directory
+
+- name: Install Go-based tools and move binaries
+  become: yes
+  vars:
+    go_tools:
+      - name: dnsx
+        repo: github.com/projectdiscovery/dnsx/cmd/dnsx@latest
+      - name: puredns
+        repo: github.com/d3mondev/puredns/v2@latest
+      - name: shuffledns
+        repo: github.com/projectdiscovery/shuffledns/cmd/shuffledns@latest
+  block:
+    - name: Install Go tools
+      command: "/usr/local/go/bin/go install {{ item.repo }}"
+      environment:
+        GOPATH: "{{ ansible_env.HOME }}/go"
+        GOROOT: "/usr/local/go"
+        PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
+      loop: "{{ go_tools }}"
+      loop_control:
+        label: "{{ item.name }}"
+
+    - name: Copy Go tool binaries to /usr/local/bin
+      copy:
+        src: "{{ ansible_env.HOME }}/go/bin/{{ item.name }}"
+        dest: "/usr/local/bin/{{ item.name }}"
+        mode: '0755'
+      loop: "{{ go_tools }}"
+      loop_control:
+        label: "{{ item.name }}"
+
+- name: Install MassDNS
+  become: yes
+  block:
+    - name: Clone MassDNS repository
+      git:
+        repo: 'https://github.com/blechschmidt/massdns.git'
+        dest: /opt/tools/dns_resolver/massdns
+
+    - name: Build and install MassDNS
+      shell: cd /opt/tools/dns_resolver/massdns && make && make install
+
+    - name: Copy MassDNS binary to /usr/local/bin
+      copy:
+        src: /opt/tools/dns_resolver/massdns/bin/massdns
+        dest: /usr/local/bin/massdns
+        mode: '0755'
+
+- name: Install dnsvalidator
+  become: yes
+  block:
+    - name: Clone dnsvalidator repository
+      git:
+        repo: 'https://github.com/vortexau/dnsvalidator.git'
+        dest: /opt/tools/dns_resolver/dnsvalidator
+
+    - name: Build and install dnsvalidator
+      shell: cd /opt/tools/dns_resolver/dnsvalidator && python3 setup.py install && pip3 install contextvars --break-system-packages && pip3 install -e . --break-system-packages
+
+    - name: Copy dnsvalidator binary to /usr/local/bin
+      copy:
+        src: /opt/tools/dns_resolver/dnsvalidator/dnsvalidator
+        dest: /usr/local/bin/dnsvalidator
+        mode: '0755'
+      ignore_errors: yes

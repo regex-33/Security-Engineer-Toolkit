@@ -1,0 +1,38 @@
+- name: Ensure git_hunting directory exists
+  become: yes
+  file:
+    path: /opt/tools/git_hunting
+    state: directory
+
+- name: Clone repositories and install requirements
+  become: yes
+  vars:
+    git_tools:
+      - name: GitDorker
+        repo: 'https://github.com/obheda12/GitDorker.git'
+        req_file: 'requirements.txt'
+      - name: gitGraber
+        repo: 'https://github.com/hisxo/gitGraber.git'
+        req_file: 'requirements.txt'
+      - name: GitTools
+        repo: 'https://github.com/internetwache/GitTools.git'
+        req_file: ''  # No requirements file for GitTools
+  block:
+    - name: Clone repositories
+      git:
+        repo: "{{ item.repo }}"
+        dest: "/opt/tools/git_hunting/{{ item.name }}"
+      loop: "{{ git_tools }}"
+      loop_control:
+        label: "{{ item.name }}"
+
+    - name: Install requirements
+      shell: "cd /opt/tools/git_hunting/{{ item.name }} && pip3 install -r {{ item.req_file }} --break-system-packages"
+      when: item.req_file != ''
+      loop: "{{ git_tools }}"
+      loop_control:
+        label: "{{ item.name }}"
+
+- name: Install GitHacker
+  become: yes
+  shell: "pip3 install GitHacker --break-system-packages"

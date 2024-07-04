@@ -1,0 +1,3 @@
+#!/home/regex-33/Security-Engineer-Toolkit/playbooks/venv/bin/python3
+import ldapdomaindump
+ldapdomaindump.main()

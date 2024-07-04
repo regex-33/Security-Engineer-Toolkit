@@ -1,0 +1,6 @@
+- name: Setup Request-Smuggling tools
+  hosts: localhost
+  become: yes
+  roles:
+    - apt-gem-stuff
+    - request_smuggling 

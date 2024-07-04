@@ -1,0 +1,6 @@
+- name: Setup Http_probe fuzzers
+  hosts: localhost
+  become: yes
+  roles:
+    - apt-gem-stuff
+    - http_probe

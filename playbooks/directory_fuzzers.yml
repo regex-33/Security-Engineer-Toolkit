@@ -1,0 +1,6 @@
+- name: Setup directory fuzzers
+  hosts: localhost
+  become: yes
+  roles:
+    - apt-gem-stuff
+    - directory_fuzzers

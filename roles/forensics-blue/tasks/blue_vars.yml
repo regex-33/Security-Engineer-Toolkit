@@ -1,0 +1,23 @@
+---
+pip_modules:
+  - oletools
+  - olefile
+
+packages:
+  - foremost
+  - exiftool
+  - steghide
+
+forensic_tools:
+  - https://github.com/volatilityfoundation/volatility3.git
+
+vol3_dir: volatility3
+
+oledump_version: "0_0_60"
+oledump_checksum: sha256:D847E499CB84B034E08BCDDC61ADDADA39B90A5FA2E1ABA0756A05039C0D8BA2
+oledump_py: oledump.py
+
+alias_items:
+  - "# Additional alias from kali-up forensics-blue role"
+  - "alias oledump={{ oledump_dir }}{{ oledump_py }}"
+  - "alias vol3={{ blue_dir }}{{ vol3_dir }}/vol.py"

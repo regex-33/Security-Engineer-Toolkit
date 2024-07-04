@@ -1,0 +1,46 @@
+- name: Ensure necessary directories exist
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - "/opt/tools/api"
+    - "/opt/tools/api/kiterunner"
+    - "/opt/tools/api/kiterunner-wordlists"
+
+- name: Download latest Kiterunner release version
+  uri:
+    url: "https://api.github.com/repos/assetnote/kiterunner/releases/latest"
+    return_content: yes
+  register: kiterunner_release
+
+- name: Set Kiterunner version and download URL
+  set_fact:
+    kiterunner_version: "{{ kiterunner_release.json.tag_name }}"
+    kiterunner_url: "https://github.com/assetnote/kiterunner/releases/download/{{ kiterunner_version }}/kiterunner_{{ kiterunner_version }}_linux_amd64.tar.gz"
+
+- name: Download Kiterunner
+  get_url:
+    url: "{{ kiterunner_url }}"
+    dest: "/opt/tools/api/kiterunner_{{ kiterunner_version }}_linux_amd64.tar.gz"
+
+- name: Extract Kiterunner
+  unarchive:
+    src: "/opt/tools/api/kiterunner_{{ kiterunner_version }}_linux_amd64.tar.gz"
+    dest: "/opt/tools/api/kiterunner"
+    remote_src: yes
+
+- name: Copy Kiterunner binary to /usr/local/bin
+  copy:
+    src: "/opt/tools/api/kiterunner/kr"
+    dest: "/usr/local/bin/kr"
+    mode: "0755"
+
+- name: Download and extract Kiterunner wordlists
+  shell: |
+    cd /opt/tools/api/kiterunner-wordlists
+    wget https://wordlists-cdn.assetnote.io/data/kiterunner/routes-small.kite.tar.gz -q
+    tar xf routes-small.kite.tar.gz
+    rm -f routes-small.kite.tar.gz
+  args:
+    executable: /bin/bash

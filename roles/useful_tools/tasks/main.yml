@@ -1,0 +1,66 @@
+- name: Ensure useful_tools directory exists
+  file:
+    path: "/opt/tools/useful_tools"
+    state: directory
+
+- name: Install Go tools and copy binaries
+  environment:
+    GOPATH: "{{ ansible_env.HOME }}/go"
+    GOROOT: "/usr/local/go"
+    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
+  block:
+    - name: Install Go tools
+      command: "/usr/local/go/bin/go install {{ item }}@latest"
+      loop:
+        - github.com/projectdiscovery/notify/cmd/notify
+        - github.com/mrco24/tok
+        - github.com/lc/gau
+        - github.com/tomnomnom/hacks/anti-burl
+        - github.com/tomnomnom/unfurl
+        - github.com/tomnomnom/anew
+        - github.com/tomnomnom/fff
+        - github.com/tomnomnom/gron
+        - github.com/tomnomnom/qsreplace
+        - github.com/LukaSikic/subzy
+        - github.com/dwisiswant0/cf-check
+
+    - name: Copy binaries to /usr/local/bin
+      copy:
+        src: "{{ ansible_env.HOME }}/go/bin/{{ item }}"
+        dest: "/usr/local/bin/{{ item }}"
+        mode: "0755"
+      loop:
+        - notify
+        - tok
+        - gau
+        - anti-burl
+        - unfurl
+        - anew
+        - fff
+        - gron
+        - qsreplace
+        - subzy
+        - cf-check
+
+- name: Clone repositories
+  block:
+    - name: Clone SploitScan repository
+      git:
+        repo: 'https://github.com/xaitax/SploitScan.git'
+        dest: /opt/tools/useful_tools/SploitScan
+
+    - name: Clone Oralyzer repository
+      git:
+        repo: 'https://github.com/r0075h3ll/Oralyzer.git'
+        dest: /opt/tools/useful_tools/Oralyzer
+
+    - name: Clone Interlace repository
+      git:
+        repo: 'https://github.com/codingo/Interlace.git'
+        dest: /opt/tools/useful_tools/Interlace
+
+- name: Install requirements for Oralyzer
+  shell: "cd /opt/tools/useful_tools/Oralyzer && pip3 install -r requirements.txt --break-system-packages"
+
+- name: Install Interlace
+  shell: "cd /opt/tools/useful_tools/Interlace && python3 setup.py install"

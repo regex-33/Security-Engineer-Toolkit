@@ -1,0 +1,306 @@
+- include_tasks: gem-tools.yml
+- name: Include vars of pwnwin_vars.yml file.
+  include_vars:
+    file: pwnwin_vars.yml
+
+
+- name: Cloning Windows Reference Material
+  git:
+    repo: "{{ item }}"
+    dest: "/opt/windows/references/{{ item.split('/')[-1].replace('.git','')}}"
+    version: master
+  with_items: "{{ win_ref }} "
+  become: yes
+
+- name: Downloading precompiled Packages
+  get_url:
+    url: "{{ item }}"
+    dest: "/opt/windows/"
+    mode: 644
+    # owner: "{{ user_dir }}"
+  with_items: "{{ win_packages }}"
+  become: yes
+
+- name: Create temporary build directory
+  ansible.builtin.tempfile:
+    state: directory
+  register: build_dir
+
+- name: "Copying python script to download github releases"
+  copy:
+    src: "files/githubdownload.py"
+    dest: "{{ build_dir.path }}/githubdownload.py"
+    owner: root
+    group: root
+    mode: 0755
+  become: true
+  become_method: sudo
+
+- name: "Downloading github releases"
+  shell: "{{ build_dir.path }}/githubdownload.py {{ item.repo }} {{ item.regex }} {{ item.location }} {% if item.filename is defined %}{{ item.filename }}{% endif %}"
+  loop:
+    - { repo: "jpillora/chisel",  regex: "_linux_amd64.gz", location: "/opt/windows/chisel" }
+    - { repo: "jpillora/chisel",  regex: "_windows_amd64.gz", location: "/opt/windows/chisel" }
+    - { repo: "carlospolop/PEASS-ng",  regex: "linpeas.sh", location: "/opt/windows/peas" }
+    - { repo: "carlospolop/PEASS-ng",  regex: "winPEASx64.exe", location: "/opt/windows/peas" }
+    - { repo: "WithSecureLabs/chainsaw",  regex: "chainsaw_all_", location: "/opt/windows" }
+    - { repo: "BloodHoundAD/BloodHound", regex: "BloodHound-linux-x64.zip", location: "/opt/windows" }
+  async: 45
+  poll: 0
+  become: true
+  become_method: sudo
+
+- name: Install APT packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - git
+    - empire
+    - bloodhound
+    - evil-winrm
+    - unicorn
+    - responder
+    - powershell-empire
+    - powersploit
+  become: yes
+
+- name: Create a Python virtual environment
+  command: python3 -m venv "{{ playbook_dir }}/venv"
+  args:
+    creates: "{{ playbook_dir }}/venv"
+
+- name: Ensure pip is installed in the virtual environment
+  command: "{{ playbook_dir }}/venv/bin/python -m ensurepip"
+  args:
+    creates: "{{ playbook_dir }}/venv/bin/pip"
+
+- name: Upgrade pip in the virtual environment
+  command: "{{ playbook_dir }}/venv/bin/pip install --upgrade pip"
+
+- name: Install PIP packages in a virtual environment
+  command: pip install {{ item }} --break-system-packages 
+  loop:
+    - certipy-ad
+    - impacket
+  become: yes
+
+
+- name: Install packages
+  ignore_errors: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+      - python3-neo4j
+      - python-ldap
+      - git
+      - empire
+      - bloodhound
+      - bloodhound.py
+      - crackmapexec
+      - evil-winrm
+      - unicorn
+      - certipy-ad
+      - responder
+      - powershell-empire
+      - impacket
+      - powersploit
+  become: yes
+
+
+
+- name: Clone repositories
+  ignore_errors: yes
+  git:
+    repo: "{{ item.repo }}"
+    dest: "{{ item.dest }}"
+  loop:
+    - { repo: "https://github.com/Flangvik/SharpCollection", dest: "/opt/windows/SharpCollection" }
+    - { repo: 'https://github.com/adrecon/ADRecon.git', dest: '/opt/windows/ADRecon' }
+    - { repo: 'https://github.com/BloodHoundAD/BloodHound.git', dest: '/opt/windows/BloodHound' }
+    - { repo: 'https://github.com/PowerShellMafia/PowerSploit.git', dest: '/opt/windows/PowerSploit' }
+    - { repo: 'https://github.com/aas-n/spraykatz.git', dest: '/opt/windows/Spraykatz' }
+    - { repo: 'https://github.com/samratashok/nishang.git', dest: '/opt/windows/nishang' }
+    - { repo: 'https://github.com/cobbr/Covenant.git', dest: '/opt/windows/Covenant' }
+    # - { repo: 'https://github.com/GoSecure/pyGPOAbuse.git', dest: '/opt/windows/pyGPOAbuse' }
+    - { repo: 'https://github.com/r3motecontrol/Ghostpack-CompiledBinaries.git', dest: '/opt/windows/Ghostpack-CompiledBinaries' }
+    - { repo: 'https://github.com/danielbohannon/Invoke-Obfuscation.git', dest: '/opt/windows/Invoke-Obfuscation' }
+    - { repo: 'https://github.com/S3cur3Th1sSh1t/PowerSharpPack.git', dest: '/opt/windows/bfuscation' }
+    - { repo: 'https://github.com/cobbr/PSAmsi.git', dest: '/opt/windows/PSAmsi' }
+
+    - { repo: 'https://github.com/r3motecontrol/Ghostpack-CompiledBinaries.git', dest: '/opt/windows/Ghostpack-CompiledBinaries' }
+    - { repo: 'https://github.com/adrecon/ADRecon.git', dest: '/opt/windows/ADRecon' }
+    - { repo: 'https://github.com/Kevin-Robertson/Invoke-TheHash.git', dest: '/opt/windows/Invoke-TheHash' }
+    - { repo: 'https://github.com/topotam/PetitPotam.git', dest: '/opt/windows/PetitPotam' }
+    - { repo: 'https://github.com/t0thkr1s/gpp-decrypt.git', dest: '/opt/windows/gpp-decrypt' }
+    - { repo: 'https://github.com/ropnop/windapsearch.git', dest: '/opt/windows/windapsearch' }
+    - { repo: 'https://github.com/otterpwn/ottertools.git', dest: '/opt/windows/ottertools' }
+    - { repo: 'https://github.com/pentestfactory/Invoke-DCSync.git', dest: '/opt/windows/Invoke-DCSync' }
+    - { repo: 'https://github.com/NytroRST/NetRipper', dest: '/opt/windows/NetRipper' }
+
+
+- name: Install Adidnsdump 
+  ignore_errors: yes
+  shell: "pip install git+https://github.com/dirkjanm/adidnsdump#egg=adidnsdump --break-system-packages"
+
+- name: Install requirements for Spraykatz 
+  ignore_errors: yes
+  shell: "pip install -r {{ item }} --break-system-packages"
+  loop:
+    - /opt/windows/Spraykatz/requirements.txt
+    # - /opt/windows/pyGPOAbuse/requirements.txt
+
+- name: Install LDAPDomainDump
+  shell: "pip install ldapdomaindump --break-system-packages"
+  ignore_errors: yes
+
+
+- name: Ensure destination directories exist
+  file:
+    path: "{{ item.dest | dirname }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - { dest: '/opt/windows/ASREPRoast' }
+    - { dest: '/opt/windows/Rubeus' }
+    - { dest: '/opt/windows/SharpHound' }
+    - { dest: '/opt/windows/SharpGPOAbuse' }
+    - { dest: '/opt/windows/SharpLAPS' }
+    - { dest: '/opt/windows/PowerView' }
+    - { dest: '/opt/windows/Inveigh' }
+    - { dest: '/opt/windows/PowerUp' }
+    - { dest: '/opt/windows/SharpUp' }
+    - { dest: '/opt/windows/SharpDump' }
+    - { dest: '/opt/windows/SharpWMI' }
+    - { dest: '/opt/windows/SharpRoast' }
+    - { dest: '/opt/windows/SharpDPAPI' }
+    - { dest: '/opt/windows/Lockless' }
+    - { dest: '/opt/windows/SafetyKatz' }
+    - { dest: '/opt/windows/KeeThief' }
+    - { dest: '/opt/windows/Seatbelt' }
+    - { dest: '/opt/windows/Limelighter' }
+    - { dest: '/opt/windows/SharpGen' }
+    - { dest: '/opt/windows/Invoke-Mimikatz' }
+    - { dest: '/opt/windows/LaZagne' }
+    - { dest: '/opt/windows/QuarksPwDump' }
+    - { dest: '/opt/windows/Invoke-TheHash' }
+    - { dest: '/opt/windows/Invoke-DCSync' }
+    - { dest: '/opt/windows/NetRipper' }
+    - { dest: '/opt/windows/WMIExec' }
+    - { dest: '/opt/windows/Invoke-CradleCrafter' }
+    - { dest: '/opt/windows/Invoke-Phant0m' }
+    - { dest: '/opt/windows/Out-CompressedDll' }
+    - { dest: '/opt/windows/Sysmon' }
+    - { dest: '/opt/windows/ADFSDump' }
+    - { dest: '/opt/windows/DNSRecon' }
+    - { dest: '/opt/windows/ADIDNSdump' }
+    - { dest: '/opt/windows/SharpGPOAbuse' }
+    - { dest: '/opt/windows/PowerGPOAbuse' }
+    - { dest: '/opt/windows/ADFSpoof' }
+    - { dest: '/opt/windows/Invoke-ACLPwn' }
+
+- name: Download files
+  ignore_errors: yes
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ item.dest }}"
+    mode: '0755'
+  loop:
+    - { url: 'https://raw.githubusercontent.com/HarmJ0y/ASREPRoast/master/ASREPRoast.ps1', dest: '/opt/windows/ASREPRoast/ASREPRoast.ps1' }
+    - { url: 'https://raw.githubusercontent.com/BloodHoundAD/BloodHound/master/Collectors/DebugBuilds/SharpHound.ps1', dest: '/opt/windows/SharpHound/SharpHound.ps1' }
+    - { url: 'https://github.com/byronkg/SharpGPOAbuse/releases/download/1.0/SharpGPOAbuse.exe', dest: '/opt/windows/SharpGPOAbuse/SharpGPOAbuse.exe' }
+    - { url: 'https://github.com/swisskyrepo/SharpLAPS/releases/download/latest-SharpLAPS/SharpLAPS.exe', dest: '/opt/windows/SharpLAPS/SharpLAPS.exe' }
+    - { url: 'https://raw.githubusercontent.com/PowerShellEmpire/PowerTools/master/PowerView/powerview.ps1', dest: '/opt/windows/PowerView/PowerView.ps1' }
+    - { url: 'https://raw.githubusercontent.com/Kevin-Robertson/Inveigh/master/Inveigh.ps1', dest: '/opt/windows/Inveigh/Inveigh.ps1' }
+    - { url: 'https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Privesc/PowerUp.ps1', dest: '/opt/windows/PowerUp/PowerUp.ps1' }
+
+   # # - { url: 'https://raw.githubusercontent.com/GhostPack/KeeThief/master/KeeThief.exe', dest: '/opt/windows/KeeThief/KeeThief.exe' }
+    ## - { url: 'https://raw.githubusercontent.com/Tylous/Limelighter/master/Limelighter.exe', dest: '/opt/windows/Limelighter/Limelighter.exe' }
+    ## - { url: 'https://raw.githubusercontent.com/GhostPack/SharpGen/master/ConvertTo-SharpGen.ps1', dest: '/opt/windows/SharpGen/ConvertTo-SharpGen.ps1' }
+    ## - { url: 'https://raw.githubusercontent.com/QuarksLab/QuarksPwDump/master/QuarksPwDump.exe', dest: '/opt/windows/QuarksPwDump/QuarksPwDump.exe' }
+
+    - { url: 'https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Exfiltration/Invoke-Mimikatz.ps1', dest: '/opt/windows/Invoke-Mimikatz/Invoke-Mimikatz.ps1' }
+    - { url: 'https://github.com/AlessandroZ/LaZagne/releases/download/v2.4.6/LaZagne.exe', dest: '/opt/windows/LaZagne/LaZagne.exe' }
+    - { url: 'https://raw.githubusercontent.com/danielbohannon/Invoke-CradleCrafter/master/Invoke-CradleCrafter.ps1', dest: '/opt/windows/Invoke-CradleCrafter/Invoke-CradleCrafter.ps1' }
+    - { url: 'https://raw.githubusercontent.com/BC-SECURITY/Empire/main/empire/server/data/module_source/management/Invoke-Phant0m.ps1', dest: '/opt/windows/Invoke-Phant0m/Invoke-Phant0m.ps1' }
+    - { url: 'https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/ScriptModification/Out-CompressedDll.ps1', dest: '/opt/windows/Out-CompressedDll/Out-CompressedDll.ps1' }
+    - { url: 'https://live.sysinternals.com/Sysmon.exe', dest: '/opt/windows/Sysmon/Sysmon.exe' }
+
+    - { url: 'https://github.com/byronkg/SharpGPOAbuse/releases/download/1.0/SharpGPOAbuse.exe', dest: '/opt/windows/SharpGPOAbuse/SharpGPOAbuse.exe' }
+    - { url: 'https://raw.githubusercontent.com/rootSySdk/PowerGPOAbuse/master/PowerGPOAbuse.ps1', dest: '/opt/windows/PowerGPOAbuse/PowerGPOAbuse.ps1' }
+    - { url: 'https://raw.githubusercontent.com/fox-it/Invoke-ACLPwn/master/Invoke-ACLPwn.ps1', dest: '/opt/windows/Invoke-ACLPwn/Invoke-ACLPwn.ps1' }
+    # - { url: 'https://raw.githubusercontent.com/outflanknl/ADFSpoof/master/ADFSpoof.exe', dest: '/opt/windows/ADFSpoof/ADFSpoof.exe' }
+    # see  the too links you find
+
+
+- name: Install PoshC2
+  shell: curl -sSL https://raw.githubusercontent.com/nettitude/PoshC2/dev/Install.sh | sudo bash -s -- -b dev
+  ignore_errors: yes
+
+
+
+
+
+
+- name: Ensure dot_exe directory exists
+  file:
+    path: /opt/windows/dot_exe
+    state: directory
+    mode: '0755'
+
+- name: Ensure dot_ps directory exists
+  file:
+    path: /opt/windows/dot_ps
+    state: directory
+    mode: '0755'
+
+# - name: Find all .exe files in /opt/windows and its subdirectories
+#   find:
+#     paths: /opt/windows
+#     patterns: '*.exe'
+#     recurse: yes
+#   register: exe_files
+
+# - name: Debug exe_files variable
+#   debug:
+#     var: exe_files
+
+# - name: Copy all .exe files to dot_exe directory
+#   copy:
+#     src: "{{ item.path }}"
+#     dest: "/opt/windows/dot_exe/{{ item.path | basename }}"
+#     mode: '0755'
+#   loop: "{{ exe_files.files }}"
+#   when: exe_files.matched > 0
+
+- name: Find all .ps1 files in /opt/windows and its subdirectories
+  find:
+    paths: /opt/windows
+    patterns: '*.ps1'
+    recurse: yes
+  register: ps1_files
+
+- name: Debug ps1_files variable
+  debug:
+    var: ps1_files
+
+- name: Copy all .exe files to dot_exe directory
+  copy:
+    src: "{{ item.path }}"
+    dest: "/opt/windows/dot_ps/{{ item.path | basename }}"
+    mode: '0755'
+  loop: "{{ ps1_files.files }}"
+  when: ps1_files.matched > 0
+
+
+
+- name: "install Kerbrute"
+  ignore_errors: yes
+  shell:  go install github.com/ropnop/kerbrute@master
+  become: true
+
+- name: "Copy kerbrute to /usr/local/bin"
+  ignore_errors: yes
+  shell: cp /root/go/bin/kerbute /usr/local/bin/kerbrute
+  become: true

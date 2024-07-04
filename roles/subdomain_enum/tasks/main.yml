@@ -1,0 +1,112 @@
+- name: Setup tools
+  become: yes
+  block:
+    - name: Install tools using git
+      git:
+        repo: "{{ item.repo }}"
+        dest: "{{ item.dest }}"
+      loop:
+        - { repo: 'https://github.com/aboul3la/Sublist3r.git', dest: '/opt/tools/subdomain_enum/Sublist3r' }
+        - { repo: 'https://github.com/screetsec/Sudomy.git', dest: '/opt/tools/subdomain_enum/Sudomy' }
+        - { repo: 'https://github.com/joda32/CertCrunchy.git', dest: '/opt/tools/subdomain_enum/CertCrunchy' }
+
+    - name: Download and extract Golang
+      block:
+        - get_url:
+            url: "https://go.dev/dl/go1.22.2.linux-amd64.tar.gz"
+            dest: "/tmp/go1.22.2.linux-amd64.tar.gz"
+        - unarchive:
+            src: "/tmp/go1.22.2.linux-amd64.tar.gz"
+            dest: "/usr/local/"
+            remote_src: yes
+
+    - name: Set environment variables
+      lineinfile:
+        path: /etc/profile
+        line: "{{ item }}"
+        create: yes
+      loop:
+        - 'export GOROOT=/usr/local/go'
+        - 'export GOPATH=$HOME/go'
+        - 'export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin'
+
+    - name: Ensure Go binary directory exists
+      file:
+        path: "{{ ansible_env.HOME }}/go/bin"
+        state: directory
+        mode: '0755'
+
+    - name: Install tools using go
+      command: "/usr/local/go/bin/go install {{ item.name }}@latest"
+      environment:
+        GOPATH: "{{ ansible_env.HOME }}/go"
+        GOROOT: "/usr/local/go"
+        PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
+      loop:
+        - { name: 'github.com/tomnomnom/assetfinder' }
+        - { name: 'github.com/projectdiscovery/subfinder/v2/cmd/subfinder' }
+        - { name: 'github.com/gwen001/github-subdomains' }
+        - { name: 'github.com/cgboal/sonarsearch/cmd/crobat' }
+        - { name: 'github.com/projectdiscovery/mapcidr/cmd/mapcidr' }
+
+    - name: Install amass
+      apt:
+        name: amass
+        state: present
+
+    - name: Copy binaries to /usr/local/bin
+      copy:
+        src: "{{ ansible_env.HOME }}/go/bin/{{ item }}"
+        dest: "/usr/local/bin/{{ item }}"
+        mode: "0755"
+      loop:
+        - 'subfinder'
+        - 'github-subdomains'
+        - 'crobat'
+        - 'mapcidr'
+
+    - name: Download and extract Findomain
+      block:
+        - get_url:
+            url: "https://github.com/findomain/findomain/releases/latest/download/findomain-linux-i386.zip"
+            dest: "/tmp/findomain-linux-i386.zip"
+        - unarchive:
+            src: "/tmp/findomain-linux-i386.zip"
+            dest: "/usr/bin/"
+            remote_src: yes
+        - file:
+            path: "/usr/bin/findomain"
+            mode: "u+x"
+
+    - name: Install Sudomy dependencies
+      block:
+        - command: python3 -m venv /opt/tools/subdomain_enum/Sudomy/venv
+        - pip:
+            requirements: /opt/tools/subdomain_enum/Sudomy/requirements.txt
+            virtualenv: /opt/tools/subdomain_enum/Sudomy/venv
+        - apt:
+            name:
+              - npm
+              - jq
+              - nmap
+              - chromium
+              - parallel
+            state: present
+        - shell: "npm i -g wappalyzer wscat"
+        - shell: |
+            cp /opt/tools/subdomain_enum/Sudomy/sudomy /usr/local/bin || true
+            cp /opt/tools/subdomain_enum/Sudomy/sudomy.api.dist /usr/local/bin || true
+            cp /opt/tools/subdomain_enum/Sudomy/slack.conf /usr/local/bin || true
+            cp /opt/tools/subdomain_enum/Sudomy/sudomy.conf /usr/local/bin || true
+          ignore_errors: yes
+        - copy:
+            src: "/opt/tools/subdomain_enum/Sudomy/sudomy"
+            dest: "/usr/local/bin/sudomy"
+            mode: "0755"
+
+    - name: Setup CertCrunchy
+      block:
+        - command: python3 -m venv /opt/tools/subdomain_enum/CertCrunchy/venv
+        - pip:
+            requirements: /opt/tools/subdomain_enum/CertCrunchy/requirements.txt
+            virtualenv: /opt/tools/subdomain_enum/CertCrunchy/venv

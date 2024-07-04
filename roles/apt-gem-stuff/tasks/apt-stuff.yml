@@ -1,0 +1,58 @@
+---
+- name: "Updating apt repo/cache"
+  become: yes
+  apt:
+    update_cache: yes
+    force_apt_get: yes
+    cache_valid_time: 3600
+
+- name: "Upgrade all packages"
+  apt:
+    upgrade: yes
+    force_apt_get: yes
+  become: yes
+
+- name: "Installing Packages"
+  become: yes
+  apt:
+    name:
+      - jq
+      - pipx
+      - ntpdate
+      - flameshot
+      - exiftool
+      - libcurl4-openssl-dev
+      - libssl-dev
+      - ruby-full
+      - libxml2
+      - libxml2-dev
+      - libxslt1-dev
+      - ruby-dev
+      - build-essential
+      - libgmp-dev
+      - zlib1g-dev
+      - libffi-dev
+      - python-dev
+      - python-setuptools
+      - libldns-dev
+      - python3-pip
+      - python-pip
+      - python-dnspython
+      - git
+      - rename
+      - xargs
+      - libtest-www-mechanize-perl
+      - libnet-whois-ip-perl
+      - npm
+      - libpcap-dev
+      - wfuzz
+      - gobuster
+      - dirsearch
+      - make
+      - nikto
+    state: latest
+
+- name: Create tools directory
+  file:
+    path: /opt/tools
+    state: directory
