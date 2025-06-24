@@ -1,10 +1,12 @@
 - name: Ensure visual_tools directory exists
+  ignore_errors: yes
   ansible.builtin.file:
     path: "/opt/tools/visual_tools"
     state: directory
   become: yes
 
 - name: Install Gowitness
+  ignore_errors: yes
   ansible.builtin.command:
     cmd: "/usr/local/go/bin/go install github.com/sensepost/gowitness@latest"
   environment:
@@ -14,6 +16,7 @@
   become: yes
 
 - name: Copy Gowitness binary to /usr/local/bin
+  ignore_errors: yes
   ansible.builtin.copy:
     src: "{{ ansible_env.HOME }}/go/bin/gowitness"
     dest: "/usr/local/bin/gowitness"
@@ -21,18 +24,21 @@
   become: yes
 
 - name: Download Aquatone
+  ignore_errors: yes
   ansible.builtin.get_url:
     url: "https://github.com/michenriksen/aquatone/releases/download/v1.7.0/aquatone_linux_amd64_1.7.0.zip"
     dest: "/tmp/aquatone_linux_amd64_1.7.0.zip"
   become: yes
 
 - name: Ensure temporary directory for Aquatone exists
+  ignore_errors: yes
   ansible.builtin.file:
     path: "/tmp/aquatone"
     state: directory
   become: yes
 
 - name: Extract Aquatone
+  ignore_errors: yes
   ansible.builtin.unarchive:
     src: "/tmp/aquatone_linux_amd64_1.7.0.zip"
     dest: "/tmp/aquatone"
@@ -40,6 +46,7 @@
   become: yes
 
 - name: Copy Aquatone binary to /usr/local/bin
+  ignore_errors: yes
   ansible.builtin.copy:
     src: "/tmp/aquatone/aquatone"
     dest: "/usr/local/bin/aquatone"

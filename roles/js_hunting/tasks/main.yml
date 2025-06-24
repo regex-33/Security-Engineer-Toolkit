@@ -1,4 +1,5 @@
 - name: Set tools
+  ignore_errors: yes
   set_fact:
     tools:
       - name: Getjs
@@ -16,12 +17,14 @@
         requirements: "bash install.sh"
 
 - name: Ensure js_hunting directory exists
+  ignore_errors: yes
   file:
     path: "/opt/tools/js_hunting"
     state: directory
   become: yes
 
 - name: Install {{ item.name }}
+  ignore_errors: yes
   command: "{{ item.install | default(omit) }}"
   environment:
     GOPATH: "{{ ansible_env.HOME }}/go"
@@ -32,6 +35,7 @@
   loop: "{{ tools }}"
 
 - name: Copy {{ item.name }} binary to /usr/local/bin
+  ignore_errors: yes
   become: yes
   copy:
     src: "{{ item.src | default(omit) }}"
@@ -41,6 +45,7 @@
   loop: "{{ tools }}"
 
 - name: Install {{ item.name }} using git
+  ignore_errors: yes
   git:
     repo: "{{ item.repo | default(omit) }}"
     dest: "/opt/tools/js_hunting/{{ item.name }}"
@@ -49,24 +54,28 @@
   loop: "{{ tools }}"
 
 - name: Install requirements for {{ item.name }}
+  ignore_errors: yes
   shell: "cd /opt/tools/js_hunting/{{ item.name }}/ && {{ item.requirements }}"
   become: yes
   when: item.requirements is defined
   loop: "{{ tools }}"
 
 - name: Download subjs
+  ignore_errors: yes
   become: yes
   get_url:
     url: "https://github.com/lc/subjs/releases/download/v1.0.1/subjs_1.0.1_linux_amd64.tar.gz"
     dest: "/tmp/subjs_1.0.1_linux_amd64.tar.gz"
 
 - name: Ensure subjs directory exists
+  ignore_errors: yes
   file:
     path: "/opt/tools/js_hunting/subjs"
     state: directory
   become: yes
 
 - name: Extract subjs
+  ignore_errors: yes
   become: yes
   unarchive:
     src: "/tmp/subjs_1.0.1_linux_amd64.tar.gz"
@@ -74,6 +83,7 @@
     remote_src: yes
 
 - name: Copy subjs binary to /usr/local/bin
+  ignore_errors: yes
   become: yes
   copy:
     src: "/opt/tools/js_hunting/subjs/subjs"

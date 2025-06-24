@@ -1,29 +1,34 @@
 ---
 - name: "Install Tmux"
+  ignore_errors: yes
   apt:
     name: tmux
     state: present
   become: true
   become_method: sudo
 - name: "Copying Tmux Config"
+  ignore_errors: yes
   copy:
     src: "{{ role_path }}/files/.tmux.conf"
     dest: "{{ ansible_env.HOME }}"
 
 
 - name: "Install Vim"
+  ignore_errors: yes
   apt:
     name: vim 
     state: present
   become: true
   become_method: sudo
 - name: "Copying Vim Config"
+  ignore_errors: yes
   copy:
     src: "{{ role_path }}/files/.vimrc"
     dest: "{{ ansible_env.HOME }}"
 
 
 - name: Vundle Clone
+  ignore_errors: yes
   git:
     repo: 'https://github.com/VundleVim/Vundle.vim.git'
     dest: "{{ ansible_env.HOME }}/.vim/bundle/Vundle.vim"
@@ -31,6 +36,7 @@
   become_user: "{{ ansible_user_id }}"
 
 - name: Install Vim Plugins
+  ignore_errors: yes
   command: vim +PluginInstall +qall
   become: yes
   become_user: "{{ ansible_user_id }}"

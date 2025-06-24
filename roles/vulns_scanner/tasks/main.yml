@@ -1,4 +1,5 @@
 - name: Ensure directories exist
+  ignore_errors: yes
   become: yes
   file:
     path: "{{ item }}"
@@ -12,6 +13,7 @@
     - "/root/templates"
 
 - name: Install Afrog
+  ignore_errors: yes
   become: yes
   command: "/usr/local/go/bin/go install github.com/zan8in/afrog/v2/cmd/afrog@latest"
   environment:
@@ -20,6 +22,7 @@
     PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
 
 - name: Copy binaries to /usr/local/bin
+  ignore_errors: yes
   become: yes
   copy:
     src: "{{ item.src }}"
@@ -33,6 +36,7 @@
     - { src: "{{ ansible_env.HOME }}/go/bin/cent", dest: "cent" }
 
 - name: Install POC-bomber and requirements
+  ignore_errors: yes
   become: yes
   vars:
     dest_dir: "/opt/tools/vulns_scanner"
@@ -50,6 +54,7 @@
         extra_args: --ignore-installed --no-warn-script-location
 
 - name: Install and configure Xray
+  ignore_errors: yes
   become: yes
   tasks:
     - name: Fetch latest Xray release
@@ -94,6 +99,7 @@
         mv xray_linux_amd64 xray
 
 - name: Install Jaeles and templates
+  ignore_errors: yes
   become: yes
   tasks:
     - name: Fetch latest Jaeles release
@@ -124,6 +130,7 @@
         dest: "/root/templates/ghsec-jaeles-signatures"
 
 - name: Install Nuclei and templates
+  ignore_errors: yes
   become: yes
   tasks:
     - name: Fetch latest Nuclei release
@@ -149,6 +156,7 @@
         dest: "/root/templates/nuclei-templates"
 
 - name: Install Cent
+  ignore_errors: yes
   become: yes
   command: "/usr/local/go/bin/go install -v github.com/xm1k3/cent@latest"
   environment:
@@ -157,5 +165,6 @@
     PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"
 
 - name: Cent init
+  ignore_errors: yes
   become: yes
   shell: "cent init"

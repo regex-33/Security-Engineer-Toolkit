@@ -1,9 +1,11 @@
 - name: Install dirsearch
+  ignore_errors: yes
   git:
     repo: 'https://github.com/maurosoria/dirsearch.git'
     dest: /opt/tools/content_discovery/dirsearch
 
 - name: Install gobuster and dirb
+  ignore_errors: yes
   apt:
     name: 
       - gobuster
@@ -11,6 +13,7 @@
     state: present
 
 - name: Install ffuf
+  ignore_errors: yes
   shell: go install github.com/ffuf/ffuf@latest
   environment:
     PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin"

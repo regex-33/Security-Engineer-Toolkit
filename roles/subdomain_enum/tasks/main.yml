@@ -1,4 +1,5 @@
 - name: Setup tools
+  ignore_errors: yes
   become: yes
   block:
     - name: Install tools using git

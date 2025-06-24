@@ -1,5 +1,6 @@
 ---
 - name: "Install pipx tools"
+  ignore_errors: yes
   community.general.pipx:
     name: "{{ item.name }}"
     source: "{{ item.url }}"

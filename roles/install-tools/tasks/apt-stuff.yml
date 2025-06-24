@@ -1,15 +1,18 @@
 ---
 - name: "Updating apt repo/cache"
+  ignore_errors: yes
   apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
   become: true
   become_method: sudo
 
 - name: "Upgrade all packages"
+  ignore_errors: yes
   apt: upgrade=yes force_apt_get=yes
   become: true
   become_method: sudo
   
 - name: "Installing Packages"
+  ignore_errors: yes
   package:
     name:
       - jq

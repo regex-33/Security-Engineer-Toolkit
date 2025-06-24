@@ -1,5 +1,6 @@
 ---
 - name: "Installing useful github repos"
+  ignore_errors: yes
   git:
     repo: "{{ item.repo }}"
     dest: "{{ item.location }}"
@@ -10,11 +11,13 @@
   become_method: sudo
 
 - name: Create temporary build directory
+  ignore_errors: yes
   ansible.builtin.tempfile:
     state: directory
   register: build_dir
 
 - name: "Copying python script to download github releases"
+  ignore_errors: yes
   copy:
     src: "files/githubdownload.py"
     dest: "{{ build_dir.path }}/githubdownload.py"
@@ -25,6 +28,7 @@
   become_method: sudo
 
 - name: "Downloading github releases"
+  ignore_errors: yes
   shell: "{{ build_dir.path }}/githubdownload.py {{ item.repo }} {{ item.regex }} {{ item.location }} {% if item.filename is defined %}{{ item.filename }}{% endif %}"
   loop:
     - { repo: "jpillora/chisel",  regex: "_linux_amd64.gz", location: "/opt/chisel" }
@@ -40,6 +44,7 @@
   become_method: sudo
 
 - name: Remove temporary build directory
+  ignore_errors: yes
   ansible.builtin.file:
     path: "{{ build_dir.path }}"
     state: absent

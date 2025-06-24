@@ -1,4 +1,5 @@
 - name: Ensure web_technologies directory exists
+  ignore_errors: yes
   file:
     path: "/opt/tools/web_technologies"
     state: directory
@@ -6,6 +7,7 @@
 
 
 - name: Install wappalyzer-cli
+  ignore_errors: yes
   shell: |
     cd /opt/tools/web_technologies &&
     git clone https://github.com/gokulapap/wappalyzer-cli &&

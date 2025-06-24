@@ -1,9 +1,11 @@
 - name: Ensure useful_tools directory exists
+  ignore_errors: yes
   file:
     path: "/opt/tools/useful_tools"
     state: directory
 
 - name: Install Go tools and copy binaries
+  ignore_errors: yes
   environment:
     GOPATH: "{{ ansible_env.HOME }}/go"
     GOROOT: "/usr/local/go"
@@ -43,6 +45,7 @@
         - cf-check
 
 - name: Clone repositories
+  ignore_errors: yes
   block:
     - name: Clone SploitScan repository
       git:
@@ -60,7 +63,9 @@
         dest: /opt/tools/useful_tools/Interlace
 
 - name: Install requirements for Oralyzer
+  ignore_errors: yes
   shell: "cd /opt/tools/useful_tools/Oralyzer && pip3 install -r requirements.txt --break-system-packages"
 
 - name: Install Interlace
+  ignore_errors: yes
   shell: "cd /opt/tools/useful_tools/Interlace && python3 setup.py install"

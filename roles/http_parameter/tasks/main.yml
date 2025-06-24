@@ -1,4 +1,5 @@
 - name: Ensure http_parameter directories exist
+  ignore_errors: yes
   become: yes
   file:
     path: "{{ item }}"
@@ -8,10 +9,12 @@
     - /opt/tools/http_parameter/x8
 
 - name: Install Arjun
+  ignore_errors: yes
   become: yes
   shell: "pip3 install arjun --break-system-packages"
 
 - name: Download and copy x8
+  ignore_errors: yes
   become: yes
   block:
     - name: Download x8

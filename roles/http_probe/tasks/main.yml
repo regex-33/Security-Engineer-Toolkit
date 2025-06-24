@@ -1,4 +1,5 @@
 - name: Install Go-based tools and copy binaries
+  ignore_errors: yes
   become: yes
   vars:
     go_tools:

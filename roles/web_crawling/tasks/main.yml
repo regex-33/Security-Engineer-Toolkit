@@ -1,4 +1,5 @@
 - name: Set web_crawling_tools
+  ignore_errors: yes
   set_fact:
     web_crawling_tools:
       - name: Gospider
@@ -51,12 +52,14 @@
         build: "cd /opt/tools/web_crawling/freq/ && mv main.go freq.go && go build freq.go && cp freq /usr/bin"
 
 - name: Ensure web_crawling directory exists
+  ignore_errors: yes
   file:
     path: "/opt/tools/web_crawling"
     state: directory
   become: yes
 
 - name: Clone {{ item.name }} repository
+  ignore_errors: yes
   git:
     repo: "{{ item.repo | default(omit) }}"
     dest: "{{ item.dest | default(omit) }}"
@@ -65,6 +68,7 @@
   loop: "{{ web_crawling_tools }}"
 
 - name: Install {{ item.name }}
+  ignore_errors: yes
   command: "{{ item.install | default(omit) }}"
   environment:
     GOPATH: "{{ ansible_env.HOME }}/go"
@@ -75,6 +79,7 @@
   loop: "{{ web_crawling_tools }}"
 
 - name: Copy {{ item.name }} binary to /usr/local/bin
+  ignore_errors: yes
   become: yes
   copy:
     src: "{{ item.src | default(omit) }}"
@@ -84,12 +89,14 @@
   loop: "{{ web_crawling_tools }}"
 
 - name: Install requirements for {{ item.name }}
+  ignore_errors: yes
   shell: "pip3 install -r {{ item.requirements }} --break-system-packages"
   become: yes
   when: item.requirements is defined
   loop: "{{ web_crawling_tools }}"
 
 - name: Build {{ item.name }}
+  ignore_errors: yes
   shell: "{{ item.build | default(omit) }}"
   become: yes
   when: item.build is defined

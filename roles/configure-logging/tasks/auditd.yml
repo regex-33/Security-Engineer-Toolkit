@@ -1,4 +1,5 @@
 - name: "Install Packages"
+  ignore_errors: yes
   package:
     name: "auditd"
     state: present  
@@ -6,6 +7,7 @@
   become_method: sudo
 
 - name: "Configure Audit Rules"
+  ignore_errors: yes
   copy:
     src: audit.rules
     dest: /etc/audit/rules.d/audit.rules
@@ -16,6 +18,7 @@
   become_method: sudo
 
 - name: "Create _laurel user"
+  ignore_errors: yes
   user:
     name: _laurel
     state: present
@@ -26,6 +29,7 @@
   become_method: sudo
 
 - name: "Create directories for _laurel /var/log/laurel"
+  ignore_errors: yes
   file:
     path: "{{ item.path }}"
     state: directory
@@ -42,6 +46,7 @@
   poll: 0
 
 - name: "Copy laurel/config.toml to /etc/laurel/config.toml"
+  ignore_errors: yes
   copy:
     src: laurel/config.toml
     dest: /etc/laurel/config.toml
@@ -52,6 +57,7 @@
   become_method: sudo
 
 - name: "Copy laurel/laurel.conf to /etc/audit/plugins.d"
+  ignore_errors: yes
   copy:
     src: laurel/laurel.conf
     dest: /etc/audit/plugins.d/laurel.conf
@@ -62,12 +68,14 @@
   become_method: sudo
 
 - name: "Downloading https://github.com/threathunters-io/laurel/releases/download/v0.5.2/laurel-v0.5.2-x86_64-glibc.tar.gz"
+  ignore_errors: yes
   get_url:
     url: https://github.com/threathunters-io/laurel/releases/download/v0.5.2/laurel-v0.5.2-x86_64-glibc.tar.gz
     dest: /tmp/laurel-v0.5.2-x86_64-glibc.tar.gz
     mode: 0640
 
 - name: "Extract /tmp/laurel-v0.5.2-x86_64-glibc.tar.gz"
+  ignore_errors: yes
   unarchive:
     src: /tmp/laurel-v0.5.2-x86_64-glibc.tar.gz
     dest: /tmp/laurel/        
@@ -78,6 +86,7 @@
   become_method: sudo
 
 - name: "Running install -m755 laurel /usr/local/sbin/laurel"
+  ignore_errors: yes
   command: "install -m755 laurel /usr/local/sbin/laurel"
   args:
     chdir: /tmp/laurel/
@@ -85,6 +94,7 @@
   become_method: sudo
   
 - name: "Restart auditd"
+  ignore_errors: yes
   service:
     name: auditd
     state: restarted

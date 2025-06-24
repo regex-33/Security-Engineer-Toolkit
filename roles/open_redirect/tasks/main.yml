@@ -1,4 +1,5 @@
 - name: Install open-redirect
+  ignore_errors: yes
   command: "/usr/local/go/bin/go install github.com/mrco24/open-redirect@latest"
   environment:
     GOPATH: "{{ ansible_env.HOME }}/go"
@@ -7,6 +8,7 @@
   become: yes
 
 - name: Copy open-redirect binary to /usr/local/bin
+  ignore_errors: yes
   become: yes
   copy:
     src: "{{ ansible_env.HOME }}/go/bin/open-redirect"

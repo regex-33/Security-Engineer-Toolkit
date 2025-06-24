@@ -1,4 +1,5 @@
 - name: Install SecLists
+  ignore_errors: yes
   git:
     repo: 'https://github.com/danielmiessler/SecLists.git'
     dest: /opt/tools/wordlists/SecLists

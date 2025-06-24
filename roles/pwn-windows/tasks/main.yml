@@ -1,10 +1,12 @@
 - include_tasks: gem-tools.yml
 - name: Include vars of pwnwin_vars.yml file.
+  ignore_errors: yes
   include_vars:
     file: pwnwin_vars.yml
 
 
 - name: Cloning Windows Reference Material
+  ignore_errors: yes
   git:
     repo: "{{ item }}"
     dest: "/opt/windows/references/{{ item.split('/')[-1].replace('.git','')}}"
@@ -13,6 +15,7 @@
   become: yes
 
 - name: Downloading precompiled Packages
+  ignore_errors: yes
   get_url:
     url: "{{ item }}"
     dest: "/opt/windows/"
@@ -22,11 +25,13 @@
   become: yes
 
 - name: Create temporary build directory
+  ignore_errors: yes
   ansible.builtin.tempfile:
     state: directory
   register: build_dir
 
 - name: "Copying python script to download github releases"
+  ignore_errors: yes
   copy:
     src: "files/githubdownload.py"
     dest: "{{ build_dir.path }}/githubdownload.py"
@@ -37,6 +42,7 @@
   become_method: sudo
 
 - name: Ensure destination directories exist
+  ignore_errors: yes
   file:
     path: "{{ item.dest }}" # | dirname }}"
     state: directory
@@ -88,6 +94,7 @@
 
 
 - name: "Downloading github releases"
+  ignore_errors: yes
   shell: "{{ build_dir.path }}/githubdownload.py {{ item.repo }} {{ item.regex }} {{ item.location }} {% if item.filename is defined %}{{ item.filename }}{% endif %}"
   loop:
     - { repo: "jpillora/chisel",  regex: "_linux_amd64.gz", location: "/opt/windows/Persistence/chisel" }
@@ -102,6 +109,7 @@
   become_method: sudo
 
 - name: Install APT packages
+  ignore_errors: yes
   apt:
     name: "{{ item }}"
     state: present
@@ -117,19 +125,23 @@
   become: yes
 
 - name: Create a Python virtual environment
+  ignore_errors: yes
   command: python3 -m venv "{{ playbook_dir }}/venv"
   args:
     creates: "{{ playbook_dir }}/venv"
 
 - name: Ensure pip is installed in the virtual environment
+  ignore_errors: yes
   command: "{{ playbook_dir }}/venv/bin/python -m ensurepip"
   args:
     creates: "{{ playbook_dir }}/venv/bin/pip"
 
 - name: Upgrade pip in the virtual environment
+  ignore_errors: yes
   command: "{{ playbook_dir }}/venv/bin/pip install --upgrade pip"
 
 - name: Install PIP packages in a virtual environment
+  ignore_errors: yes
   command: pip install {{ item }} --break-system-packages 
   loop:
     - certipy-ad
@@ -138,6 +150,7 @@
 
 
 - name: Install packages
+  ignore_errors: yes
   ignore_errors: yes
   apt:
     name: "{{ item }}"
@@ -162,6 +175,7 @@
 
 
 - name: Clone repositories
+  ignore_errors: yes
   ignore_errors: yes
   git:
     repo: "{{ item.repo }}"
@@ -190,15 +204,18 @@
 
 - name: Install Adidnsdump 
   ignore_errors: yes
+  ignore_errors: yes
   shell: "pip install git+https://github.com/dirkjanm/adidnsdump#egg=adidnsdump --break-system-packages"
 
 - name: Install requirements for Spraykatz 
+  ignore_errors: yes
   ignore_errors: yes
   shell: "pip install -r {{ item }} --break-system-packages"
   loop:
     - /opt/windows/Spraykatz/requirements.txt
 
 - name: Install LDAPDomainDump
+  ignore_errors: yes
   shell: "pip install ldapdomaindump --break-system-packages"
   ignore_errors: yes
 
@@ -206,6 +223,7 @@
 
 
 - name: Download files
+  ignore_errors: yes
   ignore_errors: yes
   get_url:
     url: "{{ item.url }}"
@@ -534,24 +552,28 @@
 
 
 - name: Install PoshC2
+  ignore_errors: yes
   shell: curl -sSL https://raw.githubusercontent.com/nettitude/PoshC2/dev/Install.sh | sudo bash -s -- -b dev
   ignore_errors: yes
 
 
 
 - name: Ensure dot_exe directory exists
+  ignore_errors: yes
   file:
     path: /opt/windows/dot_exe
     state: directory
     mode: '0755'
 
 - name: Ensure dot_ps directory exists
+  ignore_errors: yes
   file:
     path: /opt/windows/dot_ps
     state: directory
     mode: '0755'
 
 - name: Find all .exe files in /opt/windows and its subdirectories
+  ignore_errors: yes
   find:
     paths: /opt/windows
     patterns: '*.exe'
@@ -559,10 +581,12 @@
   register: exe_files
 
 - name: Debug exe_files variable
+  ignore_errors: yes
   debug:
     var: exe_files
 
 - name: Copy all .exe files to dot_exe directory
+  ignore_errors: yes
   copy:
     src: "{{ item.path }}"
     dest: "/opt/windows/dot_exe/{{ item.path | basename }}"
@@ -571,6 +595,7 @@
   when: exe_files.matched > 0
 
 - name: Find all .ps1 files in /opt/windows and its subdirectories
+  ignore_errors: yes
   find:
     paths: /opt/windows
     patterns: '*.ps*1'
@@ -578,10 +603,12 @@
   register: ps1_files
 
 - name: Debug ps1_files variable
+  ignore_errors: yes
   debug:
     var: ps1_files
 
 - name: Copy all .exe files to dot_exe directory
+  ignore_errors: yes
   copy:
     src: "{{ item.path }}"
     dest: "/opt/windows/dot_ps/{{ item.path | basename }}"
@@ -593,10 +620,12 @@
 
 - name: "install Kerbrute"
   ignore_errors: yes
+  ignore_errors: yes
   shell:  go install github.com/ropnop/kerbrute@master
   become: true
 
 - name: "Copy kerbrute to /usr/local/bin"
+  ignore_errors: yes
   ignore_errors: yes
   shell: cp /root/go/bin/kerbrute /usr/local/bin/kerbrute
   become: true

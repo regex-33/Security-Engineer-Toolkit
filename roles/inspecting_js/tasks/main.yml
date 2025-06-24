@@ -1,10 +1,12 @@
 - name: Ensure inspecting_js directory exists
+  ignore_errors: yes
   become: yes
   file:
     path: /opt/tools/inspecting_js
     state: directory
 
 - name: Install LinkFinder and JSParser
+  ignore_errors: yes
   become: yes
   block:
     - name: Clone LinkFinder repository

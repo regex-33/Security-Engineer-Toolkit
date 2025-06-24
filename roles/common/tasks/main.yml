@@ -1,10 +1,12 @@
 - name: Update and upgrade apt packages
+  ignore_errors: yes
   apt:
     update_cache: yes
     upgrade: dist
   become: yes
 
 - name: Install common dependencies
+  ignore_errors: yes
   apt:
     name: "{{ item }}"
     state: present
@@ -42,6 +44,7 @@
   become: yes
 
 - name: Create tools directory
+  ignore_errors: yes
   file:
     path: /opt/tools
     state: directory

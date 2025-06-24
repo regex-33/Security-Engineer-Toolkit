@@ -1,15 +1,18 @@
 ---
 - name: Include vars of blue_vars.yml file.
+  ignore_errors: yes
   include_vars:
     file: blue_vars.yml
 
 - name: Update all packages to latest version
+  ignore_errors: yes
   become: yes
   apt:
     update_cache: yes
     cache_valid_time: 86400
 
 - name: Install foremost, exiftool, steghide
+  ignore_errors: yes
   package:
     name: "{{ item }}"
     state: latest
@@ -17,6 +20,7 @@
   with_items: "{{ packages }}"
 
 - name: Clone forensic tools.
+  ignore_errors: yes
   git:
     repo: "{{ item }}"
     dest: "{{ blue_dir }}{{ item.split('/')[-1].replace('.git','') }}"
@@ -26,34 +30,40 @@
   become: yes
 
 - name: Install volatility 3 requirements
+  ignore_errors: yes
   pip:
     requirements: "{{ blue_dir }}{{ vol3_dir }}/requirements.txt"
 
 - name: Install olevba via pip for analyzing macros
+  ignore_errors: yes
   pip:
     name: "{{ item }}"
   with_items: "{{ pip_modules }}"
   become: yes
 
 - name: Download oledump
+  ignore_errors: yes
   get_url:
     url: "http://didierstevens.com/files/software/oledump_V{{ oledump_version }}.zip"
     dest: "{{ blue_dir }}"
     checksum: "{{ oledump_checksum }}"
 
 - name: Expand oledump
+  ignore_errors: yes
   unarchive:
     src: "{{ blue_dir }}oledump_V{{ oledump_version }}.zip"
     dest: "{{ oledump_dir }}"
     remote_src: yes
 
 - name: Removing oledump zip
+  ignore_errors: yes
   file:
     path: "{{ blue_dir }}oledump_V{{ oledump_version }}.zip"
     state: absent
   become: yes
 
 - name: Add forensic tools alias to .zshrc
+  ignore_errors: yes
   lineinfile:
     path: ~/.zshrc
     line: "{{ item }}"
