@@ -1,4 +1,5 @@
 - name: Setup vulns scanner tools
+  ignore_errors: yes
   hosts: localhost
   become: yes
   roles:

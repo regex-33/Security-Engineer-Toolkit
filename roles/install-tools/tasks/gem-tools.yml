@@ -1,5 +1,6 @@
 ---
 - name: "Installing tools from Gems"
+  ignore_errors: yes
   gem:
     name: "{{ item }}"
     state: latest

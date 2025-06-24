@@ -1,10 +1,12 @@
 - name: Ensure git_hunting directory exists
+  ignore_errors: yes
   become: yes
   file:
     path: /opt/tools/git_hunting
     state: directory
 
 - name: Clone repositories and install requirements
+  ignore_errors: yes
   become: yes
   vars:
     git_tools:
@@ -34,5 +36,6 @@
         label: "{{ item.name }}"
 
 - name: Install GitHacker
+  ignore_errors: yes
   become: yes
   shell: "pip3 install GitHacker --break-system-packages"

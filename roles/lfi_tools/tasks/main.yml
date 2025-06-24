@@ -1,4 +1,5 @@
 - name: Ensure lfi_tools directory exists
+  ignore_errors: yes
   file:
     path: "/opt/tools/lfi_tools"
     state: directory
@@ -6,6 +7,7 @@
 
 
 - name: Install LFISuite using git
+  ignore_errors: yes
   git:
     repo: 'https://github.com/D35m0nd142/LFISuite.git'
     dest: /opt/tools/lfi_tools/LFISuite
@@ -13,6 +15,7 @@
 
 
 - name: Install mrco24-lfi
+  ignore_errors: yes
   command: "/usr/local/go/bin/go install github.com/mrco24/mrco24-lfi@latest"
   environment:
     GOPATH: "{{ ansible_env.HOME }}/go"
@@ -21,6 +24,7 @@
   become: yes
 
 - name: Copy mrco24-lfi binary to /usr/local/bin
+  ignore_errors: yes
   become: yes
   copy:
     src: "{{ ansible_env.HOME }}/go/bin/mrco24-lfi"

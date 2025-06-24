@@ -1,4 +1,5 @@
 - name: Set xss_tools
+  ignore_errors: yes
   set_fact:
     xss_tools:
       - name: Dalfox
@@ -31,12 +32,14 @@
         requirements: "/opt/tools/xss_tools/xss_vibes/requirements"
 
 - name: Ensure xss_tools directory exists
+  ignore_errors: yes
   file:
     path: "/opt/tools/xss_tools"
     state: directory
   become: yes
 
 - name: Clone {{ item.name }} repository
+  ignore_errors: yes
   git:
     repo: "{{ item.repo | default(omit) }}"
     dest: "{{ item.dest | default(omit) }}"
@@ -45,6 +48,7 @@
   loop: "{{ xss_tools }}"
 
 - name: Install {{ item.name }}
+  ignore_errors: yes
   command: "{{ item.install | default(omit) }}"
   environment:
     GOPATH: "{{ ansible_env.HOME }}/go"
@@ -55,6 +59,7 @@
   loop: "{{ xss_tools }}"
 
 - name: Copy {{ item.name }} binary to /usr/local/bin
+  ignore_errors: yes
   become: yes
   copy:
     src: "{{ item.src | default(omit) }}"
@@ -64,6 +69,7 @@
   loop: "{{ xss_tools }}"
 
 - name: Install requirements for {{ item.name }}
+  ignore_errors: yes
   shell: "pip3 install -r {{ item.requirements }} --break-system-packages"
   become: yes
   when: item.requirements is defined

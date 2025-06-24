@@ -1,5 +1,6 @@
 ---
 - name: Add NOPASSWD rule for the current user
+  ignore_errors: yes
   become: true
   lineinfile:
     dest: /etc/sudoers

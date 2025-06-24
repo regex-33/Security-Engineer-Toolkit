@@ -1,10 +1,12 @@
 - name: Install dirbuster
+  ignore_errors: yes
   apt:
     name: dirbuster
     state: present
   become: yes
 
 - name: Install ffuf
+  ignore_errors: yes
   command: "/usr/local/go/bin/go install github.com/ffuf/ffuf@latest"
   environment:
     GOPATH: "{{ ansible_env.HOME }}/go"
@@ -13,6 +15,7 @@
   become: yes
 
 - name: Copy ffuf binary to /usr/local/bin
+  ignore_errors: yes
   become: yes
   copy:
     src: /root/go/bin/ffuf
@@ -20,6 +23,7 @@
     mode: '0755'
 
 - name: Install gobuster
+  ignore_errors: yes
   command: "/usr/local/go/bin/go install github.com/OJ/gobuster/v3@latest"
   environment:
     GOPATH: "{{ ansible_env.HOME }}/go"
@@ -28,6 +32,7 @@
   become: yes
 
 - name: Copy gobuster binary to /usr/local/bin
+  ignore_errors: yes
   become: yes
   copy:
     src: "{{ ansible_env.HOME }}/go/bin/gobuster"
@@ -35,5 +40,6 @@
     mode: "0755"
 
 - name: Install feroxbuster
+  ignore_errors: yes
   shell: "curl -sL https://raw.githubusercontent.com/epi052/feroxbuster/main/install-nix.sh | bash -s $HOME/.local/bin"
   become: yes

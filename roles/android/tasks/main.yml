@@ -1,4 +1,5 @@
 - name: Install pip packages
+  ignore_errors: yes
   pip:
     name: "{{ item }}"
     state: latest
@@ -11,6 +12,7 @@
     - dnspy
 
 - name: Install required packages
+  ignore_errors: yes
   apt:
     name: "{{ item }}"
     state: latest
@@ -30,31 +32,37 @@
     - wkhtmltopdf
 
 - name: Clone Mobile-Security-Framework-MobSF from GitHub
+  ignore_errors: yes
   git:
     repo: https://github.com/MobSF/Mobile-Security-Framework-MobSF.git
     dest: /opt/Mobile-Security-Framework-MobSF
 
 - name: Run setup.sh
+  ignore_errors: yes
   command:
     cmd: ./setup.sh
     chdir: /opt/Mobile-Security-Framework-MobSF
 
 - name: Install python2.7
+  ignore_errors: yes
   apt:
     name: python2.7
     state: latest
 
 - name: Download get-pip.py for Python 2.7
+  ignore_errors: yes
   get_url:
     url: https://bootstrap.pypa.io/pip/2.7/get-pip.py
     dest: /usr/lib/python2.7/get-pip.py
 
 - name: Install pip for Python 2.7
+  ignore_errors: yes
   command:
     cmd: python2.7 get-pip.py
     chdir: /usr/lib/python2.7
 
 - name: Install prerequisites for Drozer
+  ignore_errors: yes
   command:
     cmd: pip2.7 install "{{ item }}"
   loop:
@@ -63,15 +71,18 @@
     - protobuf
 
 - name: Download Drozer wheel file
+  ignore_errors: yes
   get_url:
     url: https://github.com/FSecureLABS/drozer/releases/download/2.4.4/drozer-2.4.4-py2-none-any.whl
     dest: /tmp/drozer-2.4.4-py2-none-any.whl
 
 - name: Install Drozer
+  ignore_errors: yes
   command:
     cmd: pip2.7 install /tmp/drozer-2.4.4-py2-none-any.whl
 
 - name: Install additional tools
+  ignore_errors: yes
   apt:
     name: "{{ item }}"
     state: latest
@@ -87,6 +98,7 @@
     - jadx-dex2jar
 
 - name: Install OpenJDK headless for jarsigner
+  ignore_errors: yes
   apt:
     name: openjdk-11-jdk-headless
     state: latest

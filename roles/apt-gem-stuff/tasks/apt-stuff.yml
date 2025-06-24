@@ -1,5 +1,6 @@
 ---
 - name: "Updating apt repo/cache"
+  ignore_errors: yes
   become: yes
   apt:
     update_cache: yes
@@ -7,12 +8,14 @@
     cache_valid_time: 3600
 
 - name: "Upgrade all packages"
+  ignore_errors: yes
   apt:
     upgrade: yes
     force_apt_get: yes
   become: yes
 
 - name: "Installing Packages"
+  ignore_errors: yes
   become: yes
   apt:
     name:
@@ -53,6 +56,7 @@
     state: latest
 
 - name: Create tools directory
+  ignore_errors: yes
   file:
     path: /opt/tools
     state: directory

@@ -1,4 +1,5 @@
 - name: Set tools
+  ignore_errors: yes
   set_fact:
     tools:
       - name: EarlyBird
@@ -14,12 +15,14 @@
         dest: "/usr/local/bin/mantra"
 
 - name: Ensure sensitive_finding directory exists
+  ignore_errors: yes
   file:
     path: "/opt/tools/sensitive_finding"
     state: directory
   become: yes
 
 - name: Clone {{ item.name }} repository
+  ignore_errors: yes
   git:
     repo: "{{ item.repo | default(omit) }}"
     dest: "/opt/tools/sensitive_finding/{{ item.name }}"
@@ -28,12 +31,14 @@
   loop: "{{ tools }}"
 
 - name: Build and install {{ item.name }}
+  ignore_errors: yes
   shell: "cd /opt/tools/sensitive_finding/{{ item.name }}/ && {{ item.build }}"
   become: yes
   when: item.build is defined
   loop: "{{ tools }}"
 
 - name: Install {{ item.name }}
+  ignore_errors: yes
   command: "{{ item.install | default(omit) }}"
   environment:
     GOPATH: "{{ ansible_env.HOME }}/go"
@@ -44,6 +49,7 @@
   loop: "{{ tools }}"
 
 - name: Copy {{ item.name }} binary to /usr/local/bin
+  ignore_errors: yes
   become: yes
   copy:
     src: "{{ item.src | default(omit) }}"

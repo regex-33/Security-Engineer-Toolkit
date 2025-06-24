@@ -1,4 +1,5 @@
 - name: Set ssrf_tools
+  ignore_errors: yes
   set_fact:
     ssrf_tools:
       - name: Interactsh
@@ -13,12 +14,14 @@
         install: "cd /opt/tools/ssrf_tools/Gopherus && chmod +x install.sh && ./install.sh"
 
 - name: Ensure ssrf_tools directory exists
+  ignore_errors: yes
   file:
     path: "/opt/tools/ssrf_tools"
     state: directory
   become: yes
 
 - name: Clone {{ item.name }} repository
+  ignore_errors: yes
   git:
     repo: "{{ item.repo | default(omit) }}"
     dest: "/opt/tools/ssrf_tools/{{ item.name }}"
@@ -27,6 +30,7 @@
   loop: "{{ ssrf_tools }}"
 
 - name: Install {{ item.name }}
+  ignore_errors: yes
   command: "{{ item.install | default(omit) }}"
   environment:
     GOPATH: "{{ ansible_env.HOME }}/go"
@@ -37,6 +41,7 @@
   loop: "{{ ssrf_tools }}"
 
 - name: Copy {{ item.name }} binary to /usr/local/bin
+  ignore_errors: yes
   become: yes
   copy:
     src: "{{ item.src | default(omit) }}"

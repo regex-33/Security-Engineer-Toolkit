@@ -1,16 +1,19 @@
 - name: Ensure web_crawling directory exists
+  ignore_errors: yes
   file:
     path: "/opt/tools/request_smuggling"
     state: directory
   become: yes
 
 - name: Install http-request-smuggling using git
+  ignore_errors: yes
   git:
     repo: 'https://github.com/anshumanpattnaik/http-request-smuggling.git'
     dest: /opt/tools/request_smuggling/http-request-smuggling
   become: yes
 
 - name: Install requirements for http-request-smuggling in virtual environment
+  ignore_errors: yes
   shell: "pip3 install -r /opt/tools/request_smuggling/http-request-smuggling/requirements.txt --break-system-packages"
   become: yes
 

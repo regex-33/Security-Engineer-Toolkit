@@ -1,4 +1,5 @@
 - name: Set sql_tools
+  ignore_errors: yes
   set_fact:
     sql_tools:
       - name: Jeeves
@@ -18,12 +19,14 @@
         install: "cd /opt/tools/sql_tools/ghauri && python3 -m pip install --upgrade -r requirements.txt --break-system-packages && python3 setup.py install"
 
 - name: Ensure sql_tools directory exists
+  ignore_errors: yes
   file:
     path: "/opt/tools/sql_tools"
     state: directory
   become: yes
 
 - name: Clone {{ item.name }} repository
+  ignore_errors: yes
   git:
     repo: "{{ item.repo | default(omit) }}"
     dest: "/opt/tools/sql_tools/{{ item.name }}"
@@ -32,6 +35,7 @@
   loop: "{{ sql_tools }}"
 
 - name: Install {{ item.name }}
+  ignore_errors: yes
   command: "{{ item.install | default(omit) }}"
   environment:
     GOPATH: "{{ ansible_env.HOME }}/go"
@@ -42,6 +46,7 @@
   loop: "{{ sql_tools }}"
 
 - name: Copy {{ item.name }} binary to /usr/local/bin
+  ignore_errors: yes
   become: yes
   copy:
     src: "{{ item.src | default(omit) }}"

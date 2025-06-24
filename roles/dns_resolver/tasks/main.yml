@@ -1,10 +1,12 @@
 - name: Ensure dns_resolver directory exists
+  ignore_errors: yes
   become: yes
   file:
     path: /opt/tools/dns_resolver
     state: directory
 
 - name: Install Go-based tools and move binaries
+  ignore_errors: yes
   become: yes
   vars:
     go_tools:
@@ -35,6 +37,7 @@
         label: "{{ item.name }}"
 
 - name: Install MassDNS
+  ignore_errors: yes
   become: yes
   block:
     - name: Clone MassDNS repository
@@ -52,6 +55,7 @@
         mode: '0755'
 
 - name: Install dnsvalidator
+  ignore_errors: yes
   become: yes
   block:
     - name: Clone dnsvalidator repository

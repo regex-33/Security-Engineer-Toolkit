@@ -1,4 +1,5 @@
 - name: Setup directory fuzzers
+  ignore_errors: yes
   hosts: localhost
   become: yes
   roles:

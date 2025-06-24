@@ -1,4 +1,5 @@
 ---
 - name: "install Kerbrute"
+  ignore_errors: yes
   shell: go install github.com/ropnop/kerbrute@master
 

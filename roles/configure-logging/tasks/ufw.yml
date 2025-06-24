@@ -1,5 +1,6 @@
 ---
 - name: "Enable rsyslog service"
+  ignore_errors: yes
   service:
     name: rsyslog
     enabled: yes
@@ -8,6 +9,7 @@
   become_method: sudo
 
 - name: "Configure UFW"
+  ignore_errors: yes
   ufw:
     state: enabled
     policy: allow
@@ -15,6 +17,7 @@
   become_method: sudo
 
 - name: "Log SYN packets in INPUT Chain"
+  ignore_errors: yes
   lineinfile:
     path: /etc/ufw/after.rules
     line: '-A ufw-after-input -p tcp --syn -j LOG --log-prefix "[UFW-SYN-LOG] "'
@@ -23,6 +26,7 @@
   become_method: sudo
   
 - name: "Restart ufw"
+  ignore_errors: yes
   service:
     name: ufw
     state: restarted

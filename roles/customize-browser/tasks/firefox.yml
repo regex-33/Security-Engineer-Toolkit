@@ -1,4 +1,5 @@
 - name: "Updating Firefox Policies"
+  ignore_errors: yes
   template: 
     src: "templates/policies.json.j2"
     dest: "/usr/share/firefox-esr/distribution/policies.json"

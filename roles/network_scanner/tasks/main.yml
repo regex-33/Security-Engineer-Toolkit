@@ -1,10 +1,12 @@
 - name: Ensure network_scanner directory exists
+  ignore_errors: yes
   become: yes
   file:
     path: /opt/tools/network_scanner
     state: directory
 
 - name: Install masscan and naabu
+  ignore_errors: yes
   become: yes
   block:
     - name: Install masscan using git
@@ -38,6 +40,7 @@
         mode: '0755'
 
 - name: Install unimap
+  ignore_errors: yes
   become: yes
   shell: |
     cd /usr/local/bin
