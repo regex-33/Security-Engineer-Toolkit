@@ -4,6 +4,9 @@
     content: |
       [install]
       break-system-packages = true
+    owner: root
+    group: root
+    mode: '0644'      
   become: yes
 
 - name: Verify pip config file
