@@ -3,6 +3,8 @@
   hosts: local
   become: yes
   roles:
+    - role: "set-pip-config"
+      tags: config 
     - role: "roles/install-tools"
       tags: config
     - role: "roles/configure-tmux"
