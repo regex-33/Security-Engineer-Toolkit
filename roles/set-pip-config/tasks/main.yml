@@ -1,0 +1,18 @@
+- name: Set global pip config to always break system packages
+  copy:
+    dest: /etc/pip.conf.d/system-break.conf
+    content: |
+      [install]
+      break-system-packages = true
+  become: yes
+
+- name: Verify pip config file
+  stat:
+    path: /etc/pip.conf.d/system-break.conf
+  register: pip_conf_stat
+  become: yes
+
+- name: Debug pip config presence
+  debug:
+    msg: "Pip config exists at {{ pip_conf_stat.stat.path }} with size {{ pip_conf_stat.stat.size }} bytes"
+  when: pip_conf_stat.stat.exists
